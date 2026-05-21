@@ -1,10 +1,9 @@
-/*
- * ProofPress — DEALROOM Page
- * Design: StartupItalia-inspired — immagini 16:9, titoli Playfair serif, griglia 3 colonne
- * Focus: round di investimento, deal, funding, seed, Series A/B, exit — Italia First
+/**
+ * IDEASMART — DEALROOM · Sezione Deal, Round e Investimenti VC
+ * Layout editoriale: deal del giorno, notizie in colonne, archivio.
+ * NO filtri, NO testata sezione, NO sidebar — layout pulito come AI e Startup.
  */
 import { useMemo } from "react";
-import { Link } from "wouter";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
 import ArchiveSection from "@/components/ArchiveSection";
@@ -13,177 +12,158 @@ import NewsletterSubscribeForm from "@/components/NewsletterSubscribeForm";
 import SEOHead from "@/components/SEOHead";
 import VerifyBadge from "@/components/VerifyBadge";
 
-const ACCENT = "#0f0f0f";
-const FONT_SERIF = "'Playfair Display', Georgia, 'Times New Roman', serif";
-const FONT_SANS = "'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif";
+const ACCENT = "#1a4a2e";
+const ACCENT_LIGHT = "#f0f7f3";
+const INK = "#1a1a1a";
 
 function formatShortDate(str: string): string {
   if (!str) return "";
   try {
-    const d = new Date(str);
-    const now = new Date();
-    const diffH = Math.floor((now.getTime() - d.getTime()) / 3600000);
-    if (diffH < 1) return "Ora";
-    if (diffH < 24) return `${diffH}h fa`;
-    return d.toLocaleDateString("it-IT", { day: "numeric", month: "short" });
-  } catch { return str; }
+    return new Date(str).toLocaleDateString("it-IT", { day: "numeric", month: "short" });
+  } catch {
+    return str;
+  }
 }
 
-type NewsItem = {
-  id: number;
-  title: string;
-  summary: string;
-  category: string;
-  imageUrl?: string | null;
-  sourceName?: string;
-  publishedAt?: string;
-  sourceUrl?: string;
-  verifyHash?: string | null;
-  trustGrade?: string | null;
-  trustScore?: number | null;
-  ppvHash?: string | null;
-  ppvIpfsUrl?: string | null;
-  ppvTrustGrade?: string | null;
-  ppvTrustScore?: number | null;
-  ppvDocumentId?: number | null;
-};
+function Divider({ thick = false }: { thick?: boolean }) {
+  return <div className={`w-full ${thick ? "border-t-4" : "border-t"} border-[${INK}]`} />;
+}
 
-function SectionHeader({ title, accent, href }: { title: string; accent: string; href?: string }) {
+function ThinDivider() {
+  return <div className="w-full border-t border-[#1a1a1a]/20" />;
+}
+
+function DealBadge({ label }: { label: string }) {
   return (
-    <div className="flex items-center justify-between mb-4 pb-2" style={{ borderBottom: `3px solid ${accent}` }}>
-      <h2 className="text-[13px] font-bold uppercase tracking-[0.15em] m-0" style={{ color: accent, fontFamily: FONT_SANS }}>
-        {title}
-      </h2>
-      {href && (
-        <Link href={href}>
-          <span className="text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
-            style={{ color: accent, fontFamily: FONT_SANS }}>
-            Tutte →
-          </span>
-        </Link>
+    <span
+      className="inline-block text-[10px] font-bold uppercase tracking-[0.15em] px-2 py-0.5 rounded-lg"
+      style={{ background: ACCENT_LIGHT, color: ACCENT }}
+    >
+      {label}
+    </span>
+  );
+}
+
+function NewsCard({
+  item,
+  showImage = false,
+}: {
+  item: {
+    id: number;
+    title: string;
+    summary: string;
+    category: string;
+    imageUrl?: string | null;
+    sourceName?: string;
+    publishedAt?: string;
+    sourceUrl?: string;
+    verifyHash?: string | null;
+    trustGrade?: string | null;
+    trustScore?: number | null;
+    ppvHash?: string | null;
+    ppvIpfsUrl?: string | null;
+    ppvTrustGrade?: string | null;
+    ppvTrustScore?: number | null;
+    ppvDocumentId?: number | null;
+  };
+  showImage?: boolean;
+}) {
+  const href =
+    item.sourceUrl && item.sourceUrl !== "#"
+      ? item.sourceUrl
+      : `https://www.google.com/search?q=${encodeURIComponent(item.title)}`;
+  return (
+    <div className="py-4">
+      {showImage && item.imageUrl && (
+        <a href={href} target="_blank" rel="noopener noreferrer">
+          <img
+            src={item.imageUrl}
+            alt={item.title}
+            loading="lazy"
+            decoding="async"
+            className="w-full h-32 object-cover mb-3 cursor-pointer grayscale-[15%] hover:grayscale-0 transition-all"
+            style={{ border: "1px solid rgba(26,74,46,0.15)" }}
+          />
+        </a>
+      )}
+      <DealBadge label={item.category || "Deal"} />
+      <a href={href} target="_blank" rel="noopener noreferrer">
+        <h3 className="mt-2 text-base font-bold leading-snug text-[#1a1a1a] hover:underline cursor-pointer">
+          {item.title}
+        </h3>
+      </a>
+      <p className="mt-2 text-[15px] leading-relaxed text-[#1a1a1a]/65 line-clamp-3">
+        {item.summary}
+      </p>
+      {item.sourceName && (
+        <p className="mt-1 text-[10px] text-[#1a1a1a]/35">
+          {item.sourceName}
+          {item.publishedAt ? ` \u00b7 ${formatShortDate(item.publishedAt)}` : ""}
+        </p>
+      )}
+      {(item.verifyHash || item.ppvHash) && (
+        <div className="mt-1">
+          <VerifyBadge
+            hash={item.ppvHash || item.verifyHash}
+            size="sm"
+            trustGrade={item.ppvTrustGrade || item.trustGrade}
+            trustScore={item.ppvTrustScore ?? item.trustScore}
+            ppvHash={item.ppvHash}
+            ppvIpfsUrl={item.ppvIpfsUrl}
+            ppvTrustGrade={item.ppvTrustGrade}
+            ppvDocumentId={item.ppvDocumentId}
+          />
+        </div>
       )}
     </div>
   );
 }
 
-function HeroCard({ item }: { item: NewsItem }) {
-  const href = `/dealroom/news/${item.id}`;
+function NewsRow({
+  item,
+}: {
+  item: {
+    id: number;
+    title: string;
+    category: string;
+    sourceName?: string;
+    publishedAt?: string;
+    sourceUrl?: string;
+  };
+}) {
+  const href =
+    item.sourceUrl && item.sourceUrl !== "#"
+      ? item.sourceUrl
+      : `https://www.google.com/search?q=${encodeURIComponent(item.title)}`;
   return (
-    <article className="group cursor-pointer">
-      <Link href={href}>
-        <div className="relative overflow-hidden rounded-lg bg-[#f5f5f5]" style={{ aspectRatio: "16/9" }}>
-          {item.imageUrl ? (
-            <img src={item.imageUrl} alt={item.title} loading="eager" decoding="async"
-              className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500" />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#f5f5f5] to-[#e8e8e8]">
-              <span className="text-[#bbb] text-xs uppercase tracking-widest" style={{ fontFamily: FONT_SANS }}>Deal</span>
-            </div>
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
-        </div>
-      </Link>
-      <div className="mt-3">
-        <span className="inline-block text-[10px] font-bold uppercase tracking-[0.1em] px-2 py-0.5 mb-2"
-          style={{ background: ACCENT, color: "#fff", fontFamily: FONT_SANS, borderRadius: "3px" }}>
-          {item.category || "Deal"}
-        </span>
-        <Link href={href}>
-          <h2 className="text-[#1a1a1a] hover:text-[#e63946] transition-colors leading-tight"
-            style={{ fontFamily: FONT_SERIF, fontSize: "clamp(22px, 3vw, 30px)", fontWeight: 800, lineHeight: 1.2 }}>
+    <div className="py-2.5 grid grid-cols-[auto_1fr] gap-3 items-start">
+      <DealBadge label={item.category || "Deal"} />
+      <div>
+        <a href={href} target="_blank" rel="noopener noreferrer">
+          <span className="text-[15px] font-semibold text-[#1a1a1a] hover:underline cursor-pointer">
             {item.title}
-          </h2>
-        </Link>
-        <p className="mt-2 text-[15px] leading-relaxed text-[#555]"
-          style={{ fontFamily: FONT_SANS, lineHeight: 1.65 }}>
-          {item.summary.slice(0, 220)}{item.summary.length > 220 ? "…" : ""}
-        </p>
-        <p className="mt-2 text-[11px] text-[#999] uppercase tracking-widest" style={{ fontFamily: FONT_SANS }}>
-          {item.sourceName}{item.publishedAt ? ` · ${formatShortDate(item.publishedAt)}` : ""}
-        </p>
-        {(item.verifyHash || item.ppvHash) && (
-          <div className="mt-1.5">
-            <VerifyBadge hash={item.ppvHash || item.verifyHash} size="sm"
-              trustGrade={item.ppvTrustGrade || item.trustGrade}
-              trustScore={item.ppvTrustScore ?? item.trustScore}
-              ppvHash={item.ppvHash} ppvIpfsUrl={item.ppvIpfsUrl}
-              ppvTrustGrade={item.ppvTrustGrade} ppvDocumentId={item.ppvDocumentId} />
-          </div>
-        )}
-      </div>
-    </article>
-  );
-}
-
-function MediumCard({ item }: { item: NewsItem }) {
-  const href = `/dealroom/news/${item.id}`;
-  return (
-    <article className="group cursor-pointer">
-      <Link href={href}>
-        <div className="overflow-hidden rounded-md bg-[#f5f5f5]" style={{ aspectRatio: "16/9" }}>
-          {item.imageUrl ? (
-            <img src={item.imageUrl} alt={item.title} loading="lazy"
-              className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500" />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#f5f5f5] to-[#e8e8e8]">
-              <span className="text-[#bbb] text-[10px] uppercase tracking-widest" style={{ fontFamily: FONT_SANS }}>Deal</span>
-            </div>
-          )}
-        </div>
-      </Link>
-      <div className="mt-2.5">
-        <span className="inline-block text-[9px] font-bold uppercase tracking-[0.1em] px-1.5 py-0.5 mb-1.5"
-          style={{ background: ACCENT, color: "#fff", fontFamily: FONT_SANS, borderRadius: "2px" }}>
-          {item.category || "Deal"}
-        </span>
-        <Link href={href}>
-          <h3 className="text-[#1a1a1a] hover:text-[#e63946] transition-colors leading-snug line-clamp-3"
-            style={{ fontFamily: FONT_SERIF, fontSize: "clamp(15px, 1.6vw, 18px)", fontWeight: 700, lineHeight: 1.3 }}>
-            {item.title}
-          </h3>
-        </Link>
-        <p className="mt-1.5 text-[12px] text-[#666] line-clamp-2" style={{ fontFamily: FONT_SANS, lineHeight: 1.55 }}>
-          {item.summary.slice(0, 120)}{item.summary.length > 120 ? "…" : ""}
-        </p>
-        <p className="mt-1 text-[10px] text-[#999] uppercase tracking-widest" style={{ fontFamily: FONT_SANS }}>
-          {item.sourceName}{item.publishedAt ? ` · ${formatShortDate(item.publishedAt)}` : ""}
-        </p>
-      </div>
-    </article>
-  );
-}
-
-function SmallRow({ item }: { item: NewsItem }) {
-  const href = `/dealroom/news/${item.id}`;
-  return (
-    <div className="py-3 border-b border-[#f0f0f0] last:border-0">
-      <div className="flex items-center gap-1 mb-1">
-        <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5"
-          style={{ background: ACCENT, color: "#fff", fontFamily: FONT_SANS, borderRadius: "2px" }}>
-          {item.category || "Deal"}
-        </span>
-        {item.publishedAt && (
-          <span className="text-[9px] text-[#999]" style={{ fontFamily: FONT_SANS }}>
-            {formatShortDate(item.publishedAt)}
+          </span>
+        </a>
+        {item.sourceName && (
+          <span className="ml-2 text-[10px] text-[#1a1a1a]/35">
+            {item.sourceName}
+            {item.publishedAt ? ` \u00b7 ${formatShortDate(item.publishedAt)}` : ""}
           </span>
         )}
       </div>
-      <Link href={href}>
-        <p className="text-[14px] font-bold text-[#1a1a1a] hover:text-[#e63946] transition-colors leading-snug line-clamp-2"
-          style={{ fontFamily: FONT_SERIF }}>
-          {item.title}
-        </p>
-      </Link>
-      <p className="text-[10px] text-[#999] mt-0.5" style={{ fontFamily: FONT_SANS }}>{item.sourceName}</p>
     </div>
   );
 }
 
 export default function DealroomHome() {
-  const queryOpts = { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false };
-  const { data: newsData } = trpc.news.getLatest.useQuery({ limit: 50, section: "dealroom" }, queryOpts);
+  const { data: newsData } = trpc.news.getLatest.useQuery(
+    { limit: 50, section: "dealroom" },
+    { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false },
+  );
 
   const allNews = useMemo(() => newsData || [], [newsData]);
+
+  // Deduplica per titolo (normalizzato)
   const dedupedNews = useMemo(() => {
     const seen = new Set<string>();
     return allNews.filter((n) => {
@@ -194,82 +174,234 @@ export default function DealroomHome() {
     });
   }, [allNews]);
 
-  const heroNews = useMemo(() => dedupedNews.find(n => n.imageUrl) || dedupedNews[0] || null, [dedupedNews]);
-  const grid3 = useMemo(() => dedupedNews.filter(n => n.id !== heroNews?.id).slice(0, 3), [dedupedNews, heroNews]);
-  const grid3b = useMemo(() => dedupedNews.filter(n => n.id !== heroNews?.id).slice(3, 6), [dedupedNews, heroNews]);
-  const listNews = useMemo(() => dedupedNews.filter(n => n.id !== heroNews?.id).slice(6, 30), [dedupedNews, heroNews]);
+  // Distribuzione notizie
+  const heroNews = dedupedNews.find((n) => n.imageUrl) || dedupedNews[0] || null;
+  const secondaryNews = dedupedNews.filter((n) => n.id !== heroNews?.id).slice(0, 2);
+  const gridNews = dedupedNews.filter((n) => n.id !== heroNews?.id).slice(2, 8);
+  const listNews = dedupedNews.filter((n) => n.id !== heroNews?.id).slice(8, 30);
 
   return (
     <>
       <SEOHead
-        title="Dealroom — Proof Press"
-        description="Round di investimento, deal, funding, seed, Series A/B e investimenti venture capital. Focus sul mercato italiano, europeo e globale."
+        title="DEALROOM \u2014 Proof Press"
+        description="Notizie su round, funding, seed, Series A/B e investimenti venture capital. Focus sul mercato italiano, europeo e globale."
         canonical="https://proofpress.ai/dealroom"
         ogImage="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/og-dealroom-7mUmbMgvxbCQ26uct7dsis.png"
         ogSiteName="Proof Press"
       />
-      <div className="min-h-screen" style={{ background: "#ffffff" }}>
+
+      <div className="flex min-h-screen" style={{ background: "#ffffff", color: INK }}>
+        
+        <div className="flex-1 min-w-0 overflow-x-hidden">
         <SharedPageHeader />
-        <main className="max-w-[1280px] mx-auto px-4 pb-16">
+        <main className="max-w-6xl mx-auto px-3 sm:px-4 pb-12">
+          {/* SEZIONE 1: Deal del Giorno */}
+          <div>
+            <div className="py-4">
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40">
+                Deal del Giorno
+              </span>
+            </div>
+            <ThinDivider />
 
-          {/* ── HERO ── */}
-          <section className="mt-6">
-            <SectionHeader title="Dealroom — Round & Investimenti" accent={ACCENT} />
-            {heroNews ? <HeroCard item={heroNews} /> : (
-              <div className="py-12 text-center text-[#999]" style={{ fontFamily: FONT_SANS }}>Caricamento deal…</div>
+            {heroNews ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+                <div className="pr-0 md:pr-5 py-4">
+                  <DealBadge label={heroNews.category || "Funding"} />
+                  <a
+                    href={
+                      heroNews.sourceUrl && heroNews.sourceUrl !== "#"
+                        ? heroNews.sourceUrl
+                        : `https://www.google.com/search?q=${encodeURIComponent(heroNews.title)}`
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <h2 className="mt-3 text-2xl md:text-3xl font-bold leading-tight text-[#1a1a1a] hover:underline cursor-pointer">
+                      {heroNews.title}
+                    </h2>
+                  </a>
+                  <ThinDivider />
+                  <p className="mt-3 text-base leading-relaxed text-[#1a1a1a]/80">
+                    {heroNews.summary.slice(0, 280)}
+                    {heroNews.summary.length > 280 ? "\u2026" : ""}
+                  </p>
+                  <a
+                    href={
+                      heroNews.sourceUrl && heroNews.sourceUrl !== "#"
+                        ? heroNews.sourceUrl
+                        : `https://www.google.com/search?q=${encodeURIComponent(heroNews.title)}`
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span
+                      className="mt-3 inline-block text-xs font-bold uppercase tracking-widest hover:underline"
+                      style={{ color: ACCENT }}
+                    >
+                      Leggi l&apos;articolo originale &rarr;
+                    </span>
+                  </a>
+                </div>
+                <div className="py-4 pl-0 md:pl-5 border-l-0 md:border-l border-[#1a1a1a]/20">
+                  {heroNews.imageUrl ? (
+                    <a
+                      href={
+                        heroNews.sourceUrl && heroNews.sourceUrl !== "#"
+                          ? heroNews.sourceUrl
+                          : `https://www.google.com/search?q=${encodeURIComponent(heroNews.title)}`
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <img
+                        src={heroNews.imageUrl}
+                        alt={heroNews.title}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-36 sm:h-52 object-cover cursor-pointer grayscale-[15%] hover:grayscale-0 transition-all"
+                        style={{ border: "1px solid rgba(26,74,46,0.15)" }}
+                      />
+                    </a>
+                  ) : (
+                    <div
+                      className="w-full h-52 flex items-center justify-center"
+                      style={{ background: ACCENT_LIGHT, border: `1px solid ${ACCENT}30` }}
+                    >
+                      <span className="text-4xl opacity-30">&#128188;</span>
+                    </div>
+                  )}
+                  {heroNews.sourceName && (
+                    <p className="mt-2 text-xs text-[#1a1a1a]/40 italic">
+                      Fonte: {heroNews.sourceName}
+                      {heroNews.publishedAt
+                        ? ` \u00b7 ${formatShortDate(heroNews.publishedAt)}`
+                        : ""}
+                    </p>
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div className="py-12 text-center text-[#1a1a1a]/30">
+                <p>Caricamento notizie dealroom&hellip;</p>
+                <p className="mt-2 text-xs text-[#1a1a1a]/20">
+                  Le notizie vengono aggiornate automaticamente ogni giorno alle 01:30 CET.
+                </p>
+              </div>
             )}
-          </section>
 
-          {/* ── GRIGLIA 3 COLONNE ── */}
-          {grid3.length > 0 && (
-            <section className="mt-10">
-              <SectionHeader title="Ultimi Deal" accent={ACCENT} />
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {grid3.map(item => <MediumCard key={item.id} item={item} />)}
+            <ThinDivider />
+
+            {secondaryNews.length > 0 && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-0 mt-2">
+                {secondaryNews.map((item, i) => (
+                  <div
+                    key={item.id}
+                    className={i > 0 ? "border-l border-[#1a1a1a]/20 pl-4" : "pr-4"}
+                  >
+                    <NewsCard item={item} showImage />
+                  </div>
+                ))}
               </div>
-            </section>
+            )}
+          </div>
+
+          {/* SEZIONE 2: Griglia notizie */}
+          {gridNews.length > 0 && (
+            <div className="mt-6">
+              <Divider thick />
+              <div className="py-4">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40">
+                  Ultime Notizie Deal &amp; Funding
+                </span>
+              </div>
+              <ThinDivider />
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-0 mt-2">
+                {gridNews.slice(0, 3).map((item, i) => (
+                  <div
+                    key={item.id}
+                    className={i > 0 ? "border-l border-[#1a1a1a]/20 pl-5" : "pr-5"}
+                  >
+                    <NewsCard item={item} showImage={i === 0} />
+                  </div>
+                ))}
+              </div>
+              {gridNews.length > 3 && (
+                <>
+                  <ThinDivider />
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-0 mt-2">
+                    {gridNews.slice(3, 6).map((item, i) => (
+                      <div
+                        key={item.id}
+                        className={i > 0 ? "border-l border-[#1a1a1a]/20 pl-5" : "pr-5"}
+                      >
+                        <NewsCard item={item} />
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
           )}
 
-          {grid3b.length > 0 && (
-            <section className="mt-8">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {grid3b.map(item => <MediumCard key={item.id} item={item} />)}
-              </div>
-            </section>
-          )}
-
-          {/* ── ELENCO NOTIZIE RIMANENTI ── */}
+          {/* SEZIONE 3: Elenco notizie rimanenti */}
           {listNews.length > 0 && (
-            <section className="mt-10">
-              <SectionHeader title="Tutti i Deal" accent={ACCENT} />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
-                {listNews.map(item => <SmallRow key={item.id} item={item} />)}
+            <div className="mt-8">
+              <Divider thick />
+              <div className="py-4">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40">
+                  Altre Notizie
+                </span>
               </div>
-            </section>
+              <ThinDivider />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 mt-1">
+                {listNews.map((item, i) => (
+                  <div key={item.id}>
+                    <NewsRow item={item} />
+                    {i < listNews.length - 1 && <ThinDivider />}
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
 
-          {/* ── NEWSLETTER ── */}
-          <section className="mt-12 border-t border-[#e8e8e8] pt-10">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          {/* SEZIONE 4: Newsletter */}
+          <div className="mt-10">
+            <Divider thick />
+            <div className="py-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em]"
-                  style={{ color: ACCENT, fontFamily: FONT_SANS }}>Newsletter</span>
-                <h3 className="mt-2 text-[24px] font-bold text-[#1a1a1a]" style={{ fontFamily: FONT_SERIF }}>
-                  Ricevi Dealroom ogni settimana
+                <span
+                  className="text-[10px] font-bold uppercase tracking-[0.2em]"
+                  style={{ color: ACCENT }}
+                >
+                  Newsletter
+                </span>
+                <h3 className="mt-2 text-2xl font-bold text-[#1a1a1a]">
+                  Ricevi DEALROOM ogni venerd&igrave;
                 </h3>
-                <p className="mt-2 text-[14px] text-[#666]" style={{ fontFamily: FONT_SANS }}>
-                  I round, i deal e gli investimenti più rilevanti del mercato italiano ed europeo.
+                <p className="mt-2 text-sm text-[#1a1a1a]/65">
+                  I round, i deal e gli investimenti pi&ugrave; importanti
+                  dell&apos;ecosistema startup italiano ed europeo, direttamente
+                  nella tua inbox.
                 </p>
               </div>
               <div>
-                <NewsletterSubscribeForm defaultChannel="dealroom" accentColor={ACCENT} />
+                <NewsletterSubscribeForm
+                  defaultChannel="dealroom"
+                  accentColor={ACCENT}
+                />
               </div>
             </div>
-          </section>
+          </div>
 
+          {/* Archivio */}
           <ArchiveSection section="dealroom" accentColor={ACCENT} skipCount={10} />
-          <SharedPageFooter />
+
+          <div className="max-w-[1280px] mx-auto">
+            <SharedPageFooter />
+          </div>
         </main>
+        </div>{/* fine contenuto principale */}
       </div>
     </>
   );

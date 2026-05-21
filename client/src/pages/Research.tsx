@@ -1,7 +1,7 @@
-/*
- * ProofPress — RESEARCH Page
- * Design: StartupItalia-inspired — immagini 16:9, titoli Playfair serif, griglia 3 colonne
- * Focus: ricerche e analisi verificate su AI, Startup, Venture Capital
+/**
+ * IDEASMART Research — Ricerche & Analisi
+ * Layout editoriale identico a AiHome: hero ricerca + sidebar, griglia 3 col, lista, newsletter, archivio.
+ * Palette: bianco carta (#ffffff), inchiostro (#1a1a1a), accento viola (#6d28d9).
  */
 import { useMemo } from "react";
 import { Link } from "wouter";
@@ -12,34 +12,63 @@ import SEOHead from "@/components/SEOHead";
 import VerifyBadge from "@/components/VerifyBadge";
 import RequireAuth from "@/components/RequireAuth";
 import ArchiveSection from "@/components/ArchiveSection";
-import { ExternalLink, ArrowRight, FlaskConical } from "lucide-react";
+import {
+  ExternalLink, Globe, MapPin, BookOpen, ArrowRight,
+  FlaskConical, BarChart3, Cpu, Building2, DollarSign, TrendingUp
+} from "lucide-react";
 
-const ACCENT = "#1a1a1a";
-const FONT_SERIF = "'Playfair Display', Georgia, 'Times New Roman', serif";
-const FONT_SANS = "'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif";
+const ACCENT = "#6d28d9";
+const ACCENT_LIGHT = "#f5f3ff";
+const INK = "#1a1a1a";
+const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
+const SF_DISPLAY = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif";
+const SF_SERIF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif";
+
+function Divider({ thick = false }: { thick?: boolean }) {
+  return <div className={`w-full ${thick ? "border-t-4" : "border-t"} border-[#1a1a1a]`} />;
+}
+function ThinDivider() { return <div className="w-full border-t border-[#1a1a1a]/20" />; }
+
+function SectionBadge({ label }: { label: string }) {
+  return (
+    <span
+      className="inline-block text-[10px] font-bold uppercase tracking-[0.15em] px-2 py-0.5 rounded-lg"
+      style={{ background: ACCENT_LIGHT, color: ACCENT, fontFamily: SF }}
+    >
+      {label}
+    </span>
+  );
+}
+
+// ── Config categorie ─────────────────────────────────────────────────────────
+const CATEGORY_CONFIG: Record<string, { label: string; icon: React.ReactNode; accentColor: string; bgColor: string }> = {
+  startup:         { label: "Startup",         icon: <Building2 className="w-3.5 h-3.5" />,  accentColor: "#2a2a2a", bgColor: "#fff0e6" },
+  venture_capital: { label: "Venture Capital", icon: <DollarSign className="w-3.5 h-3.5" />, accentColor: "#1a1a1a", bgColor: "#f0fdf4" },
+  ai_trends:       { label: "AI Trends",       icon: <Cpu className="w-3.5 h-3.5" />,        accentColor: "#1a1a1a", bgColor: "#e6f4f1" },
+  technology:      { label: "Tecnologia",      icon: <BarChart3 className="w-3.5 h-3.5" />,  accentColor: "#2a2a2a", bgColor: "#faf5ff" },
+  market:          { label: "Mercati",         icon: <TrendingUp className="w-3.5 h-3.5" />, accentColor: "#1a1a1a", bgColor: "#eff6ff" }
+};
+
+const REGION_CONFIG: Record<string, { label: string; icon: React.ReactNode }> = {
+  global: { label: "Globale", icon: <Globe className="w-3 h-3" /> },
+  europe: { label: "Europa",  icon: <MapPin className="w-3 h-3" /> },
+  italy:  { label: "Italia",  icon: <MapPin className="w-3 h-3" /> }
+};
 
 const CATEGORY_FALLBACK_IMAGES: Record<string, string> = {
-  startup:         "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&q=80",
-  venture_capital: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
-  ai_trends:       "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80",
-  technology:      "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-  market:          "https://images.unsplash.com/photo-1642790551116-18e150f248e3?w=800&q=80"
+  startup:         "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=600&q=80",
+  venture_capital: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&q=80",
+  ai_trends:       "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=600&q=80",
+  technology:      "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80",
+  market:          "https://images.unsplash.com/photo-1642790551116-18e150f248e3?w=600&q=80"
 };
 
-const CATEGORY_LABELS: Record<string, string> = {
-  startup: "Startup",
-  venture_capital: "Venture Capital",
-  ai_trends: "AI Trends",
-  technology: "Tecnologia",
-  market: "Mercati"
-};
+function getCategoryConfig(cat: string) {
+  return CATEGORY_CONFIG[cat] ?? { label: cat, icon: <BookOpen className="w-3.5 h-3.5" />, accentColor: "#1a1a1a", bgColor: "#f5f5f7" };
+}
 
 function getImageUrl(report: { imageUrl?: string | null; category: string }): string {
   return report.imageUrl || CATEGORY_FALLBACK_IMAGES[report.category] || CATEGORY_FALLBACK_IMAGES["ai_trends"];
-}
-
-function getCategoryLabel(cat: string): string {
-  return CATEGORY_LABELS[cat] ?? cat;
 }
 
 function formatShortDate(str: string): string {
@@ -47,268 +76,351 @@ function formatShortDate(str: string): string {
   try { return new Date(str).toLocaleDateString("it-IT", { day: "numeric", month: "short" }); } catch { return str; }
 }
 
-type Report = {
-  id: number;
-  title: string;
-  summary: string;
-  keyFindings: string[];
-  source: string;
-  sourceUrl: string | null;
-  category: string;
-  region: string;
-  dateLabel: string;
-  isResearchOfDay?: boolean;
-  viewCount: number;
-  imageUrl?: string | null;
-};
+// ── Card ricerca (stile NewsCard di AiHome) ──────────────────────────────────
+function ResearchCard({ report, showImage = false, large = false }: {
+  report: {
+    id: number; title: string; summary: string; keyFindings: string[];
+    source: string; sourceUrl: string | null; category: string; region: string;
+    dateLabel: string; isResearchOfDay?: boolean; viewCount: number;
+    imageUrl?: string | null;
+  };
+  showImage?: boolean;
+  large?: boolean;
+}) {
+  const trackView = trpc.news.trackResearchView.useMutation();
+  const catConfig = getCategoryConfig(report.category);
+  const imgUrl = getImageUrl(report);
+  const href = `/research/${report.id}`;
 
-function SectionHeader({ title, accent, href }: { title: string; accent: string; href?: string }) {
   return (
-    <div className="flex items-center justify-between mb-4 pb-2" style={{ borderBottom: `3px solid ${accent}` }}>
-      <h2 className="text-[13px] font-bold uppercase tracking-[0.15em] m-0" style={{ color: accent, fontFamily: FONT_SANS }}>
-        {title}
-      </h2>
-      {href && (
+    <div className="py-4">
+      {showImage && (
         <Link href={href}>
-          <span className="text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
-            style={{ color: accent, fontFamily: FONT_SANS }}>
-            Tutte →
-          </span>
+          <img
+            src={imgUrl}
+            alt={report.title}
+            loading="lazy"
+            decoding="async"
+            className={`w-full ${large ? "h-40 sm:h-56" : "h-32 sm:h-40"} object-cover mb-3 cursor-pointer hover:opacity-95 transition-opacity`}
+            style={{ borderRadius: "8px", border: "1px solid rgba(26,26,46,0.07)", boxShadow: "0 1px 8px rgba(0,0,0,0.05)" }}
+          />
         </Link>
       )}
+      <SectionBadge label={catConfig.label} />
+      <Link href={href}>
+        <h3
+          className={`mt-2 ${large ? "text-2xl md:text-3xl" : "text-[17px]"} font-bold leading-snug text-[#1a1a1a] hover:underline cursor-pointer`}
+          style={{ fontFamily: SF_DISPLAY, letterSpacing: large ? "-0.02em" : "-0.01em", lineHeight: 1.25 }}
+        >
+          {report.title}
+        </h3>
+      </Link>
+      <p className="mt-2 text-[15px] leading-relaxed text-[#1a1a1a]/65 line-clamp-3" style={{ fontFamily: SF_SERIF }}>
+        {report.summary}
+      </p>
+      {report.source && (
+        <p className="mt-1 text-[10px] text-[#1a1a1a]/35" style={{ fontFamily: SF }}>
+          {report.source}{report.dateLabel ? ` · ${formatShortDate(report.dateLabel)}` : ""}
+        </p>
+      )}
+      <VerifyBadge hash={`research-${report.id}-${report.source}-${report.dateLabel}`} size="sm" />
     </div>
   );
 }
 
-function HeroCard({ report }: { report: Report }) {
+// ── Row ricerca (stile NewsRow di AiHome) ────────────────────────────────────
+function ResearchRow({ report }: {
+  report: {
+    id: number; title: string; category: string; source: string; dateLabel: string;
+  };
+}) {
+  const catConfig = getCategoryConfig(report.category);
   const href = `/research/${report.id}`;
-  const imgUrl = getImageUrl(report);
   return (
-    <article className="group cursor-pointer">
-      <Link href={href}>
-        <div className="relative overflow-hidden rounded-lg bg-[#f5f5f5]" style={{ aspectRatio: "16/9" }}>
-          <img src={imgUrl} alt={report.title} loading="eager" decoding="async"
-            className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
-        </div>
-      </Link>
-      <div className="mt-3">
-        <span className="inline-block text-[10px] font-bold uppercase tracking-[0.1em] px-2 py-0.5 mb-2"
-          style={{ background: ACCENT, color: "#fff", fontFamily: FONT_SANS, borderRadius: "3px" }}>
-          {getCategoryLabel(report.category)}
-        </span>
+    <div className="py-2.5 grid grid-cols-[auto_1fr] gap-3 items-start">
+      <SectionBadge label={catConfig.label} />
+      <div>
         <Link href={href}>
-          <h2 className="text-[#1a1a1a] hover:text-[#e63946] transition-colors leading-tight"
-            style={{ fontFamily: FONT_SERIF, fontSize: "clamp(22px, 3vw, 30px)", fontWeight: 800, lineHeight: 1.2 }}>
+          <span
+            className="text-[15px] font-semibold text-[#1a1a1a] hover:underline cursor-pointer"
+            style={{ fontFamily: SF_DISPLAY }}
+          >
             {report.title}
-          </h2>
+          </span>
         </Link>
-        <p className="mt-2 text-[15px] leading-relaxed text-[#555]"
-          style={{ fontFamily: FONT_SANS, lineHeight: 1.65 }}>
-          {report.summary.slice(0, 240)}{report.summary.length > 240 ? "…" : ""}
-        </p>
-        <div className="flex items-center gap-3 mt-2">
-          <p className="text-[11px] text-[#999] uppercase tracking-widest" style={{ fontFamily: FONT_SANS }}>
+        {report.source && (
+          <span className="ml-2 text-[10px] text-[#1a1a1a]/35" style={{ fontFamily: SF }}>
             {report.source}{report.dateLabel ? ` · ${formatShortDate(report.dateLabel)}` : ""}
-          </p>
-          {report.sourceUrl && (
-            <a href={report.sourceUrl} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest hover:underline"
-              style={{ color: "#e63946", fontFamily: FONT_SANS }}>
-              Fonte <ExternalLink className="w-3 h-3" />
-            </a>
-          )}
-        </div>
-        <VerifyBadge hash={`research-${report.id}-${report.source}-${report.dateLabel}`} size="sm" />
-      </div>
-    </article>
-  );
-}
-
-function MediumCard({ report }: { report: Report }) {
-  const href = `/research/${report.id}`;
-  const imgUrl = getImageUrl(report);
-  return (
-    <article className="group cursor-pointer">
-      <Link href={href}>
-        <div className="overflow-hidden rounded-md bg-[#f5f5f5]" style={{ aspectRatio: "16/9" }}>
-          <img src={imgUrl} alt={report.title} loading="lazy"
-            className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500" />
-        </div>
-      </Link>
-      <div className="mt-2.5">
-        <span className="inline-block text-[9px] font-bold uppercase tracking-[0.1em] px-1.5 py-0.5 mb-1.5"
-          style={{ background: ACCENT, color: "#fff", fontFamily: FONT_SANS, borderRadius: "2px" }}>
-          {getCategoryLabel(report.category)}
-        </span>
-        <Link href={href}>
-          <h3 className="text-[#1a1a1a] hover:text-[#e63946] transition-colors leading-snug line-clamp-3"
-            style={{ fontFamily: FONT_SERIF, fontSize: "clamp(15px, 1.6vw, 18px)", fontWeight: 700, lineHeight: 1.3 }}>
-            {report.title}
-          </h3>
-        </Link>
-        <p className="mt-1.5 text-[12px] text-[#666] line-clamp-2" style={{ fontFamily: FONT_SANS, lineHeight: 1.55 }}>
-          {report.summary.slice(0, 120)}{report.summary.length > 120 ? "…" : ""}
-        </p>
-        <p className="mt-1 text-[10px] text-[#999] uppercase tracking-widest" style={{ fontFamily: FONT_SANS }}>
-          {report.source}{report.dateLabel ? ` · ${formatShortDate(report.dateLabel)}` : ""}
-        </p>
-      </div>
-    </article>
-  );
-}
-
-function SmallRow({ report }: { report: Report }) {
-  const href = `/research/${report.id}`;
-  return (
-    <div className="py-3 border-b border-[#f0f0f0] last:border-0">
-      <div className="flex items-center gap-1 mb-1">
-        <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5"
-          style={{ background: ACCENT, color: "#fff", fontFamily: FONT_SANS, borderRadius: "2px" }}>
-          {getCategoryLabel(report.category)}
-        </span>
-        {report.dateLabel && (
-          <span className="text-[9px] text-[#999]" style={{ fontFamily: FONT_SANS }}>
-            {formatShortDate(report.dateLabel)}
           </span>
         )}
       </div>
-      <Link href={href}>
-        <p className="text-[14px] font-bold text-[#1a1a1a] hover:text-[#e63946] transition-colors leading-snug line-clamp-2"
-          style={{ fontFamily: FONT_SERIF }}>
-          {report.title}
-        </p>
-      </Link>
-      <p className="text-[10px] text-[#999] mt-0.5" style={{ fontFamily: FONT_SANS }}>{report.source}</p>
     </div>
   );
 }
 
+// ── Skeleton ──────────────────────────────────────────────────────────────────
+function ResearchSkeleton() {
+  return (
+    <div className="animate-pulse space-y-8">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_260px] gap-0">
+        <div className="h-72 bg-[#1a1a1a]/8 border border-[#1a1a1a]/10" />
+        <div className="h-72 bg-[#1a1a1a]/5 border border-[#1a1a1a]/10 ml-4" />
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} className="h-48 bg-[#1a1a1a]/5 border border-[#1a1a1a]/10" />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── Pagina principale ─────────────────────────────────────────────────────────
 export default function Research() {
+  const _today = useMemo(() => new Date(), []);
+
   const { data: reports, isLoading } = trpc.news.getResearchReports.useQuery({ limit: 30 });
 
-  const filteredReports = useMemo(() => reports ?? [], [reports]);
-  const heroReport = useMemo(() => filteredReports[0] ?? null, [filteredReports]);
-  const grid3 = useMemo(() => filteredReports.slice(1, 4), [filteredReports]);
-  const grid3b = useMemo(() => filteredReports.slice(4, 7), [filteredReports]);
-  const listReports = useMemo(() => filteredReports.slice(7, 30), [filteredReports]);
+  const filteredReports = reports ?? [];
+
+  // Struttura: hero + sidebar, griglia, lista
+  const heroReport = filteredReports[0] ?? null;
+  const secondaryReports = filteredReports.slice(1, 3);
+  const gridReports = filteredReports.slice(3, 9);
+  const listReports = filteredReports.slice(9, 30);
 
   return (
     <RequireAuth>
       <>
         <SEOHead
-          title="Research — Proof Press"
+          title="Ricerche & Analisi — ProofPress"
           description="Analisi approfondite su AI, Startup e Venture Capital. Ricerche verificate da ProofPress per chi prende decisioni."
           canonical="https://proofpress.ai/research"
           ogImage="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/og-research-cisacbT2pWcoc5B4U27pjr.png"
-          ogSiteName="Proof Press"
+          ogSiteName="ProofPress"
         />
-        <div className="min-h-screen" style={{ background: "#ffffff" }}>
-          <SharedPageHeader />
-          <main className="max-w-[1280px] mx-auto px-4 pb-16">
 
-            {isLoading ? (
-              <div className="py-20 text-center">
-                <div className="animate-pulse space-y-6">
-                  <div className="h-64 bg-[#f0f0f0] rounded-lg" />
-                  <div className="grid grid-cols-3 gap-6">
-                    {[1,2,3].map(i => <div key={i} className="h-48 bg-[#f0f0f0] rounded-lg" />)}
-                  </div>
+        <div className="flex min-h-screen" style={{ background: "#ffffff", color: INK }}>
+          <div className="flex-1 min-w-0 overflow-x-hidden">
+            <SharedPageHeader />
+            <main className="max-w-6xl mx-auto px-3 sm:px-4 pb-12">
+
+
+              {isLoading ? (
+                <ResearchSkeleton />
+              ) : !reports || reports.length === 0 ? (
+                <div className="text-center py-20">
+                  <FlaskConical className="w-10 h-10 text-[#1a1a1a]/20 mx-auto mb-4" />
+                  <p className="text-[#1a1a1a]/50 text-lg font-semibold" style={{ fontFamily: SF_DISPLAY }}>
+                    Le ricerche di oggi sono in preparazione
+                  </p>
+                  <p className="text-[#1a1a1a]/30 text-sm mt-2" style={{ fontFamily: SF }}>
+                    Torna tra poco — vengono generate ogni mattina alle 06:00
+                  </p>
                 </div>
-              </div>
-            ) : !reports || reports.length === 0 ? (
-              <div className="text-center py-20">
-                <FlaskConical className="w-10 h-10 text-[#ccc] mx-auto mb-4" />
-                <p className="text-[#999] text-lg font-semibold" style={{ fontFamily: FONT_SERIF }}>
-                  Le ricerche di oggi sono in preparazione
-                </p>
-                <p className="text-[#bbb] text-sm mt-2" style={{ fontFamily: FONT_SANS }}>
-                  Torna tra poco — vengono generate ogni mattina alle 06:00
-                </p>
-              </div>
-            ) : (
-              <>
-                {/* ── HERO + KEY FINDINGS ── */}
-                <section className="mt-6">
-                  <SectionHeader title="Research — Analisi e Ricerche" accent={ACCENT} />
-                  <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-8">
-                    <div>
-                      {heroReport && <HeroCard report={heroReport} />}
-                    </div>
-                    <div>
-                      {heroReport && heroReport.keyFindings.length > 0 && (
-                        <div className="border border-[#e8e8e8] rounded-lg p-5">
-                          <div className="flex items-center gap-2 mb-3 pb-2" style={{ borderBottom: `2px solid ${ACCENT}` }}>
-                            <span className="text-[11px] font-bold uppercase tracking-[0.15em]"
-                              style={{ color: ACCENT, fontFamily: FONT_SANS }}>
-                              Key Findings
-                            </span>
+              ) : (
+                <>
+                  {/* SEZIONE 1: Hero + Sidebar */}
+                  <div className="grid grid-cols-1 lg:grid-cols-[1fr_260px] gap-0 mt-0">
+
+                    {/* Colonna principale: ricerca hero + 2 secondarie */}
+                    <div className="pr-0 lg:pr-6 border-r-0 lg:border-r border-[#1a1a1a]/20">
+                      <div className="py-4">
+                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40" style={{ fontFamily: SF }}>
+                          Ricerca del Giorno
+                        </span>
+                      </div>
+                      <ThinDivider />
+
+                      {heroReport ? (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+                          <div className="pr-0 md:pr-5 py-4">
+                            <SectionBadge label={getCategoryConfig(heroReport.category).label} />
+                            <Link href={`/research/${heroReport.id}`}>
+                              <h2
+                                className="mt-3 text-2xl md:text-3xl font-bold leading-tight text-[#1a1a1a] hover:underline cursor-pointer"
+                                style={{ fontFamily: SF_DISPLAY }}
+                              >
+                                {heroReport.title}
+                              </h2>
+                            </Link>
+                            <ThinDivider />
+                            <p className="mt-3 text-base leading-relaxed text-[#1a1a1a]/80" style={{ fontFamily: SF_SERIF }}>
+                              {heroReport.summary.slice(0, 280)}{heroReport.summary.length > 280 ? "…" : ""}
+                            </p>
+                            <div className="mt-2 flex items-center gap-3">
+                              <Link href={`/research/${heroReport.id}`}>
+                                <span
+                                  className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-widest hover:underline"
+                                  style={{ color: ACCENT, fontFamily: SF }}
+                                >
+                                  Leggi la ricerca <ArrowRight className="w-3 h-3" />
+                                </span>
+                              </Link>
+                              {heroReport.sourceUrl && (
+                                <a
+                                  href={heroReport.sourceUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-widest text-[#1a1a1a]/40 hover:text-[#1a1a1a] transition-colors"
+                                  style={{ fontFamily: SF }}
+                                >
+                                  Fonte <ExternalLink className="w-3 h-3" />
+                                </a>
+                              )}
+                            </div>
+                            {heroReport.source && (
+                              <p className="mt-2 text-xs text-[#1a1a1a]/40 italic" style={{ fontFamily: SF }}>
+                                Fonte: {heroReport.source}{heroReport.dateLabel ? ` · ${formatShortDate(heroReport.dateLabel)}` : ""}
+                              </p>
+                            )}
                           </div>
-                          <p className="text-[15px] font-bold text-[#1a1a1a] leading-snug mb-3"
-                            style={{ fontFamily: FONT_SERIF }}>
+                          <div className="py-4 pl-0 md:pl-5 border-l-0 md:border-l border-[#1a1a1a]/20">
+                            <img
+                              src={getImageUrl(heroReport)}
+                              alt={heroReport.title}
+                              loading="lazy"
+                              decoding="async"
+                              className="w-full h-36 sm:h-52 object-cover grayscale-[15%] hover:grayscale-0 transition-all"
+                              style={{ border: "1px solid rgba(26,26,46,0.15)" }}
+                            />
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="py-12 text-center text-[#1a1a1a]/30">
+                          <p style={{ fontFamily: SF_SERIF }}>Caricamento ricerche…</p>
+                        </div>
+                      )}
+
+                      <ThinDivider />
+
+                      {secondaryReports.length > 0 && (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-0 mt-2">
+                          {secondaryReports.map((item, i) => (
+                            <div key={item.id} className={i > 0 ? "border-l border-[#1a1a1a]/20 pl-4" : "pr-4"}>
+                              <ResearchCard report={item} showImage />
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Sidebar: fonti e key findings della ricerca hero */}
+                    <div className="pl-0 lg:pl-5 mt-6 lg:mt-0">
+                      <div className="py-4">
+                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40" style={{ fontFamily: SF }}>
+                          Key Findings
+                        </span>
+                      </div>
+                      <ThinDivider />
+
+                      {heroReport && heroReport.keyFindings.length > 0 ? (
+                        <div className="py-4">
+                          <p
+                            className="text-base font-bold text-[#1a1a1a] leading-snug mb-3"
+                            style={{ fontFamily: SF_DISPLAY }}
+                          >
                             {heroReport.title}
                           </p>
                           <ul className="space-y-3">
                             {heroReport.keyFindings.slice(0, 5).map((f: string, i: number) => (
-                              <li key={i} className="flex gap-2 text-[13px] leading-relaxed text-[#555]"
-                                style={{ fontFamily: FONT_SANS }}>
-                                <span className="font-black shrink-0 text-[11px] mt-0.5"
-                                  style={{ color: "#e63946", fontFamily: FONT_SANS }}>
+                              <li key={i} className="flex gap-2 text-sm leading-relaxed text-[#1a1a1a]/70" style={{ fontFamily: SF_SERIF }}>
+                                <span
+                                  className="font-black shrink-0 text-[11px] mt-0.5"
+                                  style={{ color: ACCENT, fontFamily: SF }}
+                                >
                                   {i + 1}.
                                 </span>
                                 <span>{f}</span>
                               </li>
                             ))}
                           </ul>
-                          <div className="mt-3 px-3 py-1.5 rounded text-[11px] font-semibold"
-                            style={{ background: "#f5f5f5", color: ACCENT, fontFamily: FONT_SANS }}>
+                          <ThinDivider />
+                          <div className="mt-3 px-3 py-1.5 rounded-sm text-xs font-semibold" style={{ background: ACCENT_LIGHT, color: ACCENT, fontFamily: SF }}>
                             Fonte: {heroReport.source}
                           </div>
-                          <Link href={`/research/${heroReport.id}`}>
-                            <span className="mt-3 inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
-                              style={{ color: ACCENT, fontFamily: FONT_SANS }}>
-                              Leggi tutto <ArrowRight className="w-3 h-3" />
-                            </span>
+                          <Link
+                            href={`/research/${heroReport.id}`}
+                            className="mt-3 inline-block text-xs font-bold uppercase tracking-widest hover:opacity-70 transition-opacity"
+                            style={{ color: ACCENT, fontFamily: SF }}
+                          >
+                            Leggi tutto →
                           </Link>
                         </div>
+                      ) : (
+                        <div className="py-6 text-center text-[#1a1a1a]/25 text-sm">Caricamento…</div>
                       )}
                     </div>
                   </div>
-                </section>
 
-                {/* ── GRIGLIA 3 COLONNE ── */}
-                {grid3.length > 0 && (
-                  <section className="mt-10">
-                    <SectionHeader title="Ricerche di Oggi" accent={ACCENT} />
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                      {grid3.map(r => <MediumCard key={r.id} report={r} />)}
+                  {/* SEZIONE 2: Griglia ricerche 3 colonne */}
+                  {gridReports.length > 0 && (
+                    <div className="mt-6">
+                      <Divider thick />
+                      <div className="py-4">
+                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40" style={{ fontFamily: SF }}>
+                          Ricerche di Oggi
+                        </span>
+                      </div>
+                      <ThinDivider />
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-0 mt-2">
+                        {gridReports.slice(0, 3).map((item, i) => (
+                          <div key={item.id} className={i > 0 ? "border-l border-[#1a1a1a]/20 pl-5" : "pr-5"}>
+                            <ResearchCard report={item} showImage={i === 0} />
+                          </div>
+                        ))}
+                      </div>
+                      {gridReports.length > 3 && (
+                        <>
+                          <ThinDivider />
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 mt-2">
+                            {gridReports.slice(3, 6).map((item, i) => (
+                              <div key={item.id} className={i > 0 ? "border-l border-[#1a1a1a]/20 pl-5" : "pr-5"}>
+                                <ResearchCard report={item} />
+                              </div>
+                            ))}
+                          </div>
+                        </>
+                      )}
                     </div>
-                  </section>
-                )}
+                  )}
 
-                {grid3b.length > 0 && (
-                  <section className="mt-8">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                      {grid3b.map(r => <MediumCard key={r.id} report={r} />)}
+                  {/* SEZIONE 3: Elenco ricerche rimanenti */}
+                  {listReports.length > 0 && (
+                    <div className="mt-8">
+                      <Divider thick />
+                      <div className="py-4">
+                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40" style={{ fontFamily: SF }}>
+                          Altre Ricerche
+                        </span>
+                      </div>
+                      <ThinDivider />
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 mt-1">
+                        {listReports.map((item, i) => (
+                          <div key={item.id}>
+                            <ResearchRow report={item} />
+                            {i < listReports.length - 1 && <ThinDivider />}
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </section>
-                )}
+                  )}
+                </>
+              )}
 
-                {/* ── ELENCO RICERCHE RIMANENTI ── */}
-                {listReports.length > 0 && (
-                  <section className="mt-10">
-                    <SectionHeader title="Altre Ricerche" accent={ACCENT} />
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
-                      {listReports.map(r => <SmallRow key={r.id} report={r} />)}
-                    </div>
-                  </section>
-                )}
-              </>
-            )}
 
-            <ArchiveSection section="research" accentColor={ACCENT} skipCount={10} />
-            <SharedPageFooter />
-          </main>
+              {/* Archivio */}
+              <ArchiveSection
+                section="research"
+                accentColor={ACCENT}
+                skipCount={10}
+              />
+
+              <div className="max-w-[1280px] mx-auto">
+                <SharedPageFooter />
+              </div>
+            </main>
+          </div>
         </div>
       </>
     </RequireAuth>

@@ -37,8 +37,6 @@ const StartupHome = lazy(() => import("./pages/StartupHome"));
 const DealroomHome = lazy(() => import("./pages/DealroomHome"));
 const Research = lazy(() => import("./pages/Research"));
 const ResearchDetail = lazy(() => import("./pages/ResearchDetail"));
-const Personaggi = lazy(() => import("./pages/Personaggi"));
-const PersonaggioDetail = lazy(() => import("./pages/PersonaggioDetail"));
 const Verify = lazy(() => import("./pages/Verify"));
 const ProofPressVerify = lazy(() => import("./pages/ProofPressVerify"));
 const VerifyAgent = lazy(() => import("./pages/VerifyAgent"));
@@ -171,8 +169,6 @@ function Router() {
         <Route path="/advertise" component={Advertise} />
         <Route path="/research/:id" component={ResearchDetail} />
         <Route path="/research" component={Research} />
-        <Route path="/personaggi/:slug" component={PersonaggioDetail} />
-        <Route path="/personaggi" component={Personaggi} />
         {/* /verify e /proofpress-verify reindirizzano al sito ufficiale proofpressverify.com */}
         <Route path="/verify">{() => { window.location.href = 'https://proofpressverify.com'; return null; }}</Route>
         <Route path="/proofpress-verify">{() => { window.location.href = 'https://proofpressverify.com'; return null; }}</Route>

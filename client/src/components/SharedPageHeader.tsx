@@ -11,9 +11,8 @@ import BannerRotator from "@/components/BannerRotator";
 import VerifyStatsWidget from "@/components/VerifyStatsWidget";
 import { trpc } from "@/lib/trpc";
 
-const SF = "'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif";
-const SF_DISPLAY = "'Playfair Display', Georgia, 'Times New Roman', serif";
-const ACCENT = "#e63946";
+const SF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
+const SF_DISPLAY = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif";
 
 function formatDateIT(date: Date): string {
   return date.toLocaleDateString("it-IT", {
@@ -105,12 +104,20 @@ function ProofPressLogo() {
   return (
     <Link href="/">
       <div className="cursor-pointer hover:opacity-80 transition-opacity">
-        <h1
-          className="font-black tracking-tight text-[#1a1a1a] inline"
-          style={{ fontFamily: SF_DISPLAY, fontSize: "clamp(28px, 7vw, 80px)", letterSpacing: "-0.02em", lineHeight: 1 }}
-        >
-          ProofPress
-        </h1>
+        <div style={{ display: "inline-flex", alignItems: "flex-start", justifyContent: "center", position: "relative" }}>
+          <h1
+            className="font-black tracking-tight text-[#1a1a1a] inline"
+            style={{ fontFamily: SF_DISPLAY, fontSize: "clamp(28px, 7vw, 88px)", letterSpacing: "-0.02em", lineHeight: 1 }}
+          >
+            ProofPress
+          </h1>
+          <span
+            className="font-bold tracking-widest text-[#1a1a1a]/50"
+            style={{ fontFamily: SF, fontSize: "clamp(8px, 1vw, 14px)", letterSpacing: "0.15em", textTransform: "uppercase", lineHeight: 1, marginTop: "0.3em", marginLeft: "0.4em" }}
+          >
+            Magazine
+          </span>
+        </div>
       </div>
     </Link>
   );
@@ -118,37 +125,14 @@ function ProofPressLogo() {
 
 function ProofPressSubtitle() {
   return (
-    <p className="mt-1 text-[10px] uppercase tracking-[0.18em] text-[#999]" style={{ fontFamily: SF }}>
-      AI · Startup · Venture Capital · 🇮🇹 Italia First
-    </p>
-  );
-}
-
-function SectionsNav() {
-  const sections = [
-    { label: "AI", href: "/ai" },
-    { label: "Startup", href: "/startup" },
-    { label: "Research", href: "/research" },
-    { label: "Dealroom", href: "/dealroom" },
-    { label: "Personaggi", href: "/personaggi" },
-  ];
-  return (
-    <nav className="border-b border-[#e8e8e8] bg-white sticky top-0 z-40 shadow-sm">
-      <div className="max-w-[1280px] mx-auto px-4">
-        <div className="flex items-center gap-0 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
-          {sections.map((s) => (
-            <Link key={s.href} href={s.href}>
-              <span
-                className="inline-block px-4 py-3 text-[12px] font-bold uppercase tracking-[0.1em] whitespace-nowrap cursor-pointer hover:text-[#e63946] transition-colors border-b-2 border-transparent hover:border-[#e63946]"
-                style={{ fontFamily: SF, color: "#1a1a1a" }}
-              >
-                {s.label}
-              </span>
-            </Link>
-          ))}
-        </div>
+    <div className="hidden sm:block mt-2 text-[#1a1a1a]/60 font-semibold" style={{ fontFamily: SF, lineHeight: 1.5 }}>
+      <div className="uppercase tracking-[0.15em] md:tracking-[0.2em]" style={{ fontSize: "clamp(9px, 1.1vw, 13px)" }}>
+        IL TUO PUNTO DI RIFERIMENTO PER INNOVAZIONE, AI, STARTUP, VENTURE
       </div>
-    </nav>
+      <div className="uppercase tracking-[0.08em] font-bold" style={{ fontSize: "clamp(7px, 0.82vw, 10px)", marginTop: "3px", color: "#00b894" }}>
+        INFORMAZIONE 100% VERIFICATA CON PROOFPRESS VERIFY TECHNOLOGY
+      </div>
+    </div>
   );
 }
 
@@ -162,7 +146,6 @@ export default function SharedPageHeader() {
   const ipfsCount = ipfsCountData?.count ?? 0;
 
   return (
-    <>
     <header
       className="max-w-[1280px] mx-auto px-4 pt-5 pb-0"
       style={{ fontFamily: SF }}
@@ -238,7 +221,5 @@ export default function SharedPageHeader() {
       <Divider thick />
       <VerifyStatsWidget />
     </header>
-    <SectionsNav />
-    </>
   );
 }

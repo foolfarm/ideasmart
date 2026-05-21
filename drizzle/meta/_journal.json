@@ -701,20 +701,6 @@
       "when": 1779033132064,
       "tag": "0099_magical_captain_america",
       "breakpoints": true
-    },
-    {
-      "idx": 100,
-      "version": "5",
-      "when": 1779374104979,
-      "tag": "0100_nappy_next_avengers",
-      "breakpoints": true
-    },
-    {
-      "idx": 101,
-      "version": "5",
-      "when": 1779374144089,
-      "tag": "0101_orange_centennial",
-      "breakpoints": true
     }
   ]
 }

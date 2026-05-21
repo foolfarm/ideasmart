@@ -1,1 +1,0 @@
-ALTER TABLE `personaggi` MODIFY COLUMN `tags` json;

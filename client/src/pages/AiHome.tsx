@@ -1,9 +1,9 @@
-/*
- * ProofPress — AI NEWS Page
- * Design: StartupItalia-inspired — immagini 16:9, titoli Playfair serif, griglia 3 colonne
- * Accent: #e63946 (rosso ProofPress)
+/**
+ * IDEASMART — AI NEWS News · Sezione AI
+ * Layout editoriale da giornale: testata sezione, editoriale del giorno, notizie in colonne, reportage, startup del giorno.
+ * Palette: bianco carta (#ffffff), inchiostro (#1a1a1a), accento teal (#1a1a1a).
  */
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "wouter";
 import SharedPageHeader from "@/components/SharedPageHeader";
 import SharedPageFooter from "@/components/SharedPageFooter";
@@ -15,445 +15,557 @@ import EditorialeDelDirettore from "@/components/EditorialeDelDirettore";
 import VerifyBadge from "@/components/VerifyBadge";
 import { stripLinkedInSignature } from "@/lib/stripLinkedInSignature";
 
-const ACCENT = "#e63946";
-const FONT_SERIF = "'Playfair Display', Georgia, 'Times New Roman', serif";
-const FONT_SANS = "'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif";
 
+const ACCENT = "#1a1a1a";
+const ACCENT_LIGHT = "#f5f5f7";
+const INK = "#1a1a1a";
+
+function formatDateIT(date: Date): string {
+  return date.toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+}
 function formatShortDate(str: string): string {
   if (!str) return "";
-  try {
-    const d = new Date(str);
-    const now = new Date();
-    const diffH = Math.floor((now.getTime() - d.getTime()) / 3600000);
-    if (diffH < 1) return "Ora";
-    if (diffH < 24) return `${diffH}h fa`;
-    return d.toLocaleDateString("it-IT", { day: "numeric", month: "short" });
-  } catch { return str; }
+  try { return new Date(str).toLocaleDateString("it-IT", { day: "numeric", month: "short" }); } catch { return str; }
 }
 
-type NewsItem = {
-  id: number;
-  title: string;
-  summary: string;
-  category: string;
-  imageUrl?: string | null;
-  sourceName?: string;
-  publishedAt?: string;
-  sourceUrl?: string;
-  verifyHash?: string | null;
-  trustGrade?: string | null;
-  trustScore?: number | null;
-  ppvHash?: string | null;
-  ppvIpfsUrl?: string | null;
-  ppvTrustGrade?: string | null;
-  ppvTrustScore?: number | null;
-  ppvDocumentId?: number | null;
-};
+function Divider({ thick = false }: { thick?: boolean }) {
+  return <div className={`w-full ${thick ? "border-t-4" : "border-t"} border-[#1a1a1a]`} />;
+}
+function ThinDivider() { return <div className="w-full border-t border-[#1a1a1a]/20" />; }
 
-function SectionHeader({ title, accent, href }: { title: string; accent: string; href?: string }) {
+function SectionBadge({ label }: { label: string }) {
   return (
-    <div className="flex items-center justify-between mb-4 pb-2" style={{ borderBottom: `3px solid ${accent}` }}>
-      <h2 className="text-[13px] font-bold uppercase tracking-[0.15em] m-0" style={{ color: accent, fontFamily: FONT_SANS }}>
-        {title}
-      </h2>
-      {href && (
+    <span className="inline-block text-[10px] font-bold uppercase tracking-[0.15em] px-2 py-0.5 rounded-lg"
+      style={{ background: ACCENT_LIGHT, color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+      {label}
+    </span>
+  );
+}
+
+function NewsCard({ item, showImage = false, large = false }: {
+  item: { id: number; title: string; summary: string; category: string; imageUrl?: string | null; sourceName?: string; publishedAt?: string; sourceUrl?: string; verifyHash?: string | null; trustGrade?: string | null; trustScore?: number | null; ppvHash?: string | null; ppvIpfsUrl?: string | null; ppvTrustGrade?: string | null; ppvTrustScore?: number | null; ppvDocumentId?: number | null };
+  showImage?: boolean;
+  large?: boolean;
+}) {
+  const href = `/ai/news/${item.id}`;
+  return (
+    <div className="py-4">
+      {showImage && item.imageUrl && (
         <Link href={href}>
-          <span className="text-[10px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
-            style={{ color: accent, fontFamily: FONT_SANS }}>
-            Tutte →
-          </span>
+          <img src={item.imageUrl} alt={item.title} loading="lazy" decoding="async"
+            className={`w-full ${large ? "h-40 sm:h-56" : "h-32 sm:h-40"} object-cover mb-3 cursor-pointer hover:opacity-95 transition-opacity`}
+            style={{ borderRadius: "8px", border: "1px solid rgba(26,26,46,0.07)", boxShadow: "0 1px 8px rgba(0,0,0,0.05)" }} />
         </Link>
+      )}
+      <SectionBadge label={item.category || "AI"} />
+      <Link href={href}>
+        <h3 className={`mt-2 ${large ? "text-2xl md:text-3xl" : "text-[17px]"} font-bold leading-snug text-[#1a1a1a] hover:underline cursor-pointer`}
+          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", letterSpacing: large ? "-0.02em" : "-0.01em", lineHeight: 1.25 }}>
+          {item.title}
+        </h3>
+      </Link>
+      <p className="mt-2 text-[15px] leading-relaxed text-[#1a1a1a]/65 line-clamp-3"
+        style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
+        {item.summary}
+      </p>
+      {item.sourceName && (
+        <p className="mt-1 text-[10px] text-[#1a1a1a]/35" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+          {item.sourceName}{item.publishedAt ? ` · ${formatShortDate(item.publishedAt)}` : ""}
+        </p>
+      )}
+      {(item.verifyHash || item.ppvHash) && (
+        <div className="mt-1">
+          <VerifyBadge
+            hash={item.verifyHash}
+            size="sm"
+            trustGrade={item.trustGrade}
+            trustScore={item.trustScore}
+            ppvHash={item.ppvHash}
+            ppvIpfsUrl={item.ppvIpfsUrl}
+            ppvTrustGrade={item.ppvTrustGrade}
+            ppvTrustScore={item.ppvTrustScore}
+            ppvDocumentId={item.ppvDocumentId}
+          />
+        </div>
       )}
     </div>
   );
 }
 
-function HeroCard({ item }: { item: NewsItem }) {
+function NewsRow({ item }: {
+  item: { id: number; title: string; category: string; sourceName?: string; publishedAt?: string; sourceUrl?: string };
+}) {
   const href = `/ai/news/${item.id}`;
   return (
-    <article className="group cursor-pointer">
-      <Link href={href}>
-        <div className="relative overflow-hidden rounded-lg bg-[#f5f5f5]" style={{ aspectRatio: "16/9" }}>
-          {item.imageUrl ? (
-            <img src={item.imageUrl} alt={item.title} loading="eager" decoding="async"
-              className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500" />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#f5f5f5] to-[#e8e8e8]">
-              <span className="text-[#bbb] text-xs uppercase tracking-widest" style={{ fontFamily: FONT_SANS }}>AI</span>
-            </div>
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
-        </div>
-      </Link>
-      <div className="mt-3">
-        <span className="inline-block text-[10px] font-bold uppercase tracking-[0.1em] px-2 py-0.5 mb-2"
-          style={{ background: ACCENT, color: "#fff", fontFamily: FONT_SANS, borderRadius: "3px" }}>
-          {item.category || "AI"}
-        </span>
+    <div className="py-2.5 grid grid-cols-[auto_1fr] gap-3 items-start">
+      <SectionBadge label={item.category || "AI"} />
+      <div>
         <Link href={href}>
-          <h2 className="text-[#1a1a1a] hover:text-[#e63946] transition-colors leading-tight"
-            style={{ fontFamily: FONT_SERIF, fontSize: "clamp(22px, 3vw, 30px)", fontWeight: 800, lineHeight: 1.2 }}>
+          <span className="text-[15px] font-semibold text-[#1a1a1a] hover:underline cursor-pointer"
+            style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
             {item.title}
-          </h2>
+          </span>
         </Link>
-        <p className="mt-2 text-[15px] leading-relaxed text-[#555]"
-          style={{ fontFamily: FONT_SANS, lineHeight: 1.65 }}>
-          {item.summary.slice(0, 220)}{item.summary.length > 220 ? "…" : ""}
-        </p>
-        <p className="mt-2 text-[11px] text-[#999] uppercase tracking-widest" style={{ fontFamily: FONT_SANS }}>
-          {item.sourceName}{item.publishedAt ? ` · ${formatShortDate(item.publishedAt)}` : ""}
-        </p>
-        {(item.verifyHash || item.ppvHash) && (
-          <div className="mt-1.5">
-            <VerifyBadge hash={item.ppvHash || item.verifyHash} size="sm"
-              trustGrade={item.ppvTrustGrade || item.trustGrade}
-              trustScore={item.ppvTrustScore ?? item.trustScore}
-              ppvHash={item.ppvHash} ppvIpfsUrl={item.ppvIpfsUrl}
-              ppvTrustGrade={item.ppvTrustGrade} ppvDocumentId={item.ppvDocumentId} />
-          </div>
-        )}
-      </div>
-    </article>
-  );
-}
-
-function MediumCard({ item }: { item: NewsItem }) {
-  const href = `/ai/news/${item.id}`;
-  return (
-    <article className="group cursor-pointer">
-      <Link href={href}>
-        <div className="overflow-hidden rounded-md bg-[#f5f5f5]" style={{ aspectRatio: "16/9" }}>
-          {item.imageUrl ? (
-            <img src={item.imageUrl} alt={item.title} loading="lazy"
-              className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500" />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#f5f5f5] to-[#e8e8e8]">
-              <span className="text-[#bbb] text-[10px] uppercase tracking-widest" style={{ fontFamily: FONT_SANS }}>AI</span>
-            </div>
-          )}
-        </div>
-      </Link>
-      <div className="mt-2.5">
-        <span className="inline-block text-[9px] font-bold uppercase tracking-[0.1em] px-1.5 py-0.5 mb-1.5"
-          style={{ background: ACCENT, color: "#fff", fontFamily: FONT_SANS, borderRadius: "2px" }}>
-          {item.category || "AI"}
-        </span>
-        <Link href={href}>
-          <h3 className="text-[#1a1a1a] hover:text-[#e63946] transition-colors leading-snug line-clamp-3"
-            style={{ fontFamily: FONT_SERIF, fontSize: "clamp(15px, 1.6vw, 18px)", fontWeight: 700, lineHeight: 1.3 }}>
-            {item.title}
-          </h3>
-        </Link>
-        <p className="mt-1.5 text-[12px] text-[#666] line-clamp-2" style={{ fontFamily: FONT_SANS, lineHeight: 1.55 }}>
-          {item.summary.slice(0, 120)}{item.summary.length > 120 ? "…" : ""}
-        </p>
-        <p className="mt-1 text-[10px] text-[#999] uppercase tracking-widest" style={{ fontFamily: FONT_SANS }}>
-          {item.sourceName}{item.publishedAt ? ` · ${formatShortDate(item.publishedAt)}` : ""}
-        </p>
-      </div>
-    </article>
-  );
-}
-
-function SmallRow({ item }: { item: NewsItem }) {
-  const href = `/ai/news/${item.id}`;
-  return (
-    <div className="py-3 border-b border-[#f0f0f0] last:border-0">
-      <div className="flex items-center gap-1 mb-1">
-        <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5"
-          style={{ background: ACCENT, color: "#fff", fontFamily: FONT_SANS, borderRadius: "2px" }}>
-          {item.category || "AI"}
-        </span>
-        {item.publishedAt && (
-          <span className="text-[9px] text-[#999]" style={{ fontFamily: FONT_SANS }}>
-            {formatShortDate(item.publishedAt)}
+        {item.sourceName && (
+          <span className="ml-2 text-[10px] text-[#1a1a1a]/35" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+            {item.sourceName}{item.publishedAt ? ` · ${formatShortDate(item.publishedAt)}` : ""}
           </span>
         )}
       </div>
-      <Link href={href}>
-        <p className="text-[14px] font-bold text-[#1a1a1a] hover:text-[#e63946] transition-colors leading-snug line-clamp-2"
-          style={{ fontFamily: FONT_SERIF }}>
-          {item.title}
-        </p>
-      </Link>
-      <p className="text-[10px] text-[#999] mt-0.5" style={{ fontFamily: FONT_SANS }}>{item.sourceName}</p>
     </div>
   );
 }
 
 export default function AiHome() {
-  const queryOpts = { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false };
-  const { data: newsData } = trpc.news.getLatest.useQuery({ limit: 20, section: "ai" }, queryOpts);
-  const { data: editorial } = trpc.editorial.getLatest.useQuery({ section: "ai" }, queryOpts);
-  const { data: startupData } = trpc.startupOfDay.getLatest.useQuery({ section: "ai" }, queryOpts);
-  const { data: reportageItems } = trpc.reportage.getLatestWeek.useQuery({ section: "ai" }, queryOpts);
-  const { data: analyses } = trpc.marketAnalysis.getLatest.useQuery({ section: "ai" }, queryOpts);
+  const today = useMemo(() => new Date(), []);
 
-  const news = useMemo(() => newsData || [], [newsData]);
-  const heroNews = useMemo(() => news.find(n => n.imageUrl) || news[0] || null, [news]);
-  const grid3 = useMemo(() => news.filter(n => n.id !== heroNews?.id).slice(0, 3), [news, heroNews]);
-  const grid3b = useMemo(() => news.filter(n => n.id !== heroNews?.id).slice(3, 6), [news, heroNews]);
-  const listNews = useMemo(() => news.filter(n => n.id !== heroNews?.id).slice(6, 18), [news, heroNews]);
+  const { data: newsData } = trpc.news.getLatest.useQuery({ limit: 20, section: "ai" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
+  const { data: editorial } = trpc.editorial.getLatest.useQuery({ section: "ai" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
+  const { data: startupData } = trpc.startupOfDay.getLatest.useQuery({ section: "ai" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
+  const { data: reportageItems } = trpc.reportage.getLatestWeek.useQuery({ section: "ai" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
+  const { data: analyses } = trpc.marketAnalysis.getLatest.useQuery({ section: "ai" }, { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false });
+
+
+  const news = newsData || [];
+  const heroNews = news.find(n => n.imageUrl) || news[0] || null;
+  const secondaryNews = news.filter(n => n.id !== heroNews?.id).slice(0, 2);
+  const remainingNews = news.filter(n => n.id !== heroNews?.id).slice(2, 8);
+  const listNews = news.filter(n => n.id !== heroNews?.id).slice(8, 20);
 
   return (
     <>
       <SEOHead
-        title="AI NEWS — Proof Press"
+        title="AI NEWS News — Proof Press"
         description="Notizie aggiornate ogni giorno sull'Intelligenza Artificiale per il business italiano. Editoriale, analisi e startup del giorno."
         canonical="https://proofpress.ai/ai"
         ogImage="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/og-ai-2HNKKGHLmzPvLTRw9y9Nko.png"
         ogSiteName="Proof Press"
       />
-      <div className="min-h-screen" style={{ background: "#ffffff" }}>
-        <SharedPageHeader />
-        <main className="max-w-[1280px] mx-auto px-4 pb-16">
 
-          {/* ── HERO + EDITORIALE ── */}
-          <section className="mt-6">
-            <div className="flex items-center justify-between mb-4 pb-2" style={{ borderBottom: `3px solid ${ACCENT}` }}>
-              <h2 className="text-[13px] font-bold uppercase tracking-[0.15em]" style={{ color: ACCENT, fontFamily: FONT_SANS }}>
-                AI News
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-8">
-              {/* Hero principale */}
-              <div>
-                {heroNews ? <HeroCard item={heroNews} /> : (
-                  <div className="py-12 text-center text-[#999]" style={{ fontFamily: FONT_SANS }}>Caricamento notizie…</div>
-                )}
+      <style>{`
+        /* SF Pro system font — no external loading needed */
+      `}</style>
+
+      <div className="flex min-h-screen" style={{ background: "#ffffff", color: INK }}>
+        
+        <div className="flex-1 min-w-0 overflow-x-hidden">
+        <SharedPageHeader />
+        <main className="max-w-6xl mx-auto px-3 sm:px-4 pb-12">
+
+          {/* SEZIONE 1: Hero + Sidebar editoriale */}
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_260px] gap-0 mt-0">
+
+            {/* Colonna principale: notizia hero + 2 secondarie */}
+            <div className="pr-0 lg:pr-6 border-r-0 lg:border-r border-[#1a1a1a]/20">
+              <div className="py-4">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                  Notizia del Giorno
+                </span>
               </div>
-              {/* Sidebar: editoriale */}
-              <div>
-                {editorial && (
-                  <div className="border border-[#e8e8e8] rounded-lg p-5">
-                    <div className="flex items-center gap-2 mb-3 pb-2" style={{ borderBottom: `2px solid ${ACCENT}` }}>
-                      <span className="text-[11px] font-bold uppercase tracking-[0.15em]"
-                        style={{ color: ACCENT, fontFamily: FONT_SANS }}>
-                        Editoriale del Giorno
+              <ThinDivider />
+
+              {heroNews ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+                  <div className="pr-0 md:pr-5 py-4">
+                    <SectionBadge label={heroNews.category || "AI"} />
+                    <a href={heroNews.sourceUrl && heroNews.sourceUrl !== '#' ? heroNews.sourceUrl : `https://www.google.com/search?q=${encodeURIComponent(heroNews.title)}`} rel="noopener noreferrer">
+                      <h2 className="mt-3 text-2xl md:text-3xl font-bold leading-tight text-[#1a1a1a] hover:underline cursor-pointer"
+                        style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
+                        {heroNews.title}
+                      </h2>
+                    </a>
+                    <ThinDivider />
+                    <p className="mt-3 text-base leading-relaxed text-[#1a1a1a]/80"
+                      style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
+                      {heroNews.summary.slice(0, 280)}{heroNews.summary.length > 280 ? "…" : ""}
+                    </p>
+                    <a href={heroNews.sourceUrl && heroNews.sourceUrl !== '#' ? heroNews.sourceUrl : `https://www.google.com/search?q=${encodeURIComponent(heroNews.title)}`} rel="noopener noreferrer">
+                      <span className="mt-3 inline-block text-xs font-bold uppercase tracking-widest hover:underline"
+                        style={{ color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                        Leggi l'articolo originale →
                       </span>
-                    </div>
-                    <Link href={`/ai/editoriale/${editorial.id}`}>
-                      <h3 className="text-[17px] font-bold text-[#1a1a1a] leading-snug hover:text-[#e63946] transition-colors cursor-pointer"
-                        style={{ fontFamily: FONT_SERIF }}>
-                        {editorial.title}
-                      </h3>
-                    </Link>
-                    {editorial.subtitle && (
-                      <p className="mt-1 text-[13px] italic text-[#666]" style={{ fontFamily: FONT_SANS }}>
-                        {editorial.subtitle}
-                      </p>
-                    )}
-                    {editorial.keyTrend && (
-                      <div className="mt-2 px-3 py-1.5 rounded text-[11px] font-semibold"
-                        style={{ background: "#fff5f5", color: ACCENT, fontFamily: FONT_SANS }}>
-                        📈 {editorial.keyTrend}
+                    </a>
+                  </div>
+                  <div className="py-4 pl-0 md:pl-5 border-l-0 md:border-l border-[#1a1a1a]/20">
+                    {heroNews.imageUrl ? (
+                      <a href={heroNews.sourceUrl && heroNews.sourceUrl !== '#' ? heroNews.sourceUrl : `https://www.google.com/search?q=${encodeURIComponent(heroNews.title)}`} rel="noopener noreferrer">
+                        <img src={heroNews.imageUrl} alt={heroNews.title} loading="lazy" decoding="async"
+                          className="w-full h-36 sm:h-52 object-cover cursor-pointer grayscale-[15%] hover:grayscale-0 transition-all"
+                          style={{ border: "1px solid rgba(26,26,46,0.15)" }} />
+                      </a>
+                    ) : (
+                      <div className="w-full h-52 flex items-center justify-center"
+                        style={{ background: ACCENT_LIGHT, border: `1px solid ${ACCENT}30` }}>
+                        <span className="text-3xl opacity-30">🤖</span>
                       </div>
                     )}
-                    <p className="mt-3 text-[13px] leading-relaxed text-[#555] line-clamp-6"
-                      style={{ fontFamily: FONT_SANS, lineHeight: 1.6 }}>
-                      {stripLinkedInSignature(editorial.body ?? '')}
-                    </p>
-                    {editorial.authorNote && (
-                      <blockquote className="mt-3 pl-3 border-l-2 text-[12px] italic text-[#666]"
-                        style={{ borderColor: ACCENT, fontFamily: FONT_SANS }}>
-                        {editorial.authorNote}
-                      </blockquote>
+                    {heroNews.sourceName && (
+                      <p className="mt-2 text-xs text-[#1a1a1a]/40 italic" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                        Fonte: {heroNews.sourceName}{heroNews.publishedAt ? ` · ${formatShortDate(heroNews.publishedAt)}` : ""}
+                      </p>
                     )}
-                    <Link href={`/ai/editoriale/${editorial.id}`}>
-                      <span className="mt-3 inline-block text-[11px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
-                        style={{ color: ACCENT, fontFamily: FONT_SANS }}>
-                        Leggi tutto →
-                      </span>
-                    </Link>
-                  </div>
-                )}
-              </div>
-            </div>
-          </section>
-
-          {/* ── EDITORIALE DEL DIRETTORE ── */}
-          <section className="mt-10">
-            <EditorialeDelDirettore />
-          </section>
-
-          {/* ── GRIGLIA 3 COLONNE ── */}
-          {grid3.length > 0 && (
-            <section className="mt-10">
-              <SectionHeader title="Ultime Notizie AI" accent={ACCENT} />
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {grid3.map(item => <MediumCard key={item.id} item={item} />)}
-              </div>
-            </section>
-          )}
-
-          {/* ── SECONDA GRIGLIA 3 COLONNE ── */}
-          {grid3b.length > 0 && (
-            <section className="mt-8">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {grid3b.map(item => <MediumCard key={item.id} item={item} />)}
-              </div>
-            </section>
-          )}
-
-          {/* ── STARTUP DEL GIORNO ── */}
-          {startupData && (
-            <section className="mt-10">
-              <SectionHeader title="Startup del Giorno" accent="#1a1a1a" href="/startup" />
-              <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-8 border border-[#e8e8e8] rounded-lg p-6">
-                <div>
-                  <Link href={`/ai/spotlight/${startupData.id}`}>
-                    <h3 className="text-[22px] font-bold text-[#1a1a1a] hover:text-[#e63946] transition-colors cursor-pointer"
-                      style={{ fontFamily: FONT_SERIF }}>
-                      {startupData.name}
-                    </h3>
-                  </Link>
-                  <p className="text-[14px] italic text-[#666] mt-1" style={{ fontFamily: FONT_SANS }}>
-                    {startupData.tagline}
-                  </p>
-                  <p className="mt-3 text-[14px] leading-relaxed text-[#444]" style={{ fontFamily: FONT_SANS }}>
-                    {startupData.description}
-                  </p>
-                  <p className="mt-2 text-[13px] text-[#444]" style={{ fontFamily: FONT_SANS }}>
-                    <strong>Perché oggi:</strong> {startupData.whyToday}
-                  </p>
-                  <div className="flex gap-3 mt-3">
-                    {startupData.websiteUrl && (
-                      <a href={startupData.websiteUrl} target="_blank" rel="noopener noreferrer"
-                        className="text-[11px] font-bold uppercase tracking-widest hover:underline"
-                        style={{ color: ACCENT, fontFamily: FONT_SANS }}>
-                        Sito →
-                      </a>
+                    {(heroNews.verifyHash || heroNews.ppvHash) && (
+                      <div className="mt-1.5">
+                        <VerifyBadge
+                          hash={heroNews.verifyHash}
+                          size="sm"
+                          trustGrade={heroNews.trustGrade}
+                          trustScore={heroNews.trustScore}
+                          ppvHash={heroNews.ppvHash}
+                          ppvIpfsUrl={heroNews.ppvIpfsUrl}
+                          ppvTrustGrade={heroNews.ppvTrustGrade}
+                          ppvTrustScore={heroNews.ppvTrustScore}
+                          ppvDocumentId={heroNews.ppvDocumentId}
+                        />
+                      </div>
                     )}
-                    <Link href={`/ai/spotlight/${startupData.id}`}>
-                      <span className="text-[11px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
-                        style={{ color: "#1a1a1a", fontFamily: FONT_SANS }}>
-                        Approfondisci →
-                      </span>
-                    </Link>
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-3 content-start">
-                  {[
-                    { label: "Categoria", value: startupData.category },
-                    { label: "Paese", value: startupData.country || "Italia" },
-                    { label: "Fondata", value: startupData.foundedYear || "N/D" },
-                    { label: "Funding", value: startupData.funding || "N/D" }
-                  ].map(({ label, value }) => (
-                    <div key={label} className="p-3 rounded-lg bg-[#f9f9f9]">
-                      <p className="text-[9px] font-bold uppercase tracking-widest mb-1"
-                        style={{ color: ACCENT, fontFamily: FONT_SANS }}>{label}</p>
-                      <p className="text-[13px] font-semibold text-[#1a1a1a]" style={{ fontFamily: FONT_SANS }}>{value}</p>
+              ) : (
+                <div className="py-12 text-center text-[#1a1a1a]/30">
+                  <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>Caricamento notizie…</p>
+                </div>
+              )}
+
+              <ThinDivider />
+
+              {secondaryNews.length > 0 && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-0 mt-2">
+                  {secondaryNews.map((item, i) => (
+                    <div key={item.id} className={i > 0 ? "border-l border-[#1a1a1a]/20 pl-4" : "pr-4"}>
+                      <NewsCard item={item} showImage />
                     </div>
                   ))}
                 </div>
+              )}
+            </div>
+
+            {/* Sidebar: editoriale del giorno */}
+            <div className="pl-0 lg:pl-5 mt-6 lg:mt-0">
+              <div className="py-4">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                  Editoriale del Giorno
+                </span>
               </div>
-            </section>
+              <ThinDivider />
+
+              {editorial ? (
+                <div className="py-4">
+                  <Link href={`/ai/editoriale/${editorial.id}`}>
+                    <p className="text-base font-bold text-[#1a1a1a] leading-snug hover:opacity-70 transition-opacity cursor-pointer"
+                      style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
+                      {editorial.title}
+                    </p>
+                  </Link>
+                  {editorial.subtitle && (
+                    <p className="mt-1 text-sm italic text-[#1a1a1a]/55"
+                      style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
+                      {editorial.subtitle}
+                    </p>
+                  )}
+                  {editorial.keyTrend && (
+                    <div className="mt-2 px-3 py-1.5 rounded-sm text-xs font-semibold"
+                      style={{ background: ACCENT_LIGHT, color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                      Trend: {editorial.keyTrend}
+                    </div>
+                  )}
+                  <ThinDivider />
+                  <p className="mt-2 text-sm leading-relaxed text-[#1a1a1a]/70 line-clamp-8"
+                    style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
+                    {stripLinkedInSignature(editorial.body ?? '')}
+                  </p>
+                  {editorial.authorNote && (
+                    <blockquote className="mt-3 pl-3 border-l-2 text-xs italic text-[#1a1a1a]/55"
+                      style={{ borderColor: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
+                      {editorial.authorNote}
+                    </blockquote>
+                  )}
+                  <Link href={`/ai/editoriale/${editorial.id}`}
+                    className="mt-3 inline-block text-xs font-bold uppercase tracking-widest hover:opacity-70 transition-opacity"
+                    style={{ color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                    Leggi tutto →
+                  </Link>
+                </div>
+              ) : (
+                <div className="py-6 text-center text-[#1a1a1a]/25 text-sm">Caricamento editoriale…</div>
+              )}
+            </div>
+          </div>
+
+          {/* ── EDITORIALE DEL DIRETTORE ── */}
+          <div className="mt-10">
+            <EditorialeDelDirettore />
+          </div>
+
+
+
+          {/* SEZIONE 2: Griglia notizie 3 colonne */}
+          {remainingNews.length > 0 && (
+            <div className="mt-6">
+              <Divider thick />
+              <div className="py-4">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                  Ultime Notizie AI
+                </span>
+              </div>
+              <ThinDivider />
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-0 mt-2">
+                {remainingNews.slice(0, 3).map((item, i) => (
+                  <div key={item.id} className={i > 0 ? "border-l border-[#1a1a1a]/20 pl-5" : "pr-5"}>
+                    <NewsCard item={item} showImage={i === 0} />
+                  </div>
+                ))}
+              </div>
+              {remainingNews.length > 3 && (
+                <>
+                  <ThinDivider />
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-0 mt-2">
+                    {remainingNews.slice(3, 6).map((item, i) => (
+                      <div key={item.id} className={i > 0 ? "border-l border-[#1a1a1a]/20 pl-5" : "pr-5"}>
+                        <NewsCard item={item} />
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
           )}
 
-          {/* ── REPORTAGE ── */}
+          
+
+          {/* SEZIONE 3: Startup del Giorno */}
+          {startupData && (
+            <div className="mt-8">
+              <Divider thick />
+              <div className="py-4">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                  Startup del Giorno
+                </span>
+              </div>
+              <ThinDivider />
+              <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-0 py-4">
+                <div className="pr-0 lg:pr-6 border-r-0 lg:border-r border-[#1a1a1a]/20">
+                  <div className="flex items-start gap-3 mb-3">
+                    <div>
+                      <Link href={`/ai/spotlight/${startupData.id}`}>
+                        <h3 className="text-xl font-bold text-[#1a1a1a] hover:opacity-70 transition-opacity cursor-pointer"
+                          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
+                          {startupData.name}
+                        </h3>
+                      </Link>
+                      <p className="text-sm italic text-[#1a1a1a]/60"
+                        style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
+                        {startupData.tagline}
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-sm leading-relaxed text-[#1a1a1a]/75"
+                    style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
+                    {startupData.description}
+                  </p>
+                  <p className="mt-3 text-sm text-[#1a1a1a]/70"
+                    style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
+                    <strong>Perché oggi:</strong> {startupData.whyToday}
+                  </p>
+                  {startupData.websiteUrl && (
+                    <a href={startupData.websiteUrl} target="_blank" rel="noopener noreferrer"
+                      className="mt-3 inline-block text-xs font-bold uppercase tracking-widest hover:underline"
+                      style={{ color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                      Visita il sito →
+                    </a>
+                  )}
+                  <Link href={`/ai/spotlight/${startupData.id}`}
+                    className="mt-3 ml-4 inline-block text-xs font-bold uppercase tracking-widest hover:opacity-70 transition-opacity"
+                    style={{ color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                    Approfondisci →
+                  </Link>
+                </div>
+                <div className="pl-0 lg:pl-6 mt-4 lg:mt-0">
+                  <div className="grid grid-cols-2 gap-3">
+                    {[
+                      { label: "Categoria", value: startupData.category },
+                      { label: "Paese", value: startupData.country || "Italia" },
+                      { label: "Fondata", value: startupData.foundedYear || "N/D" },
+                      { label: "Funding", value: startupData.funding || "N/D" }
+                    ].map(({ label, value }) => (
+                      <div key={label} className="p-3 rounded-lg" style={{ background: ACCENT_LIGHT }}>
+                        <p className="text-[10px] font-bold uppercase tracking-widest mb-1"
+                          style={{ color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                          {label}
+                        </p>
+                        <p className="text-sm font-semibold text-[#1a1a1a]"
+                          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
+                          {value}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                  {startupData.aiScore != null && startupData.aiScore > 0 && (
+                    <div className="mt-3 p-3 rounded-lg" style={{ background: ACCENT_LIGHT }}>
+                      <p className="text-[10px] font-bold uppercase tracking-widest mb-1"
+                        style={{ color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                        AI Score
+                      </p>
+                      <div className="flex items-center gap-2">
+                        <div className="flex-1 h-2 rounded-full bg-[#1a1a1a]/10">
+                          <div className="h-2 rounded-full transition-all"
+                            style={{ width: `${startupData.aiScore}%`, background: ACCENT }} />
+                        </div>
+                        <span className="text-sm font-bold" style={{ color: ACCENT }}>{startupData.aiScore}/100</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* SEZIONE 4: Reportage */}
           {reportageItems && reportageItems.length > 0 && (
-            <section className="mt-10">
-              <SectionHeader title="Reportage della Settimana" accent="#1a1a1a" />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {reportageItems.slice(0, 4).map(item => (
-                  <article key={item.id} className="border border-[#e8e8e8] rounded-lg p-5 hover:border-[#1a1a1a]/30 hover:shadow-sm transition-all">
-                    <span className="inline-block text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 mb-2"
-                      style={{ background: "#1a1a1a", color: "#fff", fontFamily: FONT_SANS, borderRadius: "2px" }}>
-                      {item.category || "Reportage"}
-                    </span>
+            <div className="mt-8">
+              <Divider thick />
+              <div className="py-4">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                  Reportage della Settimana
+                </span>
+              </div>
+              <ThinDivider />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-0 mt-2">
+                {reportageItems.slice(0, 4).map((item, i) => (
+                  <div key={item.id}
+                    className={`py-4 ${i % 2 === 1 ? "border-l border-[#1a1a1a]/20 pl-6" : "pr-6"} ${i >= 2 ? "border-t border-[#1a1a1a]/20" : ""}`}>
+                    <SectionBadge label={item.category || "Reportage"} />
                     <Link href={`/ai/reportage/${item.id}`}>
-                      <h3 className="text-[17px] font-bold text-[#1a1a1a] hover:text-[#e63946] transition-colors leading-snug cursor-pointer"
-                        style={{ fontFamily: FONT_SERIF }}>
+                      <h3 className="mt-2 text-lg font-bold text-[#1a1a1a] leading-snug hover:opacity-70 transition-opacity cursor-pointer"
+                        style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
                         {item.headline}
                       </h3>
                     </Link>
-                    <p className="mt-2 text-[13px] text-[#666] line-clamp-3" style={{ fontFamily: FONT_SANS, lineHeight: 1.55 }}>
+                    <p className="mt-2 text-[15px] leading-relaxed text-[#1a1a1a]/65 line-clamp-3"
+                      style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
                       {item.subheadline || item.bodyText?.slice(0, 200)}
                     </p>
                     {item.quote && (
-                      <blockquote className="mt-2 pl-3 border-l-2 text-[12px] italic text-[#666]"
-                        style={{ borderColor: ACCENT, fontFamily: FONT_SANS }}>
+                      <blockquote className="mt-2 pl-3 border-l-2 text-xs italic text-[#1a1a1a]/55"
+                        style={{ borderColor: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
                         "{item.quote}"
                       </blockquote>
                     )}
-                    <Link href={`/ai/reportage/${item.id}`}>
-                      <span className="mt-2 inline-block text-[11px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
-                        style={{ color: ACCENT, fontFamily: FONT_SANS }}>
-                        Leggi tutto →
-                      </span>
+                    <Link href={`/ai/reportage/${item.id}`}
+                      className="mt-2 inline-block text-xs font-bold uppercase tracking-widest hover:opacity-70 transition-opacity"
+                      style={{ color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                      Leggi tutto →
                     </Link>
-                  </article>
+                  </div>
                 ))}
               </div>
-            </section>
+            </div>
           )}
 
-          {/* ── ANALISI DI MERCATO ── */}
+          
+
+          {/* SEZIONE 5: Analisi di mercato */}
           {analyses && analyses.length > 0 && (
-            <section className="mt-10">
-              <SectionHeader title="Analisi di Mercato" accent="#1a1a1a" />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                {analyses.slice(0, 4).map(item => (
-                  <article key={item.id} className="border border-[#e8e8e8] rounded-lg p-4 hover:border-[#1a1a1a]/30 hover:shadow-sm transition-all">
-                    <span className="inline-block text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 mb-2"
-                      style={{ background: "#1a1a1a", color: "#fff", fontFamily: FONT_SANS, borderRadius: "2px" }}>
-                      {item.source || "Analisi"}
-                    </span>
+            <div className="mt-8">
+              <Divider thick />
+              <div className="py-4">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                  Analisi di Mercato
+                </span>
+              </div>
+              <ThinDivider />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-0 mt-2">
+                {analyses.slice(0, 4).map((item, i) => (
+                  <div key={item.id}
+                    className={`py-4 ${i % 2 === 1 ? "border-l border-[#1a1a1a]/20 pl-6" : "pr-6"} ${i >= 2 ? "border-t border-[#1a1a1a]/20" : ""}`}>
+                    <SectionBadge label={item.source || "Analisi"} />
                     <Link href={`/ai/analisi/${item.id}`}>
-                      <h3 className="text-[15px] font-bold text-[#1a1a1a] hover:text-[#e63946] transition-colors leading-snug cursor-pointer"
-                        style={{ fontFamily: FONT_SERIF }}>
+                      <h3 className="mt-2 text-base font-bold text-[#1a1a1a] leading-snug hover:opacity-70 transition-opacity cursor-pointer"
+                        style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
                         {item.title}
                       </h3>
                     </Link>
-                    <p className="mt-2 text-[13px] text-[#666] line-clamp-3" style={{ fontFamily: FONT_SANS, lineHeight: 1.55 }}>
+                    <p className="mt-2 text-[15px] leading-relaxed text-[#1a1a1a]/65 line-clamp-3"
+                      style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
                       {item.summary}
                     </p>
-                    <Link href={`/ai/analisi/${item.id}`}>
-                      <span className="mt-2 inline-block text-[11px] font-bold uppercase tracking-widest hover:underline cursor-pointer"
-                        style={{ color: ACCENT, fontFamily: FONT_SANS }}>
-                        Leggi tutto →
-                      </span>
+                    <Link href={`/ai/analisi/${item.id}`}
+                      className="mt-2 inline-block text-xs font-bold uppercase tracking-widest hover:opacity-70 transition-opacity"
+                      style={{ color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                      Leggi tutto →
                     </Link>
-                  </article>
+                  </div>
                 ))}
               </div>
-            </section>
+            </div>
           )}
 
-          {/* ── ELENCO NOTIZIE RIMANENTI ── */}
+          {/* SEZIONE 6: Elenco notizie rimanenti */}
           {listNews.length > 0 && (
-            <section className="mt-10">
-              <SectionHeader title="Altre Notizie AI" accent={ACCENT} />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
-                {listNews.map(item => <SmallRow key={item.id} item={item} />)}
+            <div className="mt-8">
+              <Divider thick />
+              <div className="py-4">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1a1a]/40"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                  Altre Notizie
+                </span>
               </div>
-            </section>
+              <ThinDivider />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 mt-1">
+                {listNews.map((item, i) => (
+                  <div key={item.id}>
+                    <NewsRow item={item} />
+                    {i < listNews.length - 1 && <ThinDivider />}
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
 
-          {/* ── NEWSLETTER ── */}
-          <section className="mt-12 border-t border-[#e8e8e8] pt-10">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          
+
+          {/* SEZIONE 7: Newsletter */}
+          <div className="mt-10">
+            <Divider thick />
+            <div className="py-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <div>
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em]"
-                  style={{ color: ACCENT, fontFamily: FONT_SANS }}>Newsletter</span>
-                <h3 className="mt-2 text-[24px] font-bold text-[#1a1a1a]" style={{ fontFamily: FONT_SERIF }}>
-                  Ricevi AI News ogni settimana
+                  style={{ color: ACCENT, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                  Newsletter
+                </span>
+                <h3 className="mt-2 text-2xl font-bold text-[#1a1a1a]"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" }}>
+                  Ricevi AI NEWS News ogni settimana
                 </h3>
-                <p className="mt-2 text-[14px] text-[#666]" style={{ fontFamily: FONT_SANS }}>
-                  Le notizie più importanti sull'AI per il business italiano, ogni lunedì.
+                <p className="mt-2 text-sm text-[#1a1a1a]/65"
+                  style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Georgia, serif" }}>
+                  Le notizie più importanti sull'AI per il business italiano, direttamente nella tua inbox ogni lunedì.
                 </p>
               </div>
               <div>
-                <NewsletterSubscribeForm defaultChannel="ai" accentColor={ACCENT} />
+                <NewsletterSubscribeForm defaultChannel="ai" accentColor="#1a1a1a" />
               </div>
             </div>
-          </section>
+          </div>
 
           {/* Archivio */}
-          <ArchiveSection section="ai" accentColor={ACCENT} skipCount={10} />
+          <ArchiveSection
+            section="ai"
+            accentColor="#1a1a1a"
+            skipCount={10}
+          />
 
-          <SharedPageFooter />
+          <div className="max-w-[1280px] mx-auto">
+            <SharedPageFooter />
+          </div>
         </main>
+        </div>{/* fine contenuto principale */}
       </div>
     </>
   );
