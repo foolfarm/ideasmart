@@ -1652,7 +1652,7 @@ Ecosistema VC italiano di riferimento (scegli tra questi se non emerge nessuno d
 - P101: Andrea Di Camillo, Matteo Cascinari
 - Indaco Ventures: Nicola Redi, Luca Mori
 - Primo Ventures: Gianluca Dettori, Alessio Beverina
-- CDP Venture Capital: Enrico Resmini, Francesca Bria
+- CDP Venture Capital: Agostino Scornajenchi (CEO), Francesca Bria (ex-CTO, ora advisor)
 - Lventure Group: Luigi Capello
 - Club degli Investitori: Giancarlo Rocchietti, Massimo Canovi
 - IAG (Italian Angels for Growth): Enrico Gasperini, Stefano Molino
