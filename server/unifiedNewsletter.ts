@@ -972,7 +972,7 @@ function buildNewsletterHtmlV2(opts: {
                   <td style="vertical-align:middle;padding-right:16px;">
                     ${personaggioImgUrl
                       ? `<img src="${personaggioImgUrl}" width="72" height="72" style="width:72px;height:72px;object-fit:cover;border-radius:50%;display:block;border:2px solid ${BORDER};" alt="${personaggioDelGiorno.nome}" />`
-                      : `<div style="width:72px;height:72px;border-radius:50%;background:${BG};border:2px solid ${BORDER};display:flex;align-items:center;justify-content:center;font-size:32px;line-height:72px;text-align:center;">${personaggioDelGiorno.emoji}</div>`
+                      : `<div style="width:72px;height:72px;border-radius:50%;background:#1a1a2e;border:2px solid ${BORDER};display:inline-block;text-align:center;line-height:72px;font-size:22px;font-weight:800;color:#ffffff;font-family:${F_SANS};letter-spacing:-0.02em;">${personaggioDelGiorno.nome.split(' ').map((w: string) => w[0]).slice(0,2).join('').toUpperCase()}</div>`
                     }
                   </td>
                   <td style="vertical-align:middle;">
@@ -1013,7 +1013,7 @@ function buildNewsletterHtmlV2(opts: {
                   <td style="vertical-align:middle;padding-right:16px;">
                     ${personaggioItalianoImgUrl
                       ? `<img src="${personaggioItalianoImgUrl}" width="72" height="72" style="width:72px;height:72px;object-fit:cover;border-radius:50%;display:block;border:2px solid ${BORDER};" alt="${personaggioItalianoDelGiorno.nome}" />`
-                      : `<div style="width:72px;height:72px;border-radius:50%;background:${BG};border:2px solid ${BORDER};font-size:32px;line-height:72px;text-align:center;">${personaggioItalianoDelGiorno.emoji}</div>`
+                      : `<div style="width:72px;height:72px;border-radius:50%;background:#006400;border:2px solid ${BORDER};display:inline-block;text-align:center;line-height:72px;font-size:22px;font-weight:800;color:#ffffff;font-family:${F_SANS};letter-spacing:-0.02em;">${personaggioItalianoDelGiorno.nome.split(' ').map((w: string) => w[0]).slice(0,2).join('').toUpperCase()}</div>`
                     }
                   </td>
                   <td style="vertical-align:middle;">
@@ -1054,7 +1054,7 @@ function buildNewsletterHtmlV2(opts: {
                   <td style="vertical-align:middle;padding-right:16px;">
                     ${investitoreImgUrl
                       ? `<img src="${investitoreImgUrl}" width="72" height="72" style="width:72px;height:72px;object-fit:cover;border-radius:50%;display:block;border:2px solid ${BORDER};" alt="${investitoreItalianoDelGiorno.nome}" />`
-                      : `<div style="width:72px;height:72px;border-radius:50%;background:${BG};border:2px solid ${BORDER};font-size:32px;line-height:72px;text-align:center;">${investitoreItalianoDelGiorno.emoji}</div>`
+                      : `<div style="width:72px;height:72px;border-radius:50%;background:#8B6914;border:2px solid ${BORDER};display:inline-block;text-align:center;line-height:72px;font-size:22px;font-weight:800;color:#ffffff;font-family:${F_SANS};letter-spacing:-0.02em;">${investitoreItalianoDelGiorno.nome.split(' ').map((w: string) => w[0]).slice(0,2).join('').toUpperCase()}</div>`
                     }
                   </td>
                   <td style="vertical-align:middle;">
@@ -1561,7 +1561,36 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
       const newsListIT = allNewsForPersonaggioIT
         .map((n, i) => `${i + 1}. ${n.title}${n.summary ? ' — ' + n.summary.slice(0, 150) : ''}`)
         .join('\n');
-      const personaggioITPrompt = `Sei il direttore editoriale di ProofPress, la newsletter AI italiana piu letta dai C-level e board italiani.\n\nAnalizza queste notizie delle ultime 24 ore:\n\n${newsListIT}\n\nIndividua il PERSONAGGIO ITALIANO DEL GIORNO: un imprenditore, founder, investitore o manager ITALIANO (o con forte legame con l'ecosistema italiano) che si distingue oggi nel mondo venture capital, startup, tecnologia o investimenti.\n\nPuo essere:\n- Un founder di startup italiana che ha chiuso un round\n- Un investitore italiano che ha fatto una mossa significativa\n- Un CEO o manager italiano di azienda tech\n- Un personaggio dell'ecosistema italiano dell'innovazione\n\nSe nessun personaggio italiano emerge chiaramente dalle notizie, scegli comunque il piu rilevante dell'ecosistema italiano dell'innovazione in questo momento (anche se non direttamente citato nelle notizie).\n\nRispondi SOLO con un JSON valido (nessun testo prima o dopo):\n{\n  "nome": "Nome Cognome",\n  "ruolo": "Titolo/Ruolo (es. CEO, Founder, Partner)",\n  "azienda": "Nome azienda o fondo",\n  "citta": "Citta italiana (es. Milano, Roma, Torino)",\n  "cosa_ha_fatto": "Una frase secca su cosa ha fatto oggi/questa settimana (max 120 caratteri)",\n  "perche_conta": "Una frase sul perche questo personaggio e rilevante per l'ecosistema italiano dell'innovazione (max 150 caratteri)",\n  "emoji": "Un singolo emoji che rappresenta questo personaggio o la sua mossa"\n}`;
+      const personaggioITPrompt = `Sei il direttore editoriale di ProofPress, la newsletter AI italiana piu letta dai C-level e board italiani. Il tuo focus e ESCLUSIVAMENTE l'ecosistema italiano.
+
+Analizza queste notizie delle ultime 24 ore:
+
+${newsListIT}
+
+Individua lo STARTUP FOUNDER DEL GIORNO: DEVE essere un founder o co-founder di startup ITALIANA, con sede in Italia o fondato da italiani. NON scegliere mai personaggi stranieri o di aziende non italiane.
+
+Esempi di founder italiani da considerare (se presenti nelle notizie o rilevanti oggi):
+- Founder di startup italiane AI, fintech, healthtech, cleantech, deeptech
+- Co-founder di scale-up italiane (Satispay, Scalapay, Musixmatch, Bending Spoons, Casavo, Prima, Moneyfarm, Credimi, Lendix, Talent Garden, etc.)
+- Founder di startup italiane che hanno chiuso round recenti
+- Imprenditori italiani del digitale con notizie recenti
+
+REGOLE ASSOLUTE:
+1. DEVE essere una PERSONA FISICA con nome e cognome italiano
+2. DEVE essere founder/co-founder di una startup o azienda tech ITALIANA
+3. Se nessun founder italiano emerge dalle notizie, scegli il piu rilevante dell'ecosistema startup italiano in questo momento
+4. MAI scegliere stranieri, fondi, aziende senza un founder specifico
+
+Rispondi SOLO con un JSON valido (nessun testo prima o dopo):
+{
+  "nome": "Nome Cognome",
+  "ruolo": "Titolo/Ruolo (es. CEO & Co-Founder, CTO & Founder)",
+  "azienda": "Nome startup italiana",
+  "citta": "Citta italiana (es. Milano, Roma, Torino)",
+  "cosa_ha_fatto": "Una frase secca su cosa ha fatto oggi/questa settimana — deve essere specifico e verificabile (max 130 caratteri)",
+  "perche_conta": "Una frase sul perche questo founder e rilevante per l'ecosistema startup italiano (max 160 caratteri)",
+  "emoji": "Un singolo emoji che rappresenta questo founder o la sua startup"
+}`;
       const personaggioITResult = await invokeLLMBulk({
         messages: [{ role: 'user', content: personaggioITPrompt }],
       });
@@ -1611,7 +1640,49 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
       const newsListINV = allNewsForInvestitore
         .map((n, i) => `${i + 1}. ${n.title}${n.summary ? ' — ' + n.summary.slice(0, 150) : ''}`)
         .join('\n');
-      const investitorePrompt = `Sei il direttore editoriale di ProofPress, la newsletter AI italiana piu letta dai C-level e board italiani.\n\nAnalizza queste notizie delle ultime 24 ore dal mondo venture capital, deal e startup:\n\n${newsListINV}\n\nIndividua l'INVESTITORE ITALIANO DEL GIORNO: un Angel Investor, Venture Capitalist, Partner di fondo o Business Angel ITALIANO che si distingue oggi. Deve essere una PERSONA FISICA con nome e cognome.\n\nPuo essere:\n- Un partner di un fondo VC italiano (es. P101, Indaco, Primo Ventures, CDP Venture)\n- Un angel investor italiano attivo\n- Un family office italiano che ha fatto una mossa\n- Un investitore italiano in un deal significativo\n\nSe nessun investitore italiano emerge chiaramente dalle notizie, scegli comunque il piu rilevante dell'ecosistema VC italiano in questo momento.\n\nRispondi SOLO con un JSON valido (nessun testo prima o dopo):\n{\n  "nome": "Nome Cognome",\n  "ruolo": "Titolo (es. General Partner, Angel Investor, Managing Partner)",\n  "fondo": "Nome fondo o portfolio",\n  "tipo": "VC | Angel | Family Office | Corporate VC",\n  "citta": "Citta italiana",\n  "cosa_ha_fatto": "Una frase secca su cosa ha fatto oggi/questa settimana (max 120 caratteri)",\n  "perche_conta": "Una frase sul perche questo investitore e rilevante per l'ecosistema italiano (max 150 caratteri)",\n  "emoji": "Un singolo emoji che rappresenta questo investitore"\n}`;
+      const investitorePrompt = `Sei il direttore editoriale di ProofPress, la newsletter AI italiana piu letta dai C-level e board italiani. Il tuo focus e ESCLUSIVAMENTE l'ecosistema italiano.
+
+Analizza queste notizie delle ultime 24 ore dal mondo venture capital, deal e startup:
+
+${newsListINV}
+
+Individua l'ANGEL INVESTOR / VC DEL GIORNO: DEVE essere una persona fisica italiana, investitore attivo nell'ecosistema startup italiano. NON scegliere mai stranieri o fondi internazionali.
+
+Ecosistema VC italiano di riferimento (scegli tra questi se non emerge nessuno dalle notizie):
+- P101: Andrea Di Camillo, Matteo Cascinari
+- Indaco Ventures: Nicola Redi, Luca Mori
+- Primo Ventures: Gianluca Dettori, Alessio Beverina
+- CDP Venture Capital: Enrico Resmini, Francesca Bria
+- Lventure Group: Luigi Capello
+- Club degli Investitori: Giancarlo Rocchietti, Massimo Canovi
+- IAG (Italian Angels for Growth): Enrico Gasperini, Stefano Molino
+- H-FARM: Riccardo Donadon
+- Azimut Libera Impresa: Roberto Cravero
+- PoliHub: Mirko Benetti
+- Luiss EnLabs: Augusto Coppola
+- 360 Capital Partners: Sitar Teli (partner italiana)
+- Eureka! Venture: Umberto Martini
+- Zest Group: Massimo Ciaglia
+- Vertis SGR: Amedeo Giurazza
+- Fondo Italiano d'Investimento: Innocenzo Cipolletta
+
+REGOLE ASSOLUTE:
+1. DEVE essere una PERSONA FISICA con nome e cognome
+2. DEVE essere italiano o operante principalmente nell'ecosistema italiano
+3. Preferisci chi ha fatto una mossa concreta recente (deal, closing fondo, exit)
+4. MAI scegliere stranieri, fondi internazionali, o aziende senza un investitore specifico
+
+Rispondi SOLO con un JSON valido (nessun testo prima o dopo):
+{
+  "nome": "Nome Cognome",
+  "ruolo": "Titolo (es. General Partner, Angel Investor, Managing Partner, Founder & Investor)",
+  "fondo": "Nome fondo, club o portfolio",
+  "tipo": "VC | Angel | Business Angel | Family Office | Corporate VC",
+  "citta": "Citta italiana",
+  "cosa_ha_fatto": "Una frase secca su cosa ha fatto oggi/questa settimana — specifico e verificabile (max 130 caratteri)",
+  "perche_conta": "Una frase sul perche questo investitore e rilevante per l'ecosistema startup italiano (max 160 caratteri)",
+  "emoji": "Un singolo emoji che rappresenta questo investitore"
+}`;
       const investitoreResult = await invokeLLMBulk({
         messages: [{ role: 'user', content: investitorePrompt }],
       });
@@ -1699,6 +1770,100 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
     console.warn('[Newsletter] Wikipedia image fetch skipped:', e instanceof Error ? e.message : e);
   }
 
+  // ── Fallback LLM: Startup Italiana del Giorno ──────────────────────────────
+  // Se la startup del giorno non è italiana, genera una startup italiana dalle notizie
+  let startupDayFinal = startupDay;
+  const ITALIAN_COUNTRIES_CHECK = ['italia', 'italy', 'it', 'milano', 'roma', 'torino', 'firenze', 'napoli', 'bologna', 'genova', 'venezia', 'palermo'];
+  const isStartupItaliana = (s: typeof startupDay) => {
+    if (!s) return false;
+    const c = (s.country || '').toLowerCase();
+    const n = (s.name || '').toLowerCase();
+    return ITALIAN_COUNTRIES_CHECK.some(it => c.includes(it) || n.includes(it));
+  };
+  if (!isStartupItaliana(startupDay)) {
+    // Cerca startup italiana nelle notizie tramite LLM
+    try {
+      const startupNewsForLLM = [
+        ...content.startupNews.filter(n => n.id).slice(0, 8),
+        ...content.dealroomNews.filter(n => n.id).slice(0, 6),
+      ];
+      if (startupNewsForLLM.length > 0) {
+        const startupNewsList = startupNewsForLLM
+          .map((n, i) => `${i + 1}. ${n.title}${n.summary ? ' — ' + n.summary.slice(0, 120) : ''}`)
+          .join('\n');
+        const startupITPrompt = `Sei il direttore editoriale di ProofPress, la newsletter italiana del mondo startup e venture capital. Il tuo focus è ESCLUSIVAMENTE l'ecosistema italiano.
+
+Analizza queste notizie delle ultime 24 ore:
+
+${startupNewsList}
+
+Individua la STARTUP ITALIANA DEL GIORNO: una startup con sede in Italia, fondata da italiani o operante principalmente nel mercato italiano. NON scegliere mai startup straniere (americane, britanniche, tedesche, ecc.).
+
+Se non emerge una startup italiana chiara dalle notizie, scegli comunque una startup italiana rilevante dell'ecosistema attuale (es. Satispay, Scalapay, Bending Spoons, Musixmatch, Casavo, Jointly, Talent Garden, Moneyfarm, Credimi, Oval Money, Milkman, Cortilia, Tannico, Yolo Group, Prima.it, Axyon AI, Userbot, Hoda, Expertia, Jointly, Altroconsumo, Jakala, Enel X, Sella, Fineco, Nexi, etc.).
+
+Rispondi SOLO con un JSON valido (nessun testo prima o dopo):
+{
+  "name": "Nome Startup",
+  "tagline": "Tagline breve (max 80 caratteri)",
+  "description": "Descrizione in 2 frasi (max 200 caratteri)",
+  "category": "Settore (es. Fintech, AI, Healthtech, Proptech)",
+  "country": "Italia",
+  "funding": "Round o stage (es. Series A, Pre-seed, Bootstrapped)",
+  "websiteUrl": "https://..."
+}`;
+        const startupITResult = await invokeLLMBulk({
+          messages: [{ role: 'user', content: startupITPrompt }],
+        });
+        const startupITRaw = (typeof startupITResult.choices?.[0]?.message?.content === 'string'
+          ? startupITResult.choices[0].message.content : '').trim();
+        const cleanStartupIT = startupITRaw
+          .replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/i, '').trim();
+        try {
+          const parsedStartup = JSON.parse(cleanStartupIT);
+          if (parsedStartup?.name) {
+            startupDayFinal = {
+              id: 0,
+              name: parsedStartup.name,
+              tagline: parsedStartup.tagline || '',
+              description: parsedStartup.description || '',
+              category: parsedStartup.category || 'Startup',
+              country: 'Italia',
+              funding: parsedStartup.funding || '',
+              aiScore: null,
+              websiteUrl: parsedStartup.websiteUrl || null,
+              imageUrl: null,
+            };
+            console.log(`[Newsletter] Startup Italiana del Giorno (LLM fallback): ${startupDayFinal.name}`);
+          }
+        } catch {
+          const jsonMatchST = cleanStartupIT.match(/\{[\s\S]*\}/);
+          if (jsonMatchST) {
+            try {
+              const parsedStartup = JSON.parse(jsonMatchST[0]);
+              if (parsedStartup?.name) {
+                startupDayFinal = {
+                  id: 0,
+                  name: parsedStartup.name,
+                  tagline: parsedStartup.tagline || '',
+                  description: parsedStartup.description || '',
+                  category: parsedStartup.category || 'Startup',
+                  country: 'Italia',
+                  funding: parsedStartup.funding || '',
+                  aiScore: null,
+                  websiteUrl: parsedStartup.websiteUrl || null,
+                  imageUrl: null,
+                };
+                console.log(`[Newsletter] Startup Italiana del Giorno (LLM fallback2): ${startupDayFinal.name}`);
+              }
+            } catch { /* ignora */ }
+          }
+        }
+      }
+    } catch (e) {
+      console.warn('[Newsletter] LLM startup italiana fallback skipped:', e instanceof Error ? e.message : e);
+    }
+  }
+
   const subject = `BUONGIORNO — Le news di oggi da ProofPress, ${dateLabel}`;
 
   const html = buildNewsletterHtmlV2({
@@ -1712,7 +1877,7 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
     researches: content.researches,
     amazonDeals,
     channelContents: content.channelContents,
-    startupOfDay: startupDay,
+    startupOfDay: startupDayFinal,
     startupsOfDay: startupsDay,
     events,
     unsubscribeUrl: `${BASE_URL}/unsubscribe`,
