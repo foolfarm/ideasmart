@@ -9,28 +9,72 @@ import { researchReports } from "../drizzle/schema";
 import { eq, and, desc } from "drizzle-orm";
 
 // ── Fonti specializzate ──────────────────────────────────────────────────────
-const RESEARCH_SOURCES = [
+// ITALIA FIRST: 70% fonti italiane/europee, 30% internazionali
+const RESEARCH_SOURCES_ITALY = [
+  // Università e centri di ricerca italiani
+  "Politecnico di Milano – Osservatorio Startup",
+  "Politecnico di Milano – Osservatorio Intelligenza Artificiale",
+  "Politecnico di Milano – Osservatorio Digital Innovation",
+  "Politecnico di Milano – Osservatorio eCommerce B2c",
+  "Università Bocconi – CERIF (Centro di Ricerca sull'Innovazione e la Finanza)",
+  "Università Bocconi – Laboratorio di Economia dell'Innovazione",
+  "LUISS Guido Carli – LUISS Enlabs Research",
+  "Università La Sapienza – Dipartimento di Informatica",
+  "CNR – Consiglio Nazionale delle Ricerche",
+  "IIT – Istituto Italiano di Tecnologia",
+  "ENEA – Agenzia nazionale per le nuove tecnologie",
+  "Fondazione Bruno Kessler (FBK)",
+  "Scuola Superiore Sant'Anna – Istituto di Management",
+  // Think tank e istituti italiani
+  "Confindustria – Centro Studi",
+  "Assintel – Associazione Nazionale Imprese ICT",
+  "Assolombarda – Centro Studi",
+  "Fondazione Symbola",
+  "The European House – Ambrosetti",
+  "Osservatorio Nazionale Startup (MISE/MIMIT)",
+  "CDP Venture Capital – Rapporto Annuale",
+  "Fondo Nazionale Innovazione – Report",
+  "Italia Startup – Ecosystem Report",
+  "BeBeez – Private Capital Report Italia",
+  "Startupbusiness – Italian Startup Ecosystem Report",
+  "Economyup – Ricerca Ecosistema Digitale Italiano",
+  "Digital360 Research",
+  "Corriere Comunicazioni – Ricerche di Mercato",
+  "ICT4Executive – Osservatorio Digitale",
+  "Wired Italia – Tech Trends Report",
+  // Fonti europee con focus Italia
+  "European Investment Fund – Italian Venture Report",
+  "Atomico – State of European Tech (Italy Chapter)",
+  "Dealroom – Italy Startup Ecosystem",
+  "Sifted – Southern Europe Report",
+  "Tech.eu – Italy Focus",
+  "European Commission – Digital Economy and Society Index (DESI) Italy",
+  "EIF – European Investment Fund Research",
+  "Invest Europe – Southern Europe VC Report",
+];
+
+const RESEARCH_SOURCES_GLOBAL = [
   "Gartner",
   "CB Insights",
   "Statista",
   "McKinsey Global Institute",
-  "Dealroom",
   "PitchBook",
   "Crunchbase",
   "KPMG Venture Pulse",
   "EY Startup Barometer",
-  "Atomico State of European Tech",
   "Boston Consulting Group",
   "Sequoia Capital",
   "a16z (Andreessen Horowitz)",
   "World Economic Forum",
   "OECD",
-  "European Investment Fund",
   "Bain & Company",
   "Forrester Research",
   "IDC",
   "Bloomberg Intelligence",
 ];
+
+// Pool combinato: 70% italiane/europee, 30% globali
+const RESEARCH_SOURCES = [...RESEARCH_SOURCES_ITALY, ...RESEARCH_SOURCES_GLOBAL];
 
 // ── Categorie di ricerca ─────────────────────────────────────────────────────
 const RESEARCH_CATEGORIES = [
@@ -230,33 +274,49 @@ export async function generateDailyResearch(force = false): Promise<{
       messages: [
         {
           role: "system",
-          content: `Sei un senior research analyst di Proof Press, specializzato in Startup, Venture Capital e AI Trends.
+          content: `Sei un senior research analyst di Proof Press, specializzato in Startup, Venture Capital e AI Trends con focus sull'ecosistema italiano ed europeo.
 Il tuo compito è generare 10 ricerche originali e approfondite per la sezione "Proof Press Research".
 
+🇮🇹 REGOLA EDITORIALE FONDAMENTALE — ITALIA FIRST 70/30:
+- ALMENO 7 ricerche su 10 DEVONO riguardare il mercato italiano o europeo (regione: "italy" o "europe")
+- Al massimo 3 ricerche su 10 possono avere focus globale (regione: "global")
+- Priorità assoluta a fonti italiane: Politecnico di Milano Osservatori, Bocconi, CNR, IIT, CDP Venture, BeBeez, Confindustria, Ambrosetti, MIMIT
+- Le ricerche globali devono sempre includere un paragrafo "Impatto sull'Italia" con dati specifici
+
 Ogni ricerca deve:
-1. Essere basata su dati reali e aggiornati di fonti autorevoli (Gartner, CB Insights, Statista, McKinsey, Dealroom, PitchBook, ecc.)
-2. Fornire insight concreti e actionable per investitori, founder e manager
+1. Essere basata su dati reali e aggiornati di fonti autorevoli italiane ed europee in primis
+2. Fornire insight concreti e actionable per investitori, founder e manager italiani
 3. Coprire diversi ambiti: startup ecosistemi, VC, AI trends, mercati tecnologici
-4. Includere dati numerici, percentuali e trend specifici
-5. Essere rilevante per il mercato italiano ed europeo (almeno 3-4 ricerche)
-6. Essere scritta in italiano con terminologia tecnica appropriata
+4. Includere dati numerici, percentuali e trend specifici (es. "Il mercato italiano dell'AI vale X miliardi")
+5. Essere scritta in italiano con terminologia tecnica appropriata
 
-La prima ricerca (indice 0) deve essere la "Ricerca del Giorno": la più importante e approfondita, con isResearchOfDay: true.
+La prima ricerca (indice 0) deve essere la "Ricerca del Giorno": la più importante e approfondita, con isResearchOfDay: true, e DEVE avere focus italiano o europeo.
 
-Fonti disponibili: ${RESEARCH_SOURCES.join(", ")}
+Fonti disponibili (privilegia quelle italiane/europee):
+- ITALIANE/EUROPEE (70%): ${RESEARCH_SOURCES_ITALY.join(", ")}
+- GLOBALI (30% max): ${RESEARCH_SOURCES_GLOBAL.join(", ")}
+
 Categorie: startup, venture_capital, ai_trends, technology, market
-Regioni: global, europe, italy
+Regioni: global, europe, italy — DISTRIBUZIONE OBBLIGATORIA: almeno 4 "italy", almeno 3 "europe", max 3 "global"
 
 Genera ricerche diverse ogni giorno — oggi è ${dateFormatted}.`,
         },
         {
           role: "user",
           content: `Genera 10 ricerche originali per Proof Press Research di oggi (${today}).
-Includi una mix di: 3-4 ricerche AI Trends, 2-3 Venture Capital/Startup, 2 Mercati, 1-2 Tecnologia.
-Almeno 3 devono riguardare il mercato europeo o italiano.
-La prima deve essere la "Ricerca del Giorno" più importante.
-Ogni ricerca deve avere dati numerici concreti (%, miliardi, CAGR) e insight actionable per investitori e founder.
-IMPORTANTE: per ogni ricerca, il campo sourceUrl DEVE contenere un URL reale e plausibile alla pagina della fonte originale (es. https://www.gartner.com/en/newsroom/press-releases/..., https://www.cbinsights.com/research/report/..., https://www.statista.com/statistics/...). Non lasciare mai sourceUrl vuoto.`,
+
+🇮🇹 DISTRIBUZIONE OBBLIGATORIA ITALIA FIRST 70/30:
+- 4 ricerche con regione "italy" (es. ecosistema startup italiano, VC italiano, AI adozione in Italia, mercato digitale italiano)
+- 3 ricerche con regione "europe" (es. European Tech, EIF report, Atomico, Invest Europe)
+- Max 3 ricerche con regione "global" (sempre con paragrafo "Impatto sull'Italia")
+
+Mix tematico: 3-4 ricerche AI Trends, 2-3 Venture Capital/Startup, 2 Mercati, 1-2 Tecnologia.
+La prima deve essere la "Ricerca del Giorno" più importante con focus italiano o europeo.
+Ogni ricerca deve avere dati numerici concreti (%, miliardi, CAGR) e insight actionable per investitori e founder italiani.
+
+Fonti prioritarie italiane da usare: Politecnico di Milano Osservatori, Bocconi CERIF, CNR, IIT, CDP Venture Capital, BeBeez, Confindustria, Ambrosetti, MIMIT/MISE, Startupbusiness, Economyup, Digital360.
+
+IMPORTANTE: per ogni ricerca, il campo sourceUrl DEVE contenere un URL reale e plausibile alla pagina della fonte originale (es. https://www.osservatori.net/it/ricerche/..., https://bebeez.it/..., https://www.cdpventure.it/..., https://www.gartner.com/en/newsroom/...). Non lasciare mai sourceUrl vuoto.`,
         },
       ],
       response_format: {
