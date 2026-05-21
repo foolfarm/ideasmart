@@ -17,6 +17,7 @@
  */
 
 import { sendEmail } from "./email";
+import { invokeLLMBulk } from "./_core/llm";
 import { sendWithWarmup } from "./newsletterWarmup";
 import {
   getLatestNews,
@@ -653,6 +654,8 @@ function buildNewsletterHtmlV2(opts: {
   channelImages?: Record<string, string | null>;
   newsletterBanners?: BannerData[];
   newsImages?: Record<string, string | null>; // key: `${section}_${newsId}` → pexels URL
+  heroNewsOverride?: (NewsItem & { _section: string; _color: string; _label: string }) | null; // hero news selezionata da LLM
+  catchySummaries?: Record<number, string>; // id notizia → summary catchy riformulato da LLM
 }): string {
   const {
     dateLabel,
@@ -673,6 +676,8 @@ function buildNewsletterHtmlV2(opts: {
     startupsOfDay,
   } = opts;
   const newsImages = opts.newsImages || {};
+  const heroNewsOverride = opts.heroNewsOverride || null;
+  const catchySummaries = opts.catchySummaries || {};
 
   // ── Design Tokens v3 (ProofPress Editorial) ──
   const F_SERIF = "Georgia, 'Times New Roman', Times, serif";
@@ -700,11 +705,20 @@ function buildNewsletterHtmlV2(opts: {
   const top3Startup = startupNews.filter(n => n.id).slice(0, 3);
   const top3Deal = dealroomNews.filter(n => n.id).slice(0, 3);
   // Lista unificata delle 10 notizie: AI prima, poi Startup, poi Deal
-  const top10News: (NewsItem & { _section: string; _color: string; _label: string })[] = [
+  // Se heroNewsOverride è presente (selezionata da LLM), la mette PRIMA di tutte le altre
+  const baseTop10: (NewsItem & { _section: string; _color: string; _label: string })[] = [
     ...top4AI.map(n => ({ ...n, _section: 'ai', _color: '#dc2626', _label: n.category || 'AI NEWS' })),
     ...top3Startup.map(n => ({ ...n, _section: 'startup', _color: '#7c3aed', _label: n.category || 'STARTUP' })),
     ...top3Deal.map(n => ({ ...n, _section: 'dealroom', _color: '#059669', _label: n.category || 'DEAL & VC' })),
-  ].slice(0, 10);
+  ];
+  let top10News: (NewsItem & { _section: string; _color: string; _label: string })[];
+  if (heroNewsOverride) {
+    // Rimuovi la hero news dalla lista base (evita duplicati) e mettila in testa
+    const withoutHero = baseTop10.filter(n => n.id !== heroNewsOverride.id);
+    top10News = [heroNewsOverride, ...withoutHero].slice(0, 10);
+  } else {
+    top10News = baseTop10.slice(0, 10);
+  }
 
   // ── Startup del giorno ──
   const startup = opts.startupOfDay || (startupsOfDay && startupsOfDay[0]) || null;
@@ -809,24 +823,29 @@ function buildNewsletterHtmlV2(opts: {
     const imgKey = `${n._section}_${n.id}`;
     const imgSrc = newsImages[imgKey] || pexelsUrl(FALLBACK_PEXELS[n._section] || FALLBACK_PEXELS.default, 600, 240);
     const isFirst = idx === 0;
+    // Usa il summary catchy se disponibile (riformulato da LLM), altrimenti usa il summary originale
+    const displaySummary = (n.id && catchySummaries[n.id]) ? catchySummaries[n.id] : (n.summary || '');
+    // La prima notizia ha un badge speciale BREAKING se selezionata da LLM
+    const heroLabel = isFirst && heroNewsOverride ? `⚡ BREAKING` : n._label;
+    const heroColor = isFirst && heroNewsOverride ? ACCENT : n._color;
     return `
     <tr>
       <td style="padding:0 20px ${idx < top10News.length - 1 ? '20px' : '0'};">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:10px;overflow:hidden;border:1px solid ${BORDER};">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:10px;overflow:hidden;border:1px solid ${isFirst && heroNewsOverride ? ACCENT : BORDER};${isFirst && heroNewsOverride ? `border-top:4px solid ${ACCENT};` : ''}">
           <tr>
             <td style="padding:0;">
               <a href="${url}" style="display:block;text-decoration:none;">
-                <img src="${imgSrc}" width="600" style="width:100%;max-width:600px;height:${isFirst ? '260px' : '200px'};object-fit:cover;display:block;" alt="${n.title}" />
+                <img src="${imgSrc}" width="600" style="width:100%;max-width:600px;height:${isFirst ? '280px' : '200px'};object-fit:cover;display:block;" alt="${n.title}" />
               </a>
             </td>
           </tr>
           <tr>
             <td style="padding:20px 24px 18px;">
-              <div style="display:inline-block;background:${n._color};color:#ffffff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:3px;letter-spacing:0.1em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:12px;">${n._label}</div>
-              <div style="font-size:${isFirst ? '26px' : '20px'};font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.3;margin-bottom:10px;">
+              <div style="display:inline-block;background:${heroColor};color:#ffffff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:3px;letter-spacing:0.1em;text-transform:uppercase;font-family:${F_SANS};margin-bottom:12px;">${heroLabel}</div>
+              <div style="font-size:${isFirst ? '28px' : '20px'};font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.3;margin-bottom:10px;">
                 <a href="${url}" style="color:${BLACK};text-decoration:none;">${n.title}</a>
               </div>
-              <div style="font-size:14px;color:${SLATE};font-family:${F_SANS};line-height:1.75;margin-bottom:14px;">${n.summary ? n.summary.slice(0, isFirst ? 280 : 180) + (n.summary.length > (isFirst ? 280 : 180) ? '...' : '') : ''}</div>
+              <div style="font-size:${isFirst ? '15px' : '14px'};color:${SLATE};font-family:${F_SANS};line-height:1.75;margin-bottom:14px;">${displaySummary.slice(0, isFirst ? 320 : 200) + (displaySummary.length > (isFirst ? 320 : 200) ? '...' : '')}</div>
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
                   <td>
@@ -1197,6 +1216,66 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
     console.warn("[Newsletter] Pexels news images fetch skipped:", e);
   }
 
+  // ── Selezione LLM: Hero News + Summary Catchy ──
+  // Pre-computa la hero news più impattante e i summary catchy per tutte le 10 notizie
+  // Queste vengono passate come parametri a buildNewsletterHtmlV2 (che è sincrona)
+  let heroNewsOverride: (NewsItem & { _section: string; _color: string; _label: string }) | null = null;
+  let catchySummaries: Record<number, string> = {};
+  try {
+    // Prepara il pool di notizie candidate (4 AI + 3 Startup + 3 Deal)
+    const EXCLUDED_CATEGORIES = ['offerte', 'promozioni', 'deals', 'amazon', 'shopping', 'sconti', 'volantino', 'coupon'];
+    const isRelevantNews = (n: NewsItem) => {
+      const cat = (n.category || '').toLowerCase();
+      return n.id && !EXCLUDED_CATEGORIES.some(ex => cat.includes(ex));
+    };
+    const candidateAI = content.aiNews.filter(isRelevantNews).slice(0, 4).map(n => ({ ...n, _section: 'ai', _color: '#dc2626', _label: n.category || 'AI NEWS' }));
+    const candidateStartup = content.startupNews.filter(n => n.id).slice(0, 3).map(n => ({ ...n, _section: 'startup', _color: '#7c3aed', _label: n.category || 'STARTUP' }));
+    const candidateDeal = content.dealroomNews.filter(n => n.id).slice(0, 3).map(n => ({ ...n, _section: 'dealroom', _color: '#059669', _label: n.category || 'DEAL & VC' }));
+    const allCandidates = [...candidateAI, ...candidateStartup, ...candidateDeal];
+
+    if (allCandidates.length > 0) {
+      // Step 1: Selezione hero news (la più impattante/clamorosa)
+      const candidateList = allCandidates.map((n, i) => `${i}. [${n._section.toUpperCase()}] ${n.title}`).join('\n');
+      const heroPrompt = `Sei il direttore editoriale di ProofPress, la newsletter AI italiana più letta dai C-level.\n\nHai queste notizie disponibili per oggi:\n${candidateList}\n\nScegli il NUMERO (0-${allCandidates.length - 1}) della notizia che ha il massimo impatto editoriale: breaking news, mossa inaspettata di un big player, gossip tech, notizia sorprendente o clamorosa che farà alzare il tasso di apertura.\n\nRispondi SOLO con il numero intero, nient'altro.`;
+      const heroResult = await invokeLLMBulk({
+        messages: [{ role: 'user', content: heroPrompt }],
+      });
+      const heroIndexRaw = (typeof heroResult.choices?.[0]?.message?.content === 'string' ? heroResult.choices[0].message.content : '').trim() || '0';
+      const heroIndex = Math.max(0, Math.min(allCandidates.length - 1, parseInt(heroIndexRaw, 10) || 0));
+      heroNewsOverride = allCandidates[heroIndex];
+      console.log(`[Newsletter] Hero news selezionata da LLM: #${heroIndex} — "${heroNewsOverride.title}"`);
+
+      // Step 2: Riscrittura summary catchy per tutte le 10 notizie
+      const summaryList = allCandidates.map((n, i) => `${i}. TITOLO: ${n.title}\nSUMMARY ORIGINALE: ${(n.summary || '').slice(0, 200)}`).join('\n\n');
+      const summaryPrompt = `Sei un copywriter editoriale per ProofPress, newsletter AI italiana per C-level.\n\nRiscrivi i summary delle seguenti notizie in stile CATCHY: max 2 frasi, tono diretto e incisivo, stile "colpo di scena", niente giri di parole.\n\n${summaryList}\n\nRispondi con un JSON array dove ogni elemento ha: { "index": number, "summary": string }. Solo JSON, nessun altro testo.`;
+      const summaryResult = await invokeLLMBulk({
+        messages: [{ role: 'user', content: summaryPrompt }],
+      });
+      const summaryRaw = (typeof summaryResult.choices?.[0]?.message?.content === 'string' ? summaryResult.choices[0].message.content : '').trim() || '[]';
+      // Parse JSON robusto
+      let summaryParsed: { index: number; summary: string }[] = [];
+      try {
+        const cleanJson = summaryRaw.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/i, '').trim();
+        summaryParsed = JSON.parse(cleanJson);
+      } catch {
+        // Fallback: estrai JSON con regex
+        const jsonMatch = summaryRaw.match(/\[\s*\{[\s\S]*\}\s*\]/);
+        if (jsonMatch) {
+          try { summaryParsed = JSON.parse(jsonMatch[0]); } catch { /* ignora */ }
+        }
+      }
+      for (const item of summaryParsed) {
+        const candidate = allCandidates[item.index];
+        if (candidate?.id && item.summary) {
+          catchySummaries[candidate.id] = item.summary;
+        }
+      }
+      console.log(`[Newsletter] Summary catchy generati da LLM: ${Object.keys(catchySummaries).length}/${allCandidates.length}`);
+    }
+  } catch (e) {
+    console.warn('[Newsletter] LLM hero/summary skipped (fallback a selezione algoritmica):', e instanceof Error ? e.message : e);
+  }
+
   const subject = `BUONGIORNO — Le news di oggi da ProofPress, ${dateLabel}`;
 
   const html = buildNewsletterHtmlV2({
@@ -1219,6 +1298,8 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
     channelImages,
     newsletterBanners,
     newsImages,
+    heroNewsOverride,
+    catchySummaries,
   });
 
   const sponsorIds: number[] = [];

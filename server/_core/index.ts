@@ -659,11 +659,23 @@ async function startServer() {
     try {
       const { buildUnifiedNewsletter } = await import('../unifiedNewsletter');
       const { html, subject, stats } = await buildUnifiedNewsletter(true);
-      // Aggiungi banner di debug in cima
-      const debugBanner = `<div style="background:#ff5500;color:#fff;font-family:monospace;font-size:12px;padding:8px 16px;text-align:center;">PREVIEW NEWSLETTER v3 — ${subject} — ${JSON.stringify(stats)}</div>`;
+      // Aggiungi banner di debug in cima (solo per preview browser, NON per invio email)
+      const debugBanner = `<div style="background:#ff5500;color:#fff;font-family:monospace;font-size:12px;padding:8px 16px;text-align:center;">PREVIEW v3 — ${subject} — AI:${stats?.ai ?? 0} Startup:${stats?.startup ?? 0} Deal:${stats?.dealroom ?? 0} Breaking:${stats?.breaking ?? 0}</div>`;
       return res.send(debugBanner + html);
     } catch (err: any) {
       console.error('[HTMLPreview] Errore:', err);
+      return res.status(500).send(`<pre>Errore: ${err.message}\n${err.stack}</pre>`);
+    }
+  });
+
+  // GET /api/newsletter/html-clean — HTML puro senza banner debug (per invio email)
+  app.get("/api/newsletter/html-clean", async (req, res) => {
+    try {
+      const { buildUnifiedNewsletter } = await import('../unifiedNewsletter');
+      const { html } = await buildUnifiedNewsletter(true);
+      return res.send(html);
+    } catch (err: any) {
+      console.error('[HTMLClean] Errore:', err);
       return res.status(500).send(`<pre>Errore: ${err.message}\n${err.stack}</pre>`);
     }
   });
@@ -728,6 +740,26 @@ async function startServer() {
       return res.json({ preview: previewResult, send: sendResult, recordId });
     } catch (err: any) {
       console.error('[ForceNewsletter] Errore:', err);
+      return res.status(500).json({ error: err.message });
+    }
+  });
+
+  // POST /api/newsletter/send-test-email — invia la newsletter v3 a un indirizzo specifico (solo admin)
+  app.post("/api/newsletter/send-test-email", async (req, res) => {
+    const authHeader = req.headers.authorization || '';
+    const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : '';
+    if (!token || token !== process.env.JWT_SECRET) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+    const { email } = req.body || {};
+    if (!email) return res.status(400).json({ error: 'email richiesta nel body' });
+    try {
+      const { sendUnifiedTestToEmail } = await import('../unifiedNewsletter');
+      console.log(`[TestEmail] Invio newsletter v3 a ${email}...`);
+      const result = await sendUnifiedTestToEmail(email);
+      return res.json(result);
+    } catch (err: any) {
+      console.error('[TestEmail] Errore:', err);
       return res.status(500).json({ error: err.message });
     }
   });

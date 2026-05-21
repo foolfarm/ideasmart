@@ -3750,3 +3750,14 @@
 - [x] /research: rimossa sezione newsletter in fondo alla pagina
 - [x] /research: aumentato limite query getResearchReports da 20 a 30 — ora mostra tutte le 20 ricerche di oggi
 - [x] News Verify: immagine rotta (ppv_hero_home_9707dcb8.webp — 403 Forbidden) sostituita con nuova immagine CDN (news-verify-hero.jpg — macchina da scrivere "Fake News") per articoli ID 8700001, 8700002, 8700003
+
+## Task completati (21 maggio 2026 — Newsletter v3 LLM Hero + Summary Catchy)
+
+- [x] Aggiunto import invokeLLMBulk in unifiedNewsletter.ts
+- [x] Aggiunto parametro heroNewsOverride a buildNewsletterHtmlV2 (NewsItem selezionata da LLM)
+- [x] Aggiunto parametro catchySummaries a buildNewsletterHtmlV2 (summary riscritti da LLM)
+- [x] Aggiornata renderNewsCard: usa catchySummaries[n.id] se disponibile, badge "⚡ BREAKING" per hero news
+- [x] Aggiunta logica LLM in buildUnifiedNewsletter: selectHeroNews (DeepSeek V3) + summary catchy (10/10)
+- [x] Aggiunta route POST /api/newsletter/send-test-email per invio preview a indirizzo specifico
+- [x] Preview v3 con hero news LLM + summary catchy inviata a ac@acinelli.com
+- [x] TypeScript: 0 errori
