@@ -774,7 +774,7 @@ export default function OsservatorioTech() {
                   <br /><br />
                   Un punto di vista qualificato, costruito su oltre 30 anni di execution diretta — non teoria.
                   <br /><br />
-                  Andrea contribuisce inoltre a Base Alpha +, l'osservatorio tecnologico Premium internazionale guidato da <strong style={{ color: INK }}>Adrian Lenice</strong> e supportato da un team globale di analisti.
+                  Andrea contribuisce inoltre a <a href="/base-alpha" style={{ color: INK, fontWeight: 900, textDecoration: "underline", textDecorationColor: "#c9a227", textUnderlineOffset: 3 }}>Base Alpha +</a>, l'osservatorio tecnologico Premium internazionale guidato da <strong style={{ color: INK }}>Adrian Lenice</strong> e supportato da un team globale di analisti.
                 </p>
 
                 {/* Temi */}
@@ -828,32 +828,34 @@ export default function OsservatorioTech() {
                     </a>
                   </div>
 
-                  {/* ── Banner Base Alpha+ nella sidebar ── */}
-                  <div className="px-5 py-5 border-t border-zinc-100">
-                    <a href="/base-alpha" style={{ textDecoration: "none" }}>
-                      <div
-                        style={{
-                          background: "linear-gradient(160deg, #0a0a0a 0%, #1a1a2e 70%, #16213e 100%)",
-                          border: "1px solid #c9a227",
-                          borderRadius: 8,
-                          padding: "16px 14px 14px",
-                          cursor: "pointer",
-                          transition: "transform 0.2s, box-shadow 0.2s",
-                        }}
-                        className="hover:scale-[1.02] hover:shadow-lg block"
-                      >
-                        <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 8 }}>
-                          <div style={{ width: 22, height: 22, borderRadius: 5, background: "rgba(201,162,39,0.18)", border: "1px solid #c9a227", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#c9a227" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                          </div>
-                          <p style={{ fontFamily: FONT, fontSize: 8, fontWeight: 900, letterSpacing: "0.22em", textTransform: "uppercase", color: "#c9a227", margin: 0 }}>Base Alpha+</p>
-                        </div>
-                        <p style={{ fontFamily: FONT, fontSize: 13, fontWeight: 800, color: "#ffffff", margin: "0 0 5px", lineHeight: 1.25, letterSpacing: "-0.01em" }}>Osservatorio Intelligence Premium</p>
-                        <p style={{ fontFamily: FONT, fontSize: 10, color: "rgba(255,255,255,0.5)", margin: "0 0 10px", lineHeight: 1.5 }}>Report certificati PPV™ per C-suite e board</p>
-                        <span style={{ fontFamily: FONT, fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#c9a227", background: "rgba(201,162,39,0.12)", border: "1px solid rgba(201,162,39,0.3)", borderRadius: 3, padding: "3px 7px" }}>Scopri →</span>
+                  {/* ── Banner Base Alpha+ nella sidebar — redesign editoriale ── */}
+                  <a href="/base-alpha" style={{ textDecoration: "none", display: "block" }}>
+                    <div style={{ background: "#0a0a0a", borderTop: "3px solid #c9a227", padding: "20px 20px 18px", cursor: "pointer", transition: "opacity 0.2s" }} className="hover:opacity-90">
+                      {/* Eyebrow */}
+                      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+                        <span style={{ fontFamily: FONT, fontSize: 8, fontWeight: 900, letterSpacing: "0.28em", textTransform: "uppercase", color: "#c9a227" }}>Base Alpha+</span>
+                        <span style={{ width: 1, height: 10, background: "rgba(201,162,39,0.4)" }} />
+                        <span style={{ fontFamily: FONT, fontSize: 8, fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(255,255,255,0.35)" }}>Intelligence</span>
                       </div>
-                    </a>
-                  </div>
+                      {/* Titolo display */}
+                      <p style={{ fontFamily: FONT, fontSize: 20, fontWeight: 900, color: "#ffffff", margin: "0 0 6px", lineHeight: 1.1, letterSpacing: "-0.02em" }}>Il primo osservatorio con ricerche certificate.</p>
+                      {/* Descrizione */}
+                      <p style={{ fontFamily: FONT, fontSize: 11, color: "rgba(255,255,255,0.45)", margin: "0 0 16px", lineHeight: 1.55 }}>Report PPV™ pre-pubblici su AI, VC &amp; Startup per C-suite e board. 4.000+ fonti monitorate.</p>
+                      {/* Stats row */}
+                      <div style={{ display: "flex", gap: 16, marginBottom: 16, paddingBottom: 14, borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+                        {[{n:"200+",l:"Clienti"},{n:"10",l:"Settori"},{n:"4.000+",l:"Fonti"}].map(({n,l}) => (
+                          <div key={l}>
+                            <p style={{ fontFamily: FONT, fontSize: 15, fontWeight: 900, color: "#c9a227", margin: 0, lineHeight: 1 }}>{n}</p>
+                            <p style={{ fontFamily: FONT, fontSize: 9, color: "rgba(255,255,255,0.35)", margin: "2px 0 0", letterSpacing: "0.1em", textTransform: "uppercase" }}>{l}</p>
+                          </div>
+                        ))}
+                      </div>
+                      {/* CTA */}
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                        <span style={{ fontFamily: FONT, fontSize: 10, fontWeight: 900, letterSpacing: "0.15em", textTransform: "uppercase", color: "#c9a227" }}>Scopri Base Alpha+ →</span>
+                      </div>
+                    </div>
+                  </a>
                 </div>
               </div>
             </div>
