@@ -731,9 +731,8 @@ export default function OsservatorioTech() {
           </Link>
         </div>
       </div>
-            <div className="flex min-h-screen overflow-x-hidden">
-        
 
+      <div className="flex min-h-screen">
         <main className="flex-1 min-w-0 overflow-x-hidden" style={{ fontFamily: FONT }}>
           <div className="max-w-[1280px] mx-auto">
 
