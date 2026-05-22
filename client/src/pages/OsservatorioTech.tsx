@@ -827,6 +827,33 @@ export default function OsservatorioTech() {
                       SEGUI SU LINKEDIN
                     </a>
                   </div>
+
+                  {/* ── Banner Base Alpha+ nella sidebar ── */}
+                  <div className="px-5 py-5 border-t border-zinc-100">
+                    <a href="/base-alpha" style={{ textDecoration: "none" }}>
+                      <div
+                        style={{
+                          background: "linear-gradient(160deg, #0a0a0a 0%, #1a1a2e 70%, #16213e 100%)",
+                          border: "1px solid #c9a227",
+                          borderRadius: 8,
+                          padding: "16px 14px 14px",
+                          cursor: "pointer",
+                          transition: "transform 0.2s, box-shadow 0.2s",
+                        }}
+                        className="hover:scale-[1.02] hover:shadow-lg block"
+                      >
+                        <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 8 }}>
+                          <div style={{ width: 22, height: 22, borderRadius: 5, background: "rgba(201,162,39,0.18)", border: "1px solid #c9a227", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#c9a227" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                          </div>
+                          <p style={{ fontFamily: FONT, fontSize: 8, fontWeight: 900, letterSpacing: "0.22em", textTransform: "uppercase", color: "#c9a227", margin: 0 }}>Base Alpha+</p>
+                        </div>
+                        <p style={{ fontFamily: FONT, fontSize: 13, fontWeight: 800, color: "#ffffff", margin: "0 0 5px", lineHeight: 1.25, letterSpacing: "-0.01em" }}>Osservatorio Intelligence Premium</p>
+                        <p style={{ fontFamily: FONT, fontSize: 10, color: "rgba(255,255,255,0.5)", margin: "0 0 10px", lineHeight: 1.5 }}>Report certificati PPV™ per C-suite e board</p>
+                        <span style={{ fontFamily: FONT, fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#c9a227", background: "rgba(201,162,39,0.12)", border: "1px solid rgba(201,162,39,0.3)", borderRadius: 3, padding: "3px 7px" }}>Scopri →</span>
+                      </div>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
