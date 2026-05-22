@@ -80,30 +80,30 @@ export default function VerifyStatsWidget() {
               {CHANNELS.map(({ label, sublabel, path, Icon, color, external }) => {
                 const inner = (
                   <div
-                    className="flex items-center gap-2 px-2 py-1.5 rounded-md cursor-pointer transition-all hover:bg-white hover:shadow-sm"
+                    className="flex items-center gap-2.5 px-3 py-2 rounded-md cursor-pointer transition-all hover:bg-white hover:shadow-sm"
                     style={{ border: "1px solid #ebebeb" }}
                   >
                     <span
                       className="flex-shrink-0 flex items-center justify-center"
                       style={{
-                        width: 22,
-                        height: 22,
-                        borderRadius: 6,
+                        width: 28,
+                        height: 28,
+                        borderRadius: 7,
                         background: color + "18",
                       }}
                     >
-                      <Icon size={11} strokeWidth={2.2} color={color} />
+                      <Icon size={14} strokeWidth={2} color={color} />
                     </span>
                     <div className="min-w-0">
                       <div
-                        className="text-[10px] font-bold leading-tight truncate"
-                        style={{ color: "#1a1a1a", fontFamily: SF }}
+                        className="font-bold leading-tight truncate"
+                        style={{ color: "#1a1a1a", fontFamily: SF, fontSize: 13 }}
                       >
                         {label}
                       </div>
                       <div
-                        className="text-[8px] leading-tight truncate"
-                        style={{ color: "#8e8e93", fontFamily: SF }}
+                        className="leading-tight truncate"
+                        style={{ color: "#8e8e93", fontFamily: SF, fontSize: 11 }}
                       >
                         {sublabel}
                       </div>
