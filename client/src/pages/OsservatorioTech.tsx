@@ -731,10 +731,11 @@ export default function OsservatorioTech() {
           </Link>
         </div>
       </div>
-            <div className="flex min-h-screen">
+            <div className="flex min-h-screen overflow-x-hidden">
         
 
-        <main className="flex-1 min-w-0" style={{ fontFamily: FONT }}>
+        <main className="flex-1 min-w-0 overflow-x-hidden" style={{ fontFamily: FONT }}>
+          <div className="max-w-[1280px] mx-auto">
 
           {/* ══════════════════════════════════════════════════════════════════
               HERO — display enorme + profilo sidebar
@@ -1052,6 +1053,7 @@ export default function OsservatorioTech() {
             </div>
           </section>
 
+          </div>
         </main>
       </div>
 

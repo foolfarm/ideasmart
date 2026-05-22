@@ -3791,3 +3791,9 @@
 - [x] Rinominata sezione "Investitore Italiano del Giorno" → "Angel Investor del Giorno"
 - [x] Startup del Giorno: filtro Italia First (country = Italia/Italy) con fallback internazionale
 - [x] Preview inviata a ac@acinelli.com con tutte le modifiche
+
+## Fix Layout e Qualità Contenuti (22 Mag 2026)
+
+- [x] Fix OsservatorioTech.tsx: aggiunto overflow-x-hidden al wrapper flex e max-w-[1280px] mx-auto al contenuto principale
+- [x] Fix Home.tsx: aggiunto hook useImgSrc con fallback automatico per immagini rotte nelle news card (HeroArticle + SecondaryArticle)
+- [x] Filtro anti-sport/gossip/cronaca nel prompt LLM di rssScraperNew.ts: sport, ciclismo, calcio, Giro d'Italia, gossip, cronaca nera, intrattenimento, politica partitica, cucina/food scartati automaticamente

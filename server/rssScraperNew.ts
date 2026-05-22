@@ -264,6 +264,17 @@ VARIA gli incipit tra questi pattern (non usare sempre lo stesso):
 - Inizio con il paradosso o la tensione: "Più potente, ma anche più costoso.", "La promessa è ambiziosa."
 - Inizio con il nome del protagonista: "Elon Musk torna a scommettere su...", "Anthropic ha scelto..."
 
+FILTRO CONTENUTI — ARGOMENTI VIETATI (SCARTA IMMEDIATAMENTE):
+I seguenti argomenti NON appartengono a questa rivista e devono essere SCARTATI anche se provengono da fonti certificate:
+- Sport, gare sportive, ciclismo, calcio, tennis, Formula 1, Giro d'Italia, Tour de France, Olimpiadi, Mondiali, Europei
+- Gossip, cronaca rosa, vita privata di personaggi pubblici, celebrity news
+- Cronaca nera, criminalità, incidenti, disastri naturali (a meno che non abbiano impatto diretto su tech/startup)
+- Intrattenimento, cinema, musica, TV, eventi culturali non tech
+- Politica partitica, elezioni, sondaggi elettorali (a meno che non riguardino regolamentazione AI/tech)
+- Ricette, cucina, food, turismo, lifestyle non tech
+- Meteo, ambiente generico (a meno che non riguardi cleantech/greentech con deal o ricerca)
+Se un articolo tratta uno di questi argomenti → SCARTALO SEMPRE, indipendentemente dalla fonte.
+
 REGOLA 70/30 OBBLIGATORIA — ITALIA FIRST:
 - Gli articoli marcati 🇮🇹 provengono da fonti italiane: PRIVILEGIALI nella selezione.
 - OBBLIGATORIO: almeno 14 articoli su 20 devono provenire da fonti italiane (🇮🇹). Questo è un requisito editoriale non negoziabile.

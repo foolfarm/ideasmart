@@ -347,6 +347,20 @@ type NewsItem = {
   ppvDocumentId?: number | null;
 };
 
+// ─── Image fallback ─────────────────────────────────────────────────────────
+// Immagine placeholder usata quando un'immagine notizia è rotta o mancante
+const FALLBACK_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart_hero-6ZrdwCga3BYZbueso82C5j.webp";
+function useImgSrc(url: string | null | undefined): { src: string; onError: (e: React.SyntheticEvent<HTMLImageElement>) => void } {
+  const [src, setSrc] = useState<string>(url || FALLBACK_IMG);
+  useEffect(() => { setSrc(url || FALLBACK_IMG); }, [url]);
+  const onError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    if (e.currentTarget.src !== FALLBACK_IMG) {
+      e.currentTarget.src = FALLBACK_IMG;
+    }
+  };
+  return { src, onError };
+}
+
 // ─── Language helpers ────────────────────────────────────────────────────────
 const LangContext = React.createContext<"it" | "en">("it");
 function useLang() { return React.useContext(LangContext); }
@@ -416,7 +430,7 @@ function HeroArticle({ item, section, editorial }: {
   const lang = useLang();
   const title = editorial?.title || itemTitle(item, lang);
   const body = editorial?.body || itemSummary(item, lang);
-  const img = item.imageUrl;
+  const { src: imgSrc, onError: imgOnError } = useImgSrc(item.imageUrl);
 
   const TitleEl = (
     <h3
@@ -429,15 +443,14 @@ function HeroArticle({ item, section, editorial }: {
 
   return (
     <article className="pb-4">
-      {img && (
-          <Link href={href}>
+      <Link href={href}>
             <img
-              src={img} alt={title} loading="eager" decoding="async"
+              src={imgSrc} alt={title} loading="eager" decoding="async"
+              onError={imgOnError}
               className="w-full object-cover hover:opacity-95 transition-opacity cursor-pointer"
               style={{ height: "clamp(200px, 50vw, 420px)", borderRadius: "10px", border: "1px solid rgba(26,26,46,0.07)", boxShadow: "0 2px 20px rgba(0,0,0,0.06)" }}
             />
           </Link>
-      )}
       <div className="mt-5">
         <SectionBadge section={section} />
         <Link href={href}>{TitleEl}</Link>
@@ -490,11 +503,13 @@ function SecondaryArticle({ item, section, showImage = false }: {
 }) {
   const lang = useLang();
   const href = NewsItemHref(item, section);
+  const { src: imgSrc, onError: imgOnError } = useImgSrc(item.imageUrl);
   return (
     <article className="py-4">
-      {showImage && item.imageUrl && (
+      {showImage && (
         <Link href={href}>
-          <img src={item.imageUrl} alt={itemTitle(item, lang)} loading="lazy"
+          <img src={imgSrc} alt={itemTitle(item, lang)} loading="lazy"
+            onError={imgOnError}
             className="w-full object-cover mb-3 cursor-pointer"
             style={{ height: "200px", borderRadius: "8px", border: "1px solid rgba(26,26,46,0.07)" }} />
         </Link>
