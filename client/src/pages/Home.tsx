@@ -865,48 +865,26 @@ export default function Home() {
                         }}>
                         ProofPress
                       </h1>
-                      <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", marginTop: "0.3em", marginLeft: "0.4em" }}>
-                        <span className="font-bold tracking-widest text-[#1a1a1a]/50"
+                      <span className="font-bold tracking-widest text-[#1a1a1a]/50"
                           style={{
                             fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                             fontSize: "clamp(8px, 1vw, 14px)",
                             letterSpacing: "0.15em",
                             textTransform: "uppercase",
                             lineHeight: 1,
+                            marginTop: "0.3em",
+                            marginLeft: "0.4em",
                           }}>
                           Magazine
                         </span>
-                        <span style={{ display: "flex", alignItems: "center", gap: "3px", marginTop: "3px" }}>
-                          <span style={{ fontSize: "clamp(7px, 0.8vw, 11px)", lineHeight: 1 }}>🇮🇹</span>
-                          <span style={{
-                            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
-                            fontSize: "clamp(5px, 0.55vw, 8px)",
-                            fontWeight: 700,
-                            letterSpacing: "0.12em",
-                            textTransform: "uppercase",
-                            color: "#1a1a1a",
-                            opacity: 0.4,
-                            lineHeight: 1,
-                            whiteSpace: "nowrap"
-                          }}>Italian Edition</span>
-                        </span>
-                      </div>
                     </div>
                   </div>
                 </Link>
-                {/* Sottotitolo */}
-                <div className="hidden sm:block mt-2 text-[#1a1a1a]/60 font-semibold"
+                {/* Sottotitolo pulito */}
+                <div className="hidden sm:block mt-2 text-[#1a1a1a]/50 font-semibold"
                   style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", lineHeight: 1.5 }}>
-                  <div className="uppercase tracking-[0.08em] font-bold" style={{ fontSize: "clamp(7px, 0.82vw, 10px)", color: "#00b894" }}>
-                    Tecnologia · Investimenti · Startup · Venture Capital
-                  </div>
-                  <div className="uppercase tracking-[0.15em] md:tracking-[0.2em]" style={{ fontSize: "clamp(9px, 1.1vw, 13px)", marginTop: "3px" }}>
-                    Il primo magazine con redazione agentica e informazioni 100% certificate
-                  </div>
-                  {/* Badge edizione italiana */}
-                  <div className="flex items-center justify-center gap-1 mt-2">
-                    <span style={{ fontSize: "clamp(10px, 1.1vw, 14px)" }}>🇮🇹</span>
-                    <span className="font-semibold tracking-[0.12em] uppercase" style={{ fontSize: "clamp(7px, 0.75vw, 10px)", color: "#1a1a1a", opacity: 0.45, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Edizione Italiana</span>
+                  <div className="uppercase tracking-[0.15em] md:tracking-[0.2em]" style={{ fontSize: "clamp(9px, 1.1vw, 13px)" }}>
+                    IL PRIMO SITO DI INFORMAZIONE CON NOTIZIE CERTIFICATE
                   </div>
                 </div>
               </div>
@@ -929,47 +907,25 @@ export default function Home() {
                       }}>
                       ProofPress
                     </h1>
-                    <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", marginTop: "0.3em", marginLeft: "0.4em" }}>
-                      <span className="font-bold tracking-widest text-[#1a1a1a]/50"
+                    <span className="font-bold tracking-widest text-[#1a1a1a]/50"
                         style={{
                           fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                           fontSize: "clamp(8px, 1vw, 14px)",
                           letterSpacing: "0.15em",
                           textTransform: "uppercase",
                           lineHeight: 1,
+                          marginTop: "0.3em",
+                          marginLeft: "0.4em",
                         }}>
                         Magazine
                       </span>
-                      <span style={{ display: "flex", alignItems: "center", gap: "3px", marginTop: "3px" }}>
-                        <span style={{ fontSize: "clamp(7px, 0.8vw, 11px)", lineHeight: 1 }}>🇮🇹</span>
-                        <span style={{
-                          fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
-                          fontSize: "clamp(5px, 0.55vw, 8px)",
-                          fontWeight: 700,
-                          letterSpacing: "0.12em",
-                          textTransform: "uppercase",
-                          color: "#1a1a1a",
-                          opacity: 0.4,
-                          lineHeight: 1,
-                          whiteSpace: "nowrap"
-                        }}>Italian Edition</span>
-                      </span>
-                    </div>
                   </div>
                 </div>
               </Link>
-              <div className="hidden sm:block mt-2 text-[#1a1a1a]/60 font-semibold"
+              <div className="hidden sm:block mt-2 text-[#1a1a1a]/50 font-semibold"
                 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", lineHeight: 1.5 }}>
-                <div className="uppercase tracking-[0.08em] font-bold" style={{ fontSize: "clamp(7px, 0.82vw, 10px)", color: "#00b894" }}>
-                  Tecnologia · Investimenti · Startup · Venture Capital
-                </div>
-                <div className="uppercase tracking-[0.15em] md:tracking-[0.2em]" style={{ fontSize: "clamp(9px, 1.1vw, 13px)", marginTop: "3px" }}>
-                  Il primo magazine con redazione agentica e informazioni 100% certificate
-                </div>
-                {/* Badge edizione italiana */}
-                <div className="flex items-center justify-center gap-1 mt-2">
-                  <span style={{ fontSize: "clamp(10px, 1.1vw, 14px)" }}>🇮🇹</span>
-                  <span className="font-semibold tracking-[0.12em] uppercase" style={{ fontSize: "clamp(7px, 0.75vw, 10px)", color: "#1a1a1a", opacity: 0.45, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>Edizione Italiana</span>
+                <div className="uppercase tracking-[0.15em] md:tracking-[0.2em]" style={{ fontSize: "clamp(9px, 1.1vw, 13px)" }}>
+                  IL PRIMO SITO DI INFORMAZIONE CON NOTIZIE CERTIFICATE
                 </div>
               </div>
             </div>
