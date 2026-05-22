@@ -127,10 +127,7 @@ function ProofPressSubtitle() {
   return (
     <div className="hidden sm:block mt-2 text-[#1a1a1a]/60 font-semibold" style={{ fontFamily: SF, lineHeight: 1.5 }}>
       <div className="uppercase tracking-[0.15em] md:tracking-[0.2em]" style={{ fontSize: "clamp(9px, 1.1vw, 13px)" }}>
-        IL TUO PUNTO DI RIFERIMENTO PER INNOVAZIONE, AI, STARTUP, VENTURE
-      </div>
-      <div className="uppercase tracking-[0.08em] font-bold" style={{ fontSize: "clamp(7px, 0.82vw, 10px)", marginTop: "3px", color: "#00b894" }}>
-        INFORMAZIONE 100% VERIFICATA CON PROOFPRESS VERIFY TECHNOLOGY
+        IL PRIMO SITO DI INFORMAZIONE CON NOTIZIE CERTIFICATE
       </div>
     </div>
   );
