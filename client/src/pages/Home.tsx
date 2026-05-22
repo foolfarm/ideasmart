@@ -1455,6 +1455,41 @@ export default function Home() {
                     </a>
                   </div>
 
+                  {/* ── Banner Base Alpha — Osservatorio Intelligence ── */}
+                  <div className="mb-6">
+                    <a href="/base-alpha" style={{ textDecoration: "none" }}>
+                      <div
+                        style={{
+                          borderRadius: 10,
+                          overflow: "hidden",
+                          boxShadow: "0 2px 12px rgba(0,0,0,0.10)",
+                          transition: "box-shadow 0.2s, transform 0.2s",
+                          cursor: "pointer",
+                          background: "linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 60%, #16213e 100%)",
+                          border: "1px solid #c9a227",
+                        }}
+                        className="hover:shadow-xl hover:scale-[1.01]"
+                      >
+                        <div style={{ padding: "18px 20px 16px" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+                            <div style={{ width: 28, height: 28, borderRadius: 6, background: "rgba(201,162,39,0.15)", border: "1px solid #c9a227", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c9a227" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                            </div>
+                            <div>
+                              <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif", fontSize: 9, fontWeight: 900, letterSpacing: "0.25em", textTransform: "uppercase", color: "#c9a227", margin: 0, lineHeight: 1 }}>Base Alpha</p>
+                              <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif", fontSize: 8, fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(255,255,255,0.45)", margin: 0, lineHeight: 1.2 }}>Osservatorio Intelligence</p>
+                            </div>
+                          </div>
+                          <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif", fontSize: 15, fontWeight: 800, color: "#ffffff", margin: "0 0 6px", lineHeight: 1.25, letterSpacing: "-0.02em" }}>Analisi strategica per C-suite e board</p>
+                          <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.55)", margin: "0 0 12px", lineHeight: 1.5 }}>Report certificati ProofPress Verify™ sull’ecosistema AI &amp; Venture italiano</p>
+                          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                            <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#c9a227", background: "rgba(201,162,39,0.12)", border: "1px solid rgba(201,162,39,0.35)", borderRadius: 4, padding: "3px 8px" }}>Scopri Base Alpha →</span>
+                          </div>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+
                   {/* ── Slot 3: Banner rotante sidebar destra 300x250 ── */}
                   <div className="mb-5 flex flex-col items-center">
                     <BannerRotator slot="sidebar" width={300} height={250} site="it" />

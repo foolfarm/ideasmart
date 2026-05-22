@@ -17,7 +17,7 @@ const CHANNELS = [
   { label: "Buongiorno",       sublabel: "Newsletter delle 8:30",      path: "/buongiorno",Icon: Sun,         color: "#d97706",  external: false },
   { label: "International",    sublabel: "proofpress.biz",             path: "https://proofpress.biz", Icon: Globe, color: "#374151", external: true },
   { label: "Servizi",          sublabel: "Offerta commerciale",        path: "/offertacommerciale", Icon: Briefcase, color: "#0891b2", external: false },
-  { label: "Osservatorio",     sublabel: "Base Alpha tech",            path: "/base-alpha", Icon: Eye, color: "#7c3aed", external: false },
+  { label: "Osservatorio",     sublabel: "Base Alpha tech",            path: "https://proofpress.ai/osservatorio-tech", Icon: Eye, color: "#7c3aed", external: true },
 ];
 
 export default function VerifyStatsWidget() {
