@@ -164,7 +164,7 @@ function PuntoCard({ item }: {
 
   return (
     <article
-      className="flex flex-col cursor-pointer group"
+      className="flex flex-col cursor-pointer group h-full"
       style={{ borderTop: `2px solid ${INK}12` }}
       onClick={() => setOpen(o => !o)}
     >
@@ -191,7 +191,7 @@ function PuntoCard({ item }: {
           )}
         </div>
         <h3
-          className="text-base font-black leading-snug tracking-tight group-hover:text-[#dc2626] transition-colors"
+          className="text-base font-black leading-snug tracking-tight group-hover:text-[#dc2626] transition-colors line-clamp-3"
           style={{ color: INK, fontFamily: FONT }}
         >
           {displayTitle}
@@ -245,14 +245,14 @@ function ArticleCard({ article }: {
   const fallbackImg = "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/ideasmart_hero-6ZrdwCga3BYZbueso82C5j.webp";
 
   return (
-    <div className="flex flex-col" style={{ borderTop: `1px solid ${INK}12` }}>
+    <div className="flex flex-col h-full" style={{ borderTop: `1px solid ${INK}12` }}>
       {/* Immagine cliccabile */}
       <a
         href={article.articleUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="block overflow-hidden group"
-        style={{ height: 140 }}
+        className="block overflow-hidden group flex-shrink-0"
+        style={{ height: 160 }}
       >
         <img
           src={article.imageUrl || fallbackImg}
@@ -271,7 +271,7 @@ function ArticleCard({ article }: {
           rel="noopener noreferrer"
           className="block hover:text-[#dc2626] transition-colors"
         >
-          <h3 className="text-sm font-black leading-snug" style={{ color: INK, fontFamily: FONT }}>
+          <h3 className="text-sm font-black leading-snug line-clamp-3" style={{ color: INK, fontFamily: FONT }}>
             {article.title}
           </h3>
         </a>
@@ -893,7 +893,7 @@ export default function OsservatorioTech() {
                     <p className="text-[10px] font-bold tracking-[0.18em] uppercase mb-6" style={{ color: INK + "40" }}>
                       Archivio editoriali
                     </p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-start">
                       {rest.map(item => (
                         <PuntoCard key={item.id} item={item} />
                       ))}
@@ -939,7 +939,7 @@ export default function OsservatorioTech() {
                   Gli articoli verranno pubblicati qui non appena disponibili.
                 </p>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
                   {articles.map(a => <ArticleCard key={a.id} article={a} />)}
                 </div>
               )}
