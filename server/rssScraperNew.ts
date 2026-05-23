@@ -207,12 +207,12 @@ async function selectAndTranslate(
   const italianArticles = articles.filter(isItalian);
   const internationalArticles = articles.filter(a => !isItalian(a));
 
-  // REGOLA 70/30: max 60 articoli totali, almeno 70% italiani
-  // Target: 42 italiani + 18 internazionali (fallback: prendi tutti gli italiani disponibili + riempi con internazionali)
+  // REGOLA 80/20: max 60 articoli totali, almeno 80% italiani
+  // Target: 48 italiani + 12 internazionali (fallback: prendi tutti gli italiani disponibili + riempi con internazionali)
   const TARGET_TOTAL = 60;
-  const TARGET_IT_RATIO = 0.70;
-  const targetIt = Math.round(TARGET_TOTAL * TARGET_IT_RATIO); // 42
-  const targetIntl = TARGET_TOTAL - targetIt;                   // 18
+  const TARGET_IT_RATIO = 0.80;
+  const targetIt = Math.round(TARGET_TOTAL * TARGET_IT_RATIO); // 48
+  const targetIntl = TARGET_TOTAL - targetIt;                   // 12
 
   const itPool = italianArticles.slice(0, targetIt);
   const intlPool = internationalArticles.slice(0, targetIntl);
@@ -225,7 +225,7 @@ async function selectAndTranslate(
   const italianCount = itPool.length;
   const intlCount = intlPool.length + extraIntl.length;
   const actualRatio = sortedArticles.length > 0 ? Math.round((italianCount / sortedArticles.length) * 100) : 0;
-  console.log(`[RssScraper] 70/30 Italia First: ${italianCount} italiani + ${intlCount} internazionali = ${sortedArticles.length} totali (${actualRatio}% IT) per sezione ${section}`);
+  console.log(`[RssScraper] 80/20 Italia First: ${italianCount} italiani + ${intlCount} internazionali = ${sortedArticles.length} totali (${actualRatio}% IT) per sezione ${section}`);
 
   // Prepara lista articoli per il prompt (max 60 per non superare il context)
   const articlesForPrompt = sortedArticles.map((a, i) => 
@@ -275,11 +275,11 @@ I seguenti argomenti NON appartengono a questa rivista e devono essere SCARTATI 
 - Meteo, ambiente generico (a meno che non riguardi cleantech/greentech con deal o ricerca)
 Se un articolo tratta uno di questi argomenti → SCARTALO SEMPRE, indipendentemente dalla fonte.
 
-REGOLA 70/30 OBBLIGATORIA — ITALIA FIRST:
+REGOLA 80/20 OBBLIGATORIA — ITALIA FIRST:
 - Gli articoli marcati 🇮🇹 provengono da fonti italiane: PRIVILEGIALI nella selezione.
-- OBBLIGATORIO: almeno 14 articoli su 20 devono provenire da fonti italiane (🇮🇹). Questo è un requisito editoriale non negoziabile.
-- Se ci sono meno di 14 articoli italiani disponibili, includi tutti quelli disponibili e completa con internazionali (fallback).
-- Gli articoli internazionali (senza 🇮🇹) possono essere al massimo 6 su 20.
+- OBBLIGATORIO: almeno 16 articoli su 20 devono provenire da fonti italiane (🇮🇹). Questo è un requisito editoriale non negoziabile.
+- Se ci sono meno di 16 articoli italiani disponibili, includi tutti quelli disponibili e completa con internazionali (fallback).
+- Gli articoli internazionali (senza 🇮🇹) possono essere al massimo 4 su 20.
 - Seleziona SOLO articoli dalla lista fornita (usa sourceIndex per riferimento)
 - Traduci e adatta i titoli in italiano giornalistico — TUTTI i titoli devono essere in ITALIANO, anche se la fonte è in inglese
 - LINGUA OBBLIGATORIA: titoli e summary SEMPRE in italiano, mai in inglese
