@@ -544,6 +544,16 @@ export const STARTUP_SOURCES: RssSource[] = [
   { name: "Startupbusiness Insurtech", homepage: "https://www.startupbusiness.it", feedUrl: "https://www.startupbusiness.it/category/insurtech/feed", section: "startup", language: "it", priority: 3 },
   { name: "Startupbusiness Govtech", homepage: "https://www.startupbusiness.it", feedUrl: "https://www.startupbusiness.it/category/govtech/feed", section: "startup", language: "it", priority: 3 },
   { name: "Startupbusiness Legaltech", homepage: "https://www.startupbusiness.it", feedUrl: "https://www.startupbusiness.it/category/legaltech/feed", section: "startup", language: "it", priority: 3 },
+  // ─── Nuove fonti italiane aggiunte (Mag 2026) ────────────────────────────────
+  { name: "EconomyUp (main)", homepage: "https://www.economyup.it", feedUrl: "https://www.economyup.it/feed/", section: "startup", language: "it", priority: 0, tags: ["italia", "startup", "innovazione"] },
+  { name: "Club degli Investitori", homepage: "https://www.clubdeglinvestitori.it", feedUrl: "https://www.clubdeglinvestitori.it/it/news/feed/", section: "startup", language: "it", priority: 0, tags: ["italia", "vc", "angel", "funding"] },
+  { name: "Ventive Group", homepage: "https://www.ventivegroup.com", feedUrl: "https://www.ventivegroup.com/feed/", section: "startup", language: "it", priority: 1, tags: ["italia", "vc", "venture"] },
+  // StartupItalia feed bloccato (403) → uso Google News come proxy
+  { name: "Google News StartupItalia", homepage: "https://news.google.com", feedUrl: "https://news.google.com/rss/search?q=startupitalia+startup+italiana+innovazione&hl=it&gl=IT&ceid=IT:it", section: "startup", language: "it", priority: 0, tags: ["aggregator", "italia", "startup"] },
+  // Italian Angels feed rotto (PHP error) → uso Google News come proxy
+  { name: "Google News Italian Angels", homepage: "https://news.google.com", feedUrl: "https://news.google.com/rss/search?q=italian+angels+business+angel+investimento+startup+italia&hl=it&gl=IT&ceid=IT:it", section: "startup", language: "it", priority: 0, tags: ["aggregator", "italia", "angel"] },
+  // Feed Google News dedicato all'ecosistema FoolFarm/Fasteer
+  { name: "Google News FoolFarm Fasteer", homepage: "https://news.google.com", feedUrl: "https://news.google.com/rss/search?q=%22FoolFarm%22+OR+%22Fasteer%22+startup+AI+italiana&hl=it&gl=IT&ceid=IT:it", section: "startup", language: "it", priority: 0, tags: ["aggregator", "italia", "foolfarm", "fasteer"] },
 ];
 
 // ─── 3. Music Rock / Indie / Alternative Sources ──────────────────────────────
