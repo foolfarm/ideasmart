@@ -827,6 +827,16 @@ function buildNewsletterHtmlV2(opts: {
       imgSrc: 'https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/banners/proofpress_verify_a4.png',
       alt: 'ProofPress Verify™ — The world is full of fakes.',
     },
+    {
+      url: 'https://fasteer.ai?utm_source=newsletter&utm_medium=email&utm_campaign=fasteer_new_sponsor',
+      imgSrc: 'https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/banner_fasteer_newsletter-FzvmfxaBiN5F8qZT9z9qUP.png',
+      alt: 'Fasteer.ai — Il tuo copilota AI per il codice',
+    },
+    {
+      url: 'https://proofpress.ai/base-alpha?utm_source=newsletter&utm_medium=email&utm_campaign=basealpha_sponsor',
+      imgSrc: 'https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/banner_basealpha_newsletter-J3oxvXc4MNa3psLa7qRpBo.png',
+      alt: 'Base Alpha+ — Osservatorio Intelligence Premium',
+    },
   ];
   const _todayForSponsor = new Date().toISOString().slice(0, 10);
   const _sponsorIdx = _todayForSponsor.split('').reduce((a, c) => a + c.charCodeAt(0), 0) % _sponsorBanners.length;
