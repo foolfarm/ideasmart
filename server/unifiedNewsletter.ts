@@ -842,10 +842,31 @@ function buildNewsletterHtmlV2(opts: {
       imgSrc: 'https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/banner_proofpress_creator_newsletter-R8TempDPxzGrxGgFQzdaAe.png',
       alt: 'ProofPress Creator — Il Giornale Che Si Scrive Da Solo.',
     },
+    {
+      url: 'https://promptcollection2026.com?utm_source=newsletter&utm_medium=email&utm_campaign=promptcollection_sponsor',
+      imgSrc: '',
+      alt: 'Prompt Collection 2026',
+      html: `<a href="https://promptcollection2026.com?utm_source=newsletter&utm_medium=email&utm_campaign=promptcollection_sponsor" style="display:block;text-decoration:none;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#111111;border-radius:10px;overflow:hidden;border-left:4px solid #d94f3d;">
+          <tr>
+            <td style="padding:28px 32px;">
+              <p style="margin:0 0 4px;font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#d94f3d;">PROMPT COLLECTION 2026</p>
+              <p style="margin:0 0 12px;font-family:Georgia,'Times New Roman',serif;font-size:28px;font-weight:700;color:#ffffff;line-height:1.2;">500+ Prompt Pronti.<br>Risultati Immediati.</p>
+              <p style="margin:0 0 20px;font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;font-size:14px;color:#aaaaaa;line-height:1.5;">La libreria definitiva di prompt AI per professionisti, manager e founder. Copia, adatta, esegui.</p>
+              <span style="display:inline-block;background:#d94f3d;color:#ffffff;font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;font-size:13px;font-weight:700;padding:12px 28px;border-radius:6px;letter-spacing:0.04em;">Scarica la Collection →</span>
+            </td>
+          </tr>
+        </table>
+      </a>`,
+    },
   ];
   const _todayForSponsor = new Date().toISOString().slice(0, 10);
   const _sponsorIdx = _todayForSponsor.split('').reduce((a, c) => a + c.charCodeAt(0), 0) % _sponsorBanners.length;
+  // PARTNER SPOTLIGHT (mid) = banner del giorno; SPONSOR OF THE DAY (footer) = banner successivo
+  // In questo modo i due blocchi mostrano sempre sponsor diversi
+  const _footerSponsorIdx = (_sponsorIdx + 1) % _sponsorBanners.length;
   const todaySponsor = _sponsorBanners[_sponsorIdx];
+  const footerSponsor = _sponsorBanners[_footerSponsorIdx];
 
   // ── Pexels fallback ──
   function pexelsUrl(id: string | number, w: number, h: number): string {
@@ -955,6 +976,12 @@ function buildNewsletterHtmlV2(opts: {
       </td>
     </tr>`;
   }
+  // Helper per renderizzare un banner sponsor (supporta imgSrc o html inline)
+  function renderSponsorBanner(sponsor: typeof _sponsorBanners[0]): string {
+    if (sponsor.html) return sponsor.html;
+    return `<a href="${sponsor.url}" style="display:block;text-decoration:none;"><img src="${sponsor.imgSrc}" alt="${sponsor.alt}" width="600" style="width:100%;max-width:600px;height:auto;display:block;border-radius:8px;" /></a>`;
+  }
+
   // Blocco sponsor di metà newsletter (tra notizia 5 e 6)
   const midSponsorHtml = `
     <tr>
@@ -964,9 +991,7 @@ function buildNewsletterHtmlV2(opts: {
     </tr>
     <tr>
       <td style="padding:0 20px;">
-        <a href="${todaySponsor.url}" style="display:block;text-decoration:none;">
-          <img src="${todaySponsor.imgSrc}" alt="${todaySponsor.alt}" width="600" style="width:100%;max-width:600px;height:auto;display:block;border-radius:8px;" />
-        </a>
+        ${renderSponsorBanner(todaySponsor)}
       </td>
     </tr>
     <tr><td style="height:24px;background:${BG};"></td></tr>`;
@@ -1228,9 +1253,7 @@ function buildNewsletterHtmlV2(opts: {
     </tr>
     <tr>
       <td style="padding:0 20px;">
-        <a href="${todaySponsor.url}" style="display:block;text-decoration:none;">
-          <img src="${todaySponsor.imgSrc}" alt="${todaySponsor.alt}" width="600" style="width:100%;max-width:600px;height:auto;display:block;border-radius:8px;" />
-        </a>
+        ${renderSponsorBanner(footerSponsor)}
       </td>
     </tr>
     <tr><td style="height:28px;background:${BG};"></td></tr>`;
