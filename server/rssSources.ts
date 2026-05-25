@@ -271,6 +271,26 @@ export const AI_SOURCES: RssSource[] = [
   { name: "Google News AI Startup IT 2026", homepage: "https://news.google.com", feedUrl: "https://news.google.com/rss/search?q=AI+startup+italiana+2026+round+investimento&hl=it&gl=IT&ceid=IT:it", section: "ai", language: "it", priority: 0, tags: ["aggregator", "italia", "startup"] },
   { name: "Google News Generative AI IT", homepage: "https://news.google.com", feedUrl: "https://news.google.com/rss/search?q=generative+AI+GenAI+applicazione+aziendale+italia&hl=it&gl=IT&ceid=IT:it", section: "ai", language: "it", priority: 0, tags: ["aggregator", "italia", "genai"] },
 
+  // ─── Nuove fonti AI di alta qualità (Mag 2026) ─────────────────────────────
+  { name: "Axios AI", homepage: "https://www.axios.com", feedUrl: "https://api.axios.com/feed/technology", section: "ai", language: "en", priority: 1, tags: ["ai", "tech"] },
+  { name: "IEEE Spectrum AI", homepage: "https://spectrum.ieee.org", feedUrl: "https://spectrum.ieee.org/feeds/topic/artificial-intelligence.rss", section: "ai", language: "en", priority: 1, tags: ["ai", "research"] },
+  { name: "Fortune AI", homepage: "https://fortune.com", feedUrl: "https://fortune.com/tag/artificial-intelligence/feed", section: "ai", language: "en", priority: 1, tags: ["ai", "business"] },
+  { name: "Bloomberg Technology", homepage: "https://www.bloomberg.com", feedUrl: "https://feeds.bloomberg.com/technology/news.rss", section: "ai", language: "en", priority: 1, tags: ["ai", "tech"] },
+  { name: "Reuters Technology", homepage: "https://www.reuters.com", feedUrl: "https://feeds.reuters.com/reuters/technologyNews", section: "ai", language: "en", priority: 1, tags: ["ai", "tech"] },
+  { name: "TechCrunch AI", homepage: "https://techcrunch.com", feedUrl: "https://techcrunch.com/category/artificial-intelligence/feed", section: "ai", language: "en", priority: 1, tags: ["ai"] },
+  { name: "CNBC Tech", homepage: "https://www.cnbc.com", feedUrl: "https://www.cnbc.com/id/19854910/device/rss/rss.html", section: "ai", language: "en", priority: 1, tags: ["ai", "business"] },
+  { name: "Hacker News", homepage: "https://news.ycombinator.com", feedUrl: "https://hnrss.org/frontpage", section: "ai", language: "en", priority: 1, tags: ["ai", "tech", "dev"] },
+  { name: "AI Business", homepage: "https://aibusiness.com", feedUrl: "https://aibusiness.com/rss.xml", section: "ai", language: "en", priority: 1, tags: ["ai", "enterprise"] },
+  { name: "The Register AI", homepage: "https://www.theregister.com", feedUrl: "https://www.theregister.com/software/ai_ml/headlines.atom", section: "ai", language: "en", priority: 2, tags: ["ai", "tech"] },
+  { name: "Futurism AI", homepage: "https://futurism.com", feedUrl: "https://futurism.com/feed", section: "ai", language: "en", priority: 2, tags: ["ai", "science"] },
+  { name: "Science Daily AI", homepage: "https://www.sciencedaily.com", feedUrl: "https://www.sciencedaily.com/rss/computers_math/artificial_intelligence.xml", section: "ai", language: "en", priority: 1, tags: ["ai", "research"] },
+  { name: "arXiv cs.AI", homepage: "https://arxiv.org", feedUrl: "https://rss.arxiv.org/rss/cs.AI", section: "ai", language: "en", priority: 1, tags: ["ai", "research", "arxiv"] },
+  { name: "arXiv cs.LG", homepage: "https://arxiv.org", feedUrl: "https://rss.arxiv.org/rss/cs.LG", section: "ai", language: "en", priority: 1, tags: ["ai", "research", "arxiv", "ml"] },
+  { name: "arXiv cs.CL", homepage: "https://arxiv.org", feedUrl: "https://rss.arxiv.org/rss/cs.CL", section: "ai", language: "en", priority: 2, tags: ["ai", "research", "arxiv", "nlp"] },
+  { name: "Nature Machine Intelligence", homepage: "https://www.nature.com", feedUrl: "https://www.nature.com/natmachintell.rss", section: "ai", language: "en", priority: 1, tags: ["ai", "research", "science"] },
+  { name: "Google News AI Global", homepage: "https://news.google.com", feedUrl: "https://news.google.com/rss/search?q=artificial+intelligence+AI+breakthrough+2026&hl=en&gl=US&ceid=US:en", section: "ai", language: "en", priority: 0, tags: ["aggregator", "ai", "global"] },
+  { name: "Google News Generative AI", homepage: "https://news.google.com", feedUrl: "https://news.google.com/rss/search?q=generative+AI+LLM+GPT+Claude+Gemini+2026&hl=en&gl=US&ceid=US:en", section: "ai", language: "en", priority: 0, tags: ["aggregator", "ai", "genai"] },
+
   // Tech globale (alimenta sezione AI)
   { name: "The Verge (full)", homepage: "https://www.theverge.com", feedUrl: "https://www.theverge.com/rss/index.xml", section: "ai", language: "en", priority: 2, tags: ["tech"] },
   { name: "Ars Technica", homepage: "https://arstechnica.com", feedUrl: "https://arstechnica.com/feed", section: "ai", language: "en", priority: 1, tags: ["tech"] },
@@ -424,6 +444,22 @@ export const STARTUP_SOURCES: RssSource[] = [
   { name: "Venture Burn", homepage: "https://ventureburn.com", feedUrl: "https://ventureburn.com/feed", section: "startup", language: "en", priority: 2 },
   { name: "FT Technology", homepage: "https://www.ft.com", feedUrl: "https://www.ft.com/technology?format=rss", section: "startup", language: "en", priority: 1 },
   { name: "Mark SV", homepage: "https://marksv.com", feedUrl: "https://marksv.com/feed", section: "startup", language: "en", priority: 3, tags: ["vc"] },
+
+  // ─── Nuove fonti Startup/VC di alta qualità (Mag 2026) ────────────────────────
+  { name: "Axios Pro Deals", homepage: "https://www.axios.com", feedUrl: "https://api.axios.com/feed/business", section: "startup", language: "en", priority: 1, tags: ["vc", "deals", "funding"] },
+  { name: "The Information Startups", homepage: "https://www.theinformation.com", feedUrl: "https://www.theinformation.com/feed", section: "startup", language: "en", priority: 1, tags: ["vc", "startup"] },
+  { name: "Sifted Research", homepage: "https://sifted.eu", feedUrl: "https://sifted.eu/research/feed", section: "startup", language: "en", priority: 1, tags: ["eu", "startup", "research"] },
+  { name: "Mattermark", homepage: "https://mattermark.com", feedUrl: "https://mattermark.com/feed", section: "startup", language: "en", priority: 2, tags: ["vc", "startup", "data"] },
+  { name: "Dealroom Weekly", homepage: "https://dealroom.co", feedUrl: "https://dealroom.co/weekly/feed", section: "startup", language: "en", priority: 1, tags: ["vc", "eu", "deals"] },
+  { name: "CNBC Startups", homepage: "https://www.cnbc.com", feedUrl: "https://www.cnbc.com/id/10000115/device/rss/rss.html", section: "startup", language: "en", priority: 1, tags: ["startup", "vc"] },
+  { name: "Reuters Venture", homepage: "https://www.reuters.com", feedUrl: "https://feeds.reuters.com/reuters/businessNews", section: "startup", language: "en", priority: 1, tags: ["vc", "funding"] },
+  { name: "Bloomberg Startups", homepage: "https://www.bloomberg.com", feedUrl: "https://feeds.bloomberg.com/entrepreneurs/news.rss", section: "startup", language: "en", priority: 1, tags: ["startup", "vc"] },
+  { name: "Hacker News Ask HN", homepage: "https://news.ycombinator.com", feedUrl: "https://hnrss.org/ask", section: "startup", language: "en", priority: 2, tags: ["startup", "dev"] },
+  { name: "Product Hunt Daily", homepage: "https://www.producthunt.com", feedUrl: "https://www.producthunt.com/feed", section: "startup", language: "en", priority: 1, tags: ["startup", "product"] },
+  { name: "Startup Battlefield TechCrunch", homepage: "https://techcrunch.com", feedUrl: "https://techcrunch.com/tag/startup-battlefield/feed", section: "startup", language: "en", priority: 1, tags: ["startup", "funding"] },
+  { name: "Google News EU Startup Funding", homepage: "https://news.google.com", feedUrl: "https://news.google.com/rss/search?q=startup+funding+round+series+A+B+Europe+2026&hl=en&gl=US&ceid=US:en", section: "startup", language: "en", priority: 0, tags: ["aggregator", "eu", "funding"] },
+  { name: "Google News Unicorn 2026", homepage: "https://news.google.com", feedUrl: "https://news.google.com/rss/search?q=unicorn+startup+valuation+billion+2026&hl=en&gl=US&ceid=US:en", section: "startup", language: "en", priority: 0, tags: ["aggregator", "unicorn", "vc"] },
+  { name: "Google News AI Startup Funding", homepage: "https://news.google.com", feedUrl: "https://news.google.com/rss/search?q=AI+startup+funding+investment+2026+million&hl=en&gl=US&ceid=US:en", section: "startup", language: "en", priority: 0, tags: ["aggregator", "ai", "funding"] },
 
   // ── 100+ Fonti Startup Italiane (Apr 2026) ────────────────────────────────
   // Media tech/innovazione italiani

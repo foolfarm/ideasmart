@@ -898,7 +898,7 @@ function buildNewsletterHtmlV2(opts: {
           <a href="${BASE_URL}?utm_source=newsletter&utm_medium=email&utm_campaign=header_browser" style="font-size:11px;color:${MUTED};text-decoration:none;font-family:${F_SANS};">Leggi nel browser →</a>
         </div>
         <div style="font-size:56px;font-weight:900;color:${BLACK};font-family:${F_SERIF};line-height:1.0;letter-spacing:-0.02em;margin-bottom:4px;">PROOFPRESS</div>
-        <div style="font-size:13px;font-weight:400;color:${MUTED};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.14em;margin-bottom:16px;">BUONPOMERIGGIO NEWSLETTER</div>
+        <div style="font-size:13px;font-weight:400;color:${MUTED};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.14em;margin-bottom:16px;">BUONGIORNO NEWSLETTER</div>
         <div style="width:48px;height:3px;background:${ACCENT};margin:0 auto 16px;"></div>
         <div style="font-size:13px;color:${SLATE};font-family:${F_SANS};">
           ${dateLabel} &nbsp;·&nbsp; N° ${issueNumber} &nbsp;·&nbsp; <strong style="color:${BLACK};">${subscriberCount.toLocaleString('it-IT')} lettori</strong>
@@ -916,9 +916,9 @@ function buildNewsletterHtmlV2(opts: {
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};border-left:4px solid ${ACCENT};">
           <tr>
             <td style="padding:18px 24px;">
-              <div style="font-size:10px;color:${MUTED};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.18em;margin-bottom:6px;">BUONPOMERIGGIO — OGGI SU PROOFPRESS</div>
+              <div style="font-size:10px;color:${MUTED};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.18em;margin-bottom:6px;">BUONGIORNO — OGGI SU PROOFPRESS</div>
               <div style="font-size:16px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.4;">🇮🇹 Le 10 notizie che contano oggi — AI · Startup · Venture Capital</div>
-              <div style="font-size:12px;color:${MUTED};font-family:${F_SANS};margin-top:6px;line-height:1.6;">Ogni pomeriggio, il meglio da AI, Startup e Venture Capital — certificato con ProofPress Verify Technology. Italia First.</div>
+              <div style="font-size:12px;color:${MUTED};font-family:${F_SANS};margin-top:6px;line-height:1.6;">Ogni mattina, il meglio da AI, Startup e Venture Capital — certificato con ProofPress Verify Technology. Italia First.</div>
             </td>
           </tr>
         </table>
@@ -1318,7 +1318,7 @@ function buildNewsletterHtmlV2(opts: {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BUONPOMERIGGIO — Le news di oggi da ProofPress, ${dateLabel}</title>
+  <title>BUONGIORNO — Le news di oggi da ProofPress, ${dateLabel}</title>
   <!--[if mso]><style>table{border-collapse:collapse;}td{font-family:Helvetica,Arial,sans-serif;}</style><![endif]-->
 </head>
 <body style="margin:0;padding:0;background:${BG};font-family:${F_SANS};-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;">
@@ -1714,7 +1714,7 @@ Rispondi SOLO con un JSON valido (nessun testo prima o dopo):
     }
   }
 
-  const subject = `BUONPOMERIGGIO — Le news di oggi da ProofPress, ${dateLabel}`;
+  const subject = `BUONGIORNO — Le news di oggi da ProofPress, ${dateLabel}`;
 
   const html = buildNewsletterHtmlV2({
     dateLabel,
@@ -2320,7 +2320,7 @@ export async function sendMorningNewsletterToAll(): Promise<{
 
   const now = new Date();
   const dateLabel = getDateLabel(now);
-  const MORNING_SUBJECT = `BUONPOMERIGGIO — Le news di oggi da ProofPress, ${dateLabel}`;
+  const MORNING_SUBJECT = `BUONGIORNO — Le news di oggi da ProofPress, ${dateLabel}`;
 
   console.log(`[MorningNewsletter] 📧 Avvio invio automatico "${MORNING_SUBJECT}"...`);
 
