@@ -880,8 +880,8 @@ function buildNewsletterHtmlV2(opts: {
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${WHITE};border-radius:8px;overflow:hidden;border:1px solid ${BORDER};border-left:4px solid ${ACCENT};">
           <tr>
             <td style="padding:18px 24px;">
-              <div style="font-size:10px;color:${MUTED};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.18em;margin-bottom:6px;">IL FORMATO DI OGGI</div>
-              <div style="font-size:16px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.4;">🇮🇹 2 personaggi italiani · 10 notizie · 1 startup · 1 deal · 1 sponsor</div>
+              <div style="font-size:10px;color:${MUTED};font-family:${F_SANS};text-transform:uppercase;letter-spacing:0.18em;margin-bottom:6px;">BUONGIORNO — OGGI SU PROOFPRESS</div>
+              <div style="font-size:16px;font-weight:700;color:${BLACK};font-family:${F_SERIF};line-height:1.4;">🇮🇹 Le 10 notizie che contano oggi — AI · Startup · Venture Capital</div>
               <div style="font-size:12px;color:${MUTED};font-family:${F_SANS};margin-top:6px;line-height:1.6;">Ogni mattina, il meglio da AI, Startup e Venture Capital — certificato con ProofPress Verify Technology. Italia First.</div>
             </td>
           </tr>
@@ -924,10 +924,12 @@ function buildNewsletterHtmlV2(opts: {
               <div style="font-size:${isFirst ? '15px' : '14px'};color:${SLATE};font-family:${F_SANS};line-height:1.75;margin-bottom:14px;">${displaySummary.slice(0, isFirst ? 320 : 200) + (displaySummary.length > (isFirst ? 320 : 200) ? '...' : '')}</div>
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                  <td>
-                    <a href="${url}" style="font-size:12px;font-weight:700;color:${ACCENT};text-decoration:none;font-family:${F_SANS};letter-spacing:0.04em;">LEGGI SU PROOFPRESS →</a>
+                  <td style="padding-bottom:12px;">
+                    <a href="${url}" style="display:inline-block;background:${ACCENT};color:#ffffff;font-size:14px;font-weight:800;font-family:${F_SANS};text-decoration:none;padding:12px 28px;border-radius:6px;letter-spacing:0.03em;">Leggi adesso la notizia su ProofPress →</a>
                   </td>
-                  <td style="text-align:right;vertical-align:middle;">
+                </tr>
+                <tr>
+                  <td style="text-align:left;vertical-align:middle;">
                     ${verifyBadge(n)}
                   </td>
                 </tr>
@@ -1270,13 +1272,7 @@ function buildNewsletterHtmlV2(opts: {
       <table width="640" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;width:100%;">
         ${headerHtml}
         ${introHtml}
-        ${personaggioItalianoHtml}
-        ${investitoreHtml}
         ${newsCardsHtml}
-        ${startupHtml}
-        ${dealHtml}
-        ${researchHtml}
-        ${personaggioHtml}
         ${sponsorHtml}
         ${ctaHtml}
         ${footerHtml}
@@ -1534,189 +1530,15 @@ export async function buildUnifiedNewsletter(isTest: boolean): Promise<{
     console.warn('[Newsletter] LLM personaggio del giorno skipped:', e instanceof Error ? e.message : e);
   }
 
-  // ── Step 4: Personaggio Italiano del Giorno ─────────────────────────────────
-  // DeepSeek V3 individua il protagonista ITALIANO più rilevante del giorno
-  // dal mondo venture, startup, investimenti, tech italiani
-  let personaggioItalianoDelGiorno: {
-    nome: string;
-    ruolo: string;
-    azienda: string;
-    cosa_ha_fatto: string;
-    perche_conta: string;
-    emoji: string;
-    citta?: string;
-  } | null = null;
-  try {
-    const EXCLUDED_CATEGORIES_IT = ['offerte', 'promozioni', 'deals', 'amazon', 'shopping', 'sconti', 'volantino', 'coupon'];
-    const isRelevantIT = (n: NewsItem) => {
-      const cat = (n.category || '').toLowerCase();
-      return n.id && !EXCLUDED_CATEGORIES_IT.some(ex => cat.includes(ex));
-    };
-    const allNewsForPersonaggioIT = [
-      ...content.aiNews.filter(isRelevantIT).slice(0, 8),
-      ...content.startupNews.filter(n => n.id).slice(0, 6),
-      ...content.dealroomNews.filter(n => n.id).slice(0, 6),
-    ];
-    if (allNewsForPersonaggioIT.length > 0) {
-      const newsListIT = allNewsForPersonaggioIT
-        .map((n, i) => `${i + 1}. ${n.title}${n.summary ? ' — ' + n.summary.slice(0, 150) : ''}`)
-        .join('\n');
-      const personaggioITPrompt = `Sei il direttore editoriale di ProofPress, la newsletter AI italiana piu letta dai C-level e board italiani. Il tuo focus e ESCLUSIVAMENTE l'ecosistema italiano.
+  // ── Step 4 e 5: Personaggio Italiano e Investitore del Giorno — RIMOSSI
+  // Sezioni rimosse definitivamente dal template newsletter.
+  const personaggioItalianoDelGiorno = null;
+  const investitoreItalianoDelGiorno = null;
 
-Analizza queste notizie delle ultime 24 ore:
-
-${newsListIT}
-
-Individua lo STARTUP FOUNDER DEL GIORNO: DEVE essere un founder o co-founder di startup ITALIANA, con sede in Italia o fondato da italiani. NON scegliere mai personaggi stranieri o di aziende non italiane.
-
-Esempi di founder italiani da considerare (se presenti nelle notizie o rilevanti oggi):
-- Founder di startup italiane AI, fintech, healthtech, cleantech, deeptech
-- Co-founder di scale-up italiane (Satispay, Scalapay, Musixmatch, Bending Spoons, Casavo, Prima, Moneyfarm, Credimi, Lendix, Talent Garden, etc.)
-- Founder di startup italiane che hanno chiuso round recenti
-- Imprenditori italiani del digitale con notizie recenti
-
-REGOLE ASSOLUTE:
-1. DEVE essere una PERSONA FISICA con nome e cognome italiano
-2. DEVE essere founder/co-founder di una startup o azienda tech ITALIANA
-3. Se nessun founder italiano emerge dalle notizie, scegli il piu rilevante dell'ecosistema startup italiano in questo momento
-4. MAI scegliere stranieri, fondi, aziende senza un founder specifico
-
-Rispondi SOLO con un JSON valido (nessun testo prima o dopo):
-{
-  "nome": "Nome Cognome",
-  "ruolo": "Titolo/Ruolo (es. CEO & Co-Founder, CTO & Founder)",
-  "azienda": "Nome startup italiana",
-  "citta": "Citta italiana (es. Milano, Roma, Torino)",
-  "cosa_ha_fatto": "Una frase secca su cosa ha fatto oggi/questa settimana — deve essere specifico e verificabile (max 130 caratteri)",
-  "perche_conta": "Una frase sul perche questo founder e rilevante per l'ecosistema startup italiano (max 160 caratteri)",
-  "emoji": "Un singolo emoji che rappresenta questo founder o la sua startup"
-}`;
-      const personaggioITResult = await invokeLLMBulk({
-        messages: [{ role: 'user', content: personaggioITPrompt }],
-      });
-      const personaggioITRaw = (typeof personaggioITResult.choices?.[0]?.message?.content === 'string'
-        ? personaggioITResult.choices[0].message.content
-        : '').trim();
-      try {
-        const cleanJsonIT = personaggioITRaw
-          .replace(/^```json\s*/i, '')
-          .replace(/^```\s*/i, '')
-          .replace(/\s*```$/i, '')
-          .trim();
-        personaggioItalianoDelGiorno = JSON.parse(cleanJsonIT);
-        console.log(`[Newsletter] Personaggio Italiano del Giorno: ${personaggioItalianoDelGiorno?.nome} (${personaggioItalianoDelGiorno?.azienda})`);
-      } catch {
-        const jsonMatchIT = personaggioITRaw.match(/\{[\s\S]*\}/);
-        if (jsonMatchIT) {
-          try {
-            personaggioItalianoDelGiorno = JSON.parse(jsonMatchIT[0]);
-            console.log(`[Newsletter] Personaggio Italiano del Giorno (fallback): ${personaggioItalianoDelGiorno?.nome}`);
-          } catch { /* ignora */ }
-        }
-      }
-    }
-  } catch (e) {
-    console.warn('[Newsletter] LLM personaggio italiano del giorno skipped:', e instanceof Error ? e.message : e);
-  }
-
-  // ── Step 5: Investitore Italiano del Giorno ──────────────────────────────
-  let investitoreItalianoDelGiorno: {
-    nome: string;
-    ruolo: string;
-    fondo: string;
-    tipo: string;
-    cosa_ha_fatto: string;
-    perche_conta: string;
-    emoji: string;
-    citta?: string;
-  } | null = null;
-  try {
-    const allNewsForInvestitore = [
-      ...content.dealroomNews.filter(n => n.id).slice(0, 8),
-      ...content.startupNews.filter(n => n.id).slice(0, 6),
-      ...content.aiNews.filter(n => n.id).slice(0, 4),
-    ];
-    if (allNewsForInvestitore.length > 0) {
-      const newsListINV = allNewsForInvestitore
-        .map((n, i) => `${i + 1}. ${n.title}${n.summary ? ' — ' + n.summary.slice(0, 150) : ''}`)
-        .join('\n');
-      const investitorePrompt = `Sei il direttore editoriale di ProofPress, la newsletter AI italiana piu letta dai C-level e board italiani. Il tuo focus e ESCLUSIVAMENTE l'ecosistema italiano.
-
-Analizza queste notizie delle ultime 24 ore dal mondo venture capital, deal e startup:
-
-${newsListINV}
-
-Individua l'ANGEL INVESTOR / VC DEL GIORNO: DEVE essere una persona fisica italiana, investitore attivo nell'ecosistema startup italiano. NON scegliere mai stranieri o fondi internazionali.
-
-Ecosistema VC italiano di riferimento (scegli tra questi se non emerge nessuno dalle notizie):
-- P101: Andrea Di Camillo, Matteo Cascinari
-- Indaco Ventures: Nicola Redi, Luca Mori
-- Primo Ventures: Gianluca Dettori, Alessio Beverina
-- CDP Venture Capital: Agostino Scornajenchi (CEO), Francesca Bria (ex-CTO, ora advisor)
-- Lventure Group: Luigi Capello
-- Club degli Investitori: Giancarlo Rocchietti, Massimo Canovi
-- IAG (Italian Angels for Growth): Enrico Gasperini, Stefano Molino
-- H-FARM: Riccardo Donadon
-- Azimut Libera Impresa: Roberto Cravero
-- PoliHub: Mirko Benetti
-- Luiss EnLabs: Augusto Coppola
-- 360 Capital Partners: Sitar Teli (partner italiana)
-- Eureka! Venture: Umberto Martini
-- Zest Group: Massimo Ciaglia
-- Vertis SGR: Amedeo Giurazza
-- Fondo Italiano d'Investimento: Innocenzo Cipolletta
-
-REGOLE ASSOLUTE:
-1. DEVE essere una PERSONA FISICA con nome e cognome
-2. DEVE essere italiano o operante principalmente nell'ecosistema italiano
-3. Preferisci chi ha fatto una mossa concreta recente (deal, closing fondo, exit)
-4. MAI scegliere stranieri, fondi internazionali, o aziende senza un investitore specifico
-5. ANTI-ALLUCINAZIONE: il campo "cosa_ha_fatto" deve descrivere SOLO fatti presenti nelle notizie fornite OPPURE ruoli/attivita pubblicamente noti e verificabili (es. "E General Partner di P101 dal 2013"). NON inventare eventi, date, cifre o attivita non presenti nelle notizie. Se non hai informazioni recenti verificabili, descrivi il ruolo istituzionale della persona.
-6. NON attribuire mai a una persona un ruolo che non ricopre: verifica che il ruolo indicato corrisponda alla posizione pubblica nota della persona.
-
-Rispondi SOLO con un JSON valido (nessun testo prima o dopo):
-{
-  "nome": "Nome Cognome",
-  "ruolo": "Titolo verificato e pubblicamente noto (es. General Partner, Angel Investor, Managing Partner, Founder & Investor)",
-  "fondo": "Nome fondo, club o portfolio",
-  "tipo": "VC | Angel | Business Angel | Family Office | Corporate VC",
-  "citta": "Citta italiana",
-  "cosa_ha_fatto": "Una frase su cosa ha fatto — SOLO fatti verificabili dalle notizie o dal ruolo pubblico noto (max 130 caratteri)",
-  "perche_conta": "Una frase sul perche questo investitore e rilevante per l'ecosistema startup italiano (max 160 caratteri)",
-  "emoji": "Un singolo emoji che rappresenta questo investitore"
-}`;
-      const investitoreResult = await invokeLLMBulk({
-        messages: [{ role: 'user', content: investitorePrompt }],
-      });
-      const investitoreRaw = (typeof investitoreResult.choices?.[0]?.message?.content === 'string'
-        ? investitoreResult.choices[0].message.content
-        : '').trim();
-      try {
-        const cleanJsonINV = investitoreRaw
-          .replace(/^```json\s*/i, '')
-          .replace(/^```\s*/i, '')
-          .replace(/\s*```$/i, '')
-          .trim();
-        investitoreItalianoDelGiorno = JSON.parse(cleanJsonINV);
-        console.log(`[Newsletter] Investitore Italiano del Giorno: ${investitoreItalianoDelGiorno?.nome} (${investitoreItalianoDelGiorno?.fondo})`);
-      } catch {
-        const jsonMatchINV = investitoreRaw.match(/\{[\s\S]*\}/);
-        if (jsonMatchINV) {
-          try {
-            investitoreItalianoDelGiorno = JSON.parse(jsonMatchINV[0]);
-            console.log(`[Newsletter] Investitore Italiano del Giorno (fallback): ${investitoreItalianoDelGiorno?.nome}`);
-          } catch { /* ignora */ }
-        }
-      }
-    }
-  } catch (e) {
-    console.warn('[Newsletter] LLM investitore italiano del giorno skipped:', e instanceof Error ? e.message : e);
-  }
-
-  // ── Fetch immagini Wikipedia per i personaggi del giorno ──
+  // ── Fetch immagine Wikipedia solo per il Personaggio Globale del Giorno ──
   let personaggioImgUrl: string | null = null;
-  let personaggioItalianoImgUrl: string | null = null;
-  let investitoreImgUrl: string | null = null;
+  const personaggioItalianoImgUrl: string | null = null;
+  const investitoreImgUrl: string | null = null;
   try {
     const fetchWikipediaImage = async (name: string): Promise<string | null> => {
       try {
@@ -1724,7 +1546,6 @@ Rispondi SOLO con un JSON valido (nessun testo prima o dopo):
         const url = `https://en.wikipedia.org/api/rest_v1/page/summary/${encoded}`;
         const res = await fetch(url, { headers: { 'User-Agent': 'ProofPress/1.0 (newsletter@proofpress.ai)' } });
         if (!res.ok) {
-          // Prova con Wikipedia italiana
           const itUrl = `https://it.wikipedia.org/api/rest_v1/page/summary/${encoded}`;
           const itRes = await fetch(itUrl, { headers: { 'User-Agent': 'ProofPress/1.0' } });
           if (!itRes.ok) return null;
@@ -1734,40 +1555,11 @@ Rispondi SOLO con un JSON valido (nessun testo prima o dopo):
         const data = await res.json() as { thumbnail?: { source?: string } };
         return data?.thumbnail?.source || null;
       } catch { return null; }
-    }
-    // Fallback Pexels per immagini personaggi quando Wikipedia non trova thumbnail
-    const fetchPersonPexels = async (name: string): Promise<string | null> => {
-      try {
-        const pexelsKey = process.env.PEXELS_API_KEY;
-        if (!pexelsKey) return null;
-        const q = encodeURIComponent(name + ' portrait');
-        const r = await fetch(`https://api.pexels.com/v1/search?query=${q}&per_page=1&orientation=square`, {
-          headers: { Authorization: pexelsKey }
-        });
-        if (!r.ok) return null;
-        const j = await r.json() as { photos?: Array<{ src?: { medium?: string } }> };
-        return j?.photos?.[0]?.src?.medium || null;
-      } catch { return null; }
     };
-
-    const imgResults = await Promise.allSettled([
-      personaggioDelGiorno ? fetchWikipediaImage(personaggioDelGiorno.nome) : Promise.resolve(null),
-      personaggioItalianoDelGiorno ? fetchWikipediaImage(personaggioItalianoDelGiorno.nome) : Promise.resolve(null),
-      investitoreItalianoDelGiorno ? fetchWikipediaImage(investitoreItalianoDelGiorno.nome) : Promise.resolve(null),
-    ]);
-    personaggioImgUrl = imgResults[0].status === 'fulfilled' ? imgResults[0].value : null;
-    personaggioItalianoImgUrl = imgResults[1].status === 'fulfilled' ? imgResults[1].value : null;
-    investitoreImgUrl = imgResults[2].status === 'fulfilled' ? imgResults[2].value : null;
-
-    // Fallback Pexels se Wikipedia non ha trovato immagini
-    if (!personaggioImgUrl && personaggioDelGiorno)
-      personaggioImgUrl = await fetchPersonPexels(personaggioDelGiorno.nome);
-    if (!personaggioItalianoImgUrl && personaggioItalianoDelGiorno)
-      personaggioItalianoImgUrl = await fetchPersonPexels(personaggioItalianoDelGiorno.nome);
-    if (!investitoreImgUrl && investitoreItalianoDelGiorno)
-      investitoreImgUrl = await fetchPersonPexels(investitoreItalianoDelGiorno.nome);
-
-    console.log(`[Newsletter] Immagini personaggi: globale=${personaggioImgUrl ? 'OK' : 'N/A'}, italiano=${personaggioItalianoImgUrl ? 'OK' : 'N/A'}, investitore=${investitoreImgUrl ? 'OK' : 'N/A'}`);
+    if (personaggioDelGiorno) {
+      personaggioImgUrl = await fetchWikipediaImage(personaggioDelGiorno.nome);
+    }
+    console.log(`[Newsletter] Immagine personaggio globale: ${personaggioImgUrl ? 'OK' : 'N/A'}`);
   } catch (e) {
     console.warn('[Newsletter] Wikipedia image fetch skipped:', e instanceof Error ? e.message : e);
   }
