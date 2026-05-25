@@ -1363,32 +1363,12 @@ export function startAllSchedulers(): void {
   //   12:50 CET — Articolo editoriale firmato Andrea Cinelli su ProofPressVerify + post LinkedIn
   //   17:30 CET — Newsletter promozionale ProofPressVerify agli iscritti attivi
   // ══════════════════════════════════════════════════════════════════════════
-  cron.schedule("30 12 * * 1-5", async () => {
-    console.log("[PPV Campaign] ⏰ 12:30 CET — Invio preview newsletter ProofPressVerify...");
-    try {
-      const { sendPpvNewsletterPreview } = await import("./ppvEditorialScheduler");
-      await sendPpvNewsletterPreview();
-    } catch (err) { console.error("[PPV Campaign] ❌ Preview newsletter:", err); }
-  }, { timezone: TZ });
-
-  cron.schedule("50 12 * * 1-5", async () => {
-    console.log("[PPV Campaign] ⏰ 12:50 CET — Generazione articolo editoriale ProofPressVerify...");
-    try {
-      const { generatePpvEditorial } = await import("./ppvEditorialScheduler");
-      const result = await generatePpvEditorial();
-      if (result.success) console.log(`[PPV Campaign] ✅ Articolo pubblicato: ${result.title}`);
-      else console.warn(`[PPV Campaign] ⚠️ Articolo non generato: ${result.error}`);
-    } catch (err) { console.error("[PPV Campaign] ❌ Articolo editoriale:", err); }
-  }, { timezone: TZ });
-
-  cron.schedule("30 17 * * 1-5", async () => {
-    console.log("[PPV Campaign] ⏰ 17:30 CET — Invio newsletter ProofPressVerify agli iscritti...");
-    try {
-      const { sendPpvNewsletterToAll } = await import("./ppvEditorialScheduler");
-      await sendPpvNewsletterToAll();
-    } catch (err) { console.error("[PPV Campaign] ❌ Newsletter iscritti:", err); }
-  }, { timezone: TZ });
-  console.log("[SchedulerManager]   🔐 PPV Campaign → 12:30 preview, 12:50 articolo+LinkedIn, 17:30 newsletter (lun-ven, 11-15 mag 2026)");
+  // [DISABILITATO 2026-05-25] PPV Campaign — 12:30 preview, 12:50 articolo, 17:30 newsletter
+  // Disabilitato su richiesta di Andrea Cinelli: la newsletter PPV delle 17:30 non deve più essere inviata.
+  // cron.schedule("30 12 * * 1-5", ...) — preview PPV rimossa
+  // cron.schedule("50 12 * * 1-5", ...) — articolo editoriale PPV rimosso
+  // cron.schedule("30 17 * * 1-5", ...) — newsletter PPV 17:30 rimossa
+  console.log("[SchedulerManager]   🔐 PPV Campaign → DISABILITATA (2026-05-25)");
 
   // ══════════════════════════════════════════════════════════════════════════
   // SENDGRID SUPPRESSION SYNC — ogni 12 ore (06:00 e 18:00 CET)
