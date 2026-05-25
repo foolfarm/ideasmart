@@ -837,6 +837,11 @@ function buildNewsletterHtmlV2(opts: {
       imgSrc: 'https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/banner_basealpha_newsletter-J3oxvXc4MNa3psLa7qRpBo.png',
       alt: 'Base Alpha+ — Osservatorio Intelligence Premium',
     },
+    {
+      url: 'https://proofpress.ai/creator?utm_source=newsletter&utm_medium=email&utm_campaign=ppcreator_sponsor',
+      imgSrc: 'https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/banner_proofpress_creator_newsletter-R8TempDPxzGrxGgFQzdaAe.png',
+      alt: 'ProofPress Creator — Il Giornale Che Si Scrive Da Solo.',
+    },
   ];
   const _todayForSponsor = new Date().toISOString().slice(0, 10);
   const _sponsorIdx = _todayForSponsor.split('').reduce((a, c) => a + c.charCodeAt(0), 0) % _sponsorBanners.length;
