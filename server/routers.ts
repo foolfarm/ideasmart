@@ -370,14 +370,27 @@ export const appRouter = router({
           async () => {
             const db = await getDbInstance();
             if (!db) return [];
+            // Fonti consumer-tech/Apple da escludere dalla sezione "In Evidenza"
+            const EXCLUDED_SOURCES_INEVIDENZA = [
+              'macitynet', 'macworld', 'imore', 'appleinsider', 'macrumors',
+              '9to5mac', 'cultofmac', 'macobserver', 'appletoolbox',
+              'dday.it', 'hwupgrade', 'tomshardware', 'anandtech',
+            ];
             const items = await db.select().from(newsItemsTable)
               .where(isNotNull(newsItemsTable.imageUrl))
               .orderBy(desc(newsItemsTable.createdAt))
-              .limit(limit * 3); // prende più notizie per deduplicare immagini
-            // Deduplicazione per imageUrl (evita immagini doppie)
+              .limit(limit * 6); // prende più notizie per deduplicare e filtrare
+            // Deduplicazione per imageUrl + filtro anti-consumer-tech
             const seen = new Set<string>();
             const unique = items.filter(item => {
               if (!item.imageUrl || seen.has(item.imageUrl)) return false;
+              // Esclude fonti consumer-tech/Apple
+              const srcLower = (item.sourceName ?? '').toLowerCase();
+              const srcUrlLower = (item.sourceUrl ?? '').toLowerCase();
+              const isConsumerTech = EXCLUDED_SOURCES_INEVIDENZA.some(
+                s => srcLower.includes(s) || srcUrlLower.includes(s)
+              );
+              if (isConsumerTech) return false;
               seen.add(item.imageUrl);
               return true;
             }).slice(0, limit);

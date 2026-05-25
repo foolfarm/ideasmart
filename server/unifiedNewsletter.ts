@@ -940,6 +940,22 @@ function buildNewsletterHtmlV2(opts: {
       </td>
     </tr>`;
   }
+  // Blocco sponsor di metà newsletter (tra notizia 5 e 6)
+  const midSponsorHtml = `
+    <tr>
+      <td style="padding:0 20px 6px;">
+        <p style="margin:0;font-family:${F_SANS};font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:${MUTED};">PARTNER SPOTLIGHT</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:0 20px;">
+        <a href="${todaySponsor.url}" style="display:block;text-decoration:none;">
+          <img src="${todaySponsor.imgSrc}" alt="${todaySponsor.alt}" width="600" style="width:100%;max-width:600px;height:auto;display:block;border-radius:8px;" />
+        </a>
+      </td>
+    </tr>
+    <tr><td style="height:24px;background:${BG};"></td></tr>`;
+
   const newsCardsHtml = top10News.length > 0
     ? `
     <tr>
@@ -953,7 +969,9 @@ function buildNewsletterHtmlV2(opts: {
         </table>
       </td>
     </tr>
-    ${top10News.map((n, i) => renderNewsCard(n, i)).join('')}
+    ${top10News.slice(0, 5).map((n, i) => renderNewsCard(n, i)).join('')}
+    ${midSponsorHtml}
+    ${top10News.slice(5).map((n, i) => renderNewsCard(n, i + 5)).join('')}
     <tr><td style="height:28px;background:${BG};"></td></tr>`
     : '';
 
