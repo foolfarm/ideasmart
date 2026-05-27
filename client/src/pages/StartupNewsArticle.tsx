@@ -115,7 +115,7 @@ export default function StartupNewsArticle() {
 
   return (
     <div className="w-full">
-    <RequireAuth>
+    <RequireAuth articleId={newsId ? `news-${newsId}` : undefined}>
     <div className="min-h-screen bg-[#f5f5f7] flex items-center justify-center">
       <div className="text-center max-w-lg px-4">
         <div className="w-8 h-8 border-2 border-[#2a2a2a] border-t-transparent rounded-full animate-spin mx-auto mb-6" />

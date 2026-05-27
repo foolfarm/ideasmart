@@ -3797,3 +3797,10 @@
 - [x] Fix OsservatorioTech.tsx: aggiunto overflow-x-hidden al wrapper flex e max-w-[1280px] mx-auto al contenuto principale
 - [x] Fix Home.tsx: aggiunto hook useImgSrc con fallback automatico per immagini rotte nelle news card (HeroArticle + SecondaryArticle)
 - [x] Filtro anti-sport/gossip/cronaca nel prompt LLM di rssScraperNew.ts: sport, ciclismo, calcio, Giro d'Italia, gossip, cronaca nera, intrattenimento, politica partitica, cucina/food scartati automaticamente
+
+## Fix Newsletter & Auth (27 Mag 2026)
+
+- [x] news.getById cambiato da siteProtectedProcedure a publicProcedure (notizia sempre caricata, paywall gestito dal frontend)
+- [x] main.tsx: redirect UNAUTHORIZED punta a /accedi nativa invece del portale Manus OAuth
+- [x] RequireAuth: logica freemium 1 articolo/mese gratis (tracciato in localStorage per mese)
+- [x] GenericNewsArticle, NewsArticle, StartupNewsArticle: passato articleId a RequireAuth per tracking freemium

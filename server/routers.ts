@@ -425,7 +425,8 @@ export const appRouter = router({
       }),
 
     // Recupera una singola notizia per ID (per la pagina articolo)
-    getById: siteProtectedProcedure
+    // NOTA: publicProcedure — la notizia viene sempre caricata, il paywall è gestito dal frontend (RequireAuth)
+    getById: publicProcedure
       .input(z.object({ id: z.number() }))
       .query(async ({ input }) => {
         // Cache 30 minuti — il contenuto di un articolo è stabile

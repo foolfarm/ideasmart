@@ -27,7 +27,38 @@ interface RequireAuthProps {
   overlay?: boolean;
 }
 
-export default function RequireAuth({ children, overlay = false }: RequireAuthProps) {
+// ── Logica freemium: 1 articolo gratis al mese per utenti non registrati ──
+const FREE_ARTICLES_PER_MONTH = 1;
+const STORAGE_KEY = "pp_free_reads";
+
+function getFreeReadsThisMonth(): { count: number; month: string; ids: string[] } {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return { count: 0, month: "", ids: [] };
+    const parsed = JSON.parse(raw);
+    const currentMonth = new Date().toISOString().slice(0, 7); // "2026-05"
+    if (parsed.month !== currentMonth) return { count: 0, month: currentMonth, ids: [] };
+    return parsed;
+  } catch {
+    return { count: 0, month: "", ids: [] };
+  }
+}
+
+function recordFreeRead(articleId: string): void {
+  try {
+    const currentMonth = new Date().toISOString().slice(0, 7);
+    const current = getFreeReadsThisMonth();
+    if (current.ids.includes(articleId)) return; // già contata
+    const updated = {
+      count: current.count + 1,
+      month: currentMonth,
+      ids: [...current.ids, articleId],
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+  } catch { /* ignore */ }
+}
+
+export default function RequireAuth({ children, overlay = false, articleId }: RequireAuthProps) {
   const { isAuthenticated, isLoading } = useSiteAuth();
 
   // Stato form iscrizione
@@ -36,6 +67,19 @@ export default function RequireAuth({ children, overlay = false }: RequireAuthPr
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
   const [unlocked, setUnlocked] = useState(false);
+
+  // Logica freemium: controlla se l'utente ha ancora letture gratuite questo mese
+  const [freeReadUsed] = useState<boolean>(() => {
+    if (!articleId) return false;
+    const reads = getFreeReadsThisMonth();
+    if (reads.ids.includes(articleId)) return true; // già letto questo articolo gratis
+    if (reads.count < FREE_ARTICLES_PER_MONTH) {
+      // Ha ancora letture gratuite — registra e permetti l'accesso
+      recordFreeRead(articleId);
+      return true;
+    }
+    return false; // quota esaurita
+  });
 
   const subscribeMutation = trpc.newsletter.subscribe.useMutation({
     onSuccess: () => {
@@ -81,8 +125,8 @@ export default function RequireAuth({ children, overlay = false }: RequireAuthPr
     );
   }
 
-  // Autenticato o appena iscritto → accesso completo
-  if (isAuthenticated || unlocked) {
+  // Autenticato, appena iscritto, o lettura gratuita disponibile → accesso completo
+  if (isAuthenticated || unlocked || freeReadUsed) {
     return <>{children}</>;
   }
 

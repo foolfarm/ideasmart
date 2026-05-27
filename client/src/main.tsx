@@ -19,7 +19,10 @@ const redirectToLoginIfUnauthorized = (error: unknown) => {
 
   if (!isUnauthorized) return;
 
-  window.location.href = getLoginUrl();
+  // Reindirizza alla pagina di login nativa ProofPress, NON al portale Manus OAuth
+  // Preserva il returnTo per tornare alla pagina corrente dopo il login
+  const returnTo = encodeURIComponent(window.location.pathname + window.location.search);
+  window.location.href = `/accedi?returnTo=${returnTo}`;
 };
 
 // Prefissi di path tRPC per mutation non critiche (tracking, analytics)

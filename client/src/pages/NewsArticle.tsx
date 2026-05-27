@@ -129,7 +129,7 @@ export default function NewsArticle() {
 
   return (
     <div className="w-full">
-    <RequireAuth>
+    <RequireAuth articleId={newsId ? `news-${newsId}` : undefined}>
     <div style={{ minHeight: "100vh", background: BG, fontFamily: F_SANS }}>
       {/* Header nav */}
       <div style={{ background: WHITE, borderBottom: `1px solid ${BORDER}`, padding: "12px 24px" }}>
