@@ -149,6 +149,34 @@ function buildSpecialHtml(): string {
     </td>
   </tr>
 
+  <!-- SPONSOR: PROMPT COLLECTION 2026 -->
+  <tr><td style="padding:0 48px;"><div style="height:1px;background:${BORDER};"></div></td></tr>
+  <tr>
+    <td style="padding:28px 48px;">
+      <p style="margin:0 0 14px;font-family:${F_SANS};font-size:10px;letter-spacing:3px;color:${MUTED};text-transform:uppercase;font-weight:600;">SPONSOR OF THE DAY</p>
+      <table width="100%" cellpadding="0" cellspacing="0" style="border-radius:6px;overflow:hidden;">
+        <!-- Immagine hero -->
+        <tr>
+          <td style="padding:0;">
+            <a href="https://promptcollection2026.com?utm_source=newsletter&utm_medium=email&utm_campaign=proofpress-special" style="display:block;text-decoration:none;">
+              <img src="https://ideasmartai-uypaon6i.manus.space/manus-storage/promptcollection_banner_0b099480.jpg" alt="Prompt Collection 2026" width="584" style="display:block;width:100%;max-height:200px;object-fit:cover;border-radius:6px 6px 0 0;" />
+            </a>
+          </td>
+        </tr>
+        <!-- Testo + CTA su sfondo dark -->
+        <tr>
+          <td style="background:#0a0f1e;padding:28px 32px 32px;border-radius:0 0 6px 6px;">
+            <p style="margin:0 0 6px;font-family:${F_SANS};font-size:10px;letter-spacing:3px;color:#e8002d;text-transform:uppercase;font-weight:700;">PROMPT COLLECTION 2026</p>
+            <h3 style="margin:0 0 10px;font-family:${F_SERIF};font-size:26px;font-weight:900;color:#ffffff;line-height:1.15;">Smetti di perdere tempo<br>a scrivere prompt.</h3>
+            <p style="margin:0 0 22px;font-family:${F_SANS};font-size:13px;color:#8a8f9e;line-height:1.7;">500+ prompt testati e pronti all'uso per founder, marketer e team AI.<br>Copia, incolla, ottieni risultati in 30 secondi. Zero abbonamenti.</p>
+            <a href="https://promptcollection2026.com?utm_source=newsletter&utm_medium=email&utm_campaign=proofpress-special" style="display:inline-block;background:#e8002d;color:#ffffff;font-family:${F_SANS};font-size:13px;font-weight:800;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:15px 36px;border-radius:3px;">SCARICA ORA &mdash; &Egrave; GRATIS &nbsp;&#8594;</a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr><td style="padding:0 48px;"><div style="height:1px;background:${BORDER};"></div></td></tr>
+
   <!-- CTA PRINCIPALE -->
   <tr>
     <td style="padding:8px 48px 40px;text-align:center;">
