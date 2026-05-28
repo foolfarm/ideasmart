@@ -1749,4 +1749,26 @@ export function startAllSchedulers(): void {
     });
   }, { timezone: TZ });
   console.log("[SchedulerManager]   🎯 LinkedIn Thought Leadership → primo lunedì del mese 09:00 CET (editoriale lungo-forma)");
+
+  // ══════════════════════════════════════════════════════════════════════
+  // PROOFPRESS SPECIAL FASTEER — ONE-SHOT 29 maggio 2026 alle 08:30 CET
+  //   Invia la newsletter speciale Fasteer a tutta la lista iscritti.
+  //   Dopo l'invio, il job si auto-disabilita controllando la data.
+  // ══════════════════════════════════════════════════════════════════════
+  cron.schedule("30 6 29 5 *", async () => { // 29 maggio 2026, 08:30 CET (06:30 UTC)
+    const now = new Date();
+    // Sicurezza: esegui solo nel 2026
+    if (now.getFullYear() !== 2026) return;
+    console.log("[SchedulerManager] ⏰ 29 maggio 08:30 CET — ProofPress Special FASTEER in invio...");
+    await withLock("fasteer-special-newsletter", async () => {
+      try {
+        const { sendFasteerNewsletterAll } = await import('./sendFasteerNewsletter');
+        const result = await sendFasteerNewsletterAll();
+        console.log(`[SchedulerManager] ✅ ProofPress Special FASTEER: ${result.sent} inviati, ${result.errors} errori`);
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Errore ProofPress Special FASTEER:", err);
+      }
+    });
+  }, { timezone: TZ });
+  console.log("[SchedulerManager]   📧 ProofPress Special FASTEER → ONE-SHOT 29 maggio 2026 08:30 CET");
 }

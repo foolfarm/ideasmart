@@ -676,6 +676,28 @@ async function startServer() {
     }
   });
 
+  // POST /api/newsletter/trigger-fasteer — invia la ProofPress Special Fasteer a tutti gli iscritti
+  app.post("/api/newsletter/trigger-fasteer", async (req, res) => {
+    const authHeader = req.headers.authorization || '';
+    const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : '';
+    if (!token || token !== process.env.JWT_SECRET) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+    if ((_nlLocks as any)['fasteer']) {
+      return res.status(409).json({ error: 'Invio già in corso', locked: true });
+    }
+    (_nlLocks as any)['fasteer'] = true;
+    try {
+      const { sendFasteerNewsletterAll } = await import('../sendFasteerNewsletter');
+      const result = await sendFasteerNewsletterAll();
+      return res.json({ success: true, message: `ProofPress Special Fasteer inviata: ${result.sent} inviati, ${result.errors} errori` });
+    } catch (err: any) {
+      return res.status(500).json({ error: err.message });
+    } finally {
+      (_nlLocks as any)['fasteer'] = false;
+    }
+  });
+
   // GET /api/newsletter/html-preview — genera e mostra l'HTML della newsletter nel browser (solo admin)
   app.get("/api/newsletter/html-preview", async (req, res) => {
     try {
