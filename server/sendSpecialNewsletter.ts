@@ -4,6 +4,9 @@
  * o a tutti gli iscritti attivi.
  */
 import { sendEmail } from "./email";
+import { getActiveSubscribers } from "./db";
+import { sendWithWarmup } from "./newsletterWarmup";
+import { notifyOwner } from "./_core/notification";
 
 const RESEARCH_ID = 1800001;
 const RESEARCH_URL = `https://proofpress.ai/research/${RESEARCH_ID}`;
@@ -188,14 +191,45 @@ function buildSpecialHtml(): string {
   <!-- DIVIDER -->
   <tr><td style="padding:0 48px;"><div style="height:1px;background:${BORDER};"></div></td></tr>
 
-  <!-- TAKEAWAY BOARD -->
+  <!-- CITAZIONE + PROOFPRESS VERIFY -->
   <tr>
     <td style="padding:32px 48px;background:#f9fafb;">
-      <p style="margin:0 0 12px;font-family:${F_SANS};font-size:11px;letter-spacing:3px;color:${ACCENT};text-transform:uppercase;font-weight:700;">TAKEAWAY PER IL BOARD</p>
-      <p style="margin:0;font-family:${F_SERIF};font-size:18px;color:#0a0f1e;line-height:1.6;font-style:italic;">
-        "Il contenuto certificato non è una scelta editoriale — è una posizione strategica. Chi costruisce oggi l'infrastruttura di certificazione si posiziona su tre vettori simultanei: difesa legale, revenue da AI e premium pubblicitario."
-      </p>
-      <p style="margin:12px 0 0;font-family:${F_SANS};font-size:13px;color:${MUTED};">— Andrea Cinelli, CEO FoolFarm · ProofPress.AI</p>
+      <!-- Citazione -->
+      <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+          <td style="border-left:3px solid ${ACCENT};padding-left:20px;">
+            <p style="margin:0 0 10px;font-family:${F_SERIF};font-size:18px;color:#0a0f1e;line-height:1.6;font-style:italic;">
+              &ldquo;Il contenuto certificato non è una scelta editoriale &mdash; è una posizione strategica. Chi costruisce oggi l&rsquo;infrastruttura di certificazione si posiziona su tre vettori simultanei: difesa legale, revenue da AI e premium pubblicitario.&rdquo;
+            </p>
+            <p style="margin:0;font-family:${F_SANS};font-size:12px;color:${MUTED};font-weight:600;">— Adrian Lenice, Fondatore ProofPress.AI</p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <!-- PROOFPRESS VERIFY BLOCK -->
+  <tr>
+    <td style="padding:0 48px 40px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="background:#0a0f1e;border-radius:6px;">
+        <tr>
+          <td style="padding:28px 32px;">
+            <p style="margin:0 0 4px;font-family:${F_SANS};font-size:10px;letter-spacing:3px;color:#e8002d;text-transform:uppercase;font-weight:700;">PROOFPRESS VERIFY&trade;</p>
+            <h3 style="margin:0 0 12px;font-family:${F_SERIF};font-size:22px;font-weight:900;color:#ffffff;line-height:1.2;">Il futuro dell&rsquo;informazione<br>è la notizia certificata.</h3>
+            <p style="margin:0 0 18px;font-family:${F_SANS};font-size:13px;color:#8a8f9e;line-height:1.7;">ProofPress Verify è il sistema che imprime un codice crittografico su ogni contenuto &mdash; articolo, report, comunicato, output di Agent AI. Ogni informazione diventa tracciabile, verificabile e monetizzabile quando citata da un modello AI.</p>
+            <table cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="padding-right:12px;">
+                  <a href="https://proofpressverify.com?utm_source=newsletter&utm_medium=email&utm_campaign=proofpress-special" style="display:inline-block;background:#e8002d;color:#ffffff;font-family:${F_SANS};font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;padding:13px 28px;border-radius:3px;">Scopri come funziona &nbsp;&#8594;</a>
+                </td>
+                <td>
+                  <a href="https://proofpressverify.com/certifica?utm_source=newsletter&utm_medium=email&utm_campaign=proofpress-special" style="display:inline-block;background:transparent;color:#ffffff;font-family:${F_SANS};font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;padding:13px 28px;border-radius:3px;border:1px solid rgba(255,255,255,0.25);">Certifica la tua informazione &nbsp;&#8594;</a>
+                </td>
+              </tr>
+            </table>
+            <p style="margin:16px 0 0;font-family:${F_SANS};font-size:11px;color:#555c6e;line-height:1.5;">Disponibile per aziende, editori, studi legali e Agent AI. &mdash; <a href="https://proofpressverify.com" style="color:#e8002d;text-decoration:none;">proofpressverify.com</a></p>
+          </td>
+        </tr>
+      </table>
     </td>
   </tr>
 
@@ -243,6 +277,50 @@ async function sendSpecialNewsletter(toEmail: string): Promise<void> {
   }
 }
 
+export async function sendSpecialNewsletterAll(): Promise<void> {
+  const subject = `PROOFPRESS SPECIAL — Dealroom Global Tech Ecosystem Index 2026: chi comanda l'innovazione globale`;
+  const html = buildSpecialHtml();
+  const BASE_URL = "https://proofpress.ai";
+
+  const subscribers = await getActiveSubscribers();
+  if (subscribers.length === 0) {
+    console.log(`[SpecialNewsletter] Nessun iscritto attivo trovato.`);
+    return;
+  }
+  console.log(`[SpecialNewsletter] Invio a ${subscribers.length} iscritti attivi...`);
+
+  const warmupResult = await sendWithWarmup(
+    subscribers,
+    async (sub) => {
+      const unsubUrl = sub.unsubscribeToken
+        ? `${BASE_URL}/unsubscribe?token=${sub.unsubscribeToken}`
+        : `${BASE_URL}/unsubscribe`;
+      const personalizedHtml = html.replace(`${BASE_URL}/unsubscribe`, unsubUrl);
+      return sendEmail({
+        sender: 'daily',
+        to: sub.email,
+        subject,
+        html: personalizedHtml,
+        listUnsubscribeUrl: unsubUrl,
+      });
+    },
+    '[SpecialNewsletter]'
+  );
+
+  const totalSent = warmupResult.totalSent;
+  console.log(`[SpecialNewsletter] ✅ ${totalSent}/${subscribers.length} inviati`);
+
+  await notifyOwner({
+    title: `📧 ProofPress Special inviata — Dealroom 2026`,
+    content: `Newsletter speciale inviata a ${totalSent}/${subscribers.length} iscritti.`,
+  });
+}
+
 // Esegui
-const target = process.argv[2] || "ac@acinelli.com";
-sendSpecialNewsletter(target).catch(console.error);
+const arg = process.argv[2];
+if (arg === '--all') {
+  sendSpecialNewsletterAll().catch(console.error);
+} else {
+  const target = arg || "ac@acinelli.com";
+  sendSpecialNewsletter(target).catch(console.error);
+}

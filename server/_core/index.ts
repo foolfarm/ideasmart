@@ -654,6 +654,28 @@ async function startServer() {
     }
   });
 
+  // POST /api/newsletter/trigger-special — invia la ProofPress Special newsletter a tutti gli iscritti
+  app.post("/api/newsletter/trigger-special", async (req, res) => {
+    const authHeader = req.headers.authorization || '';
+    const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : '';
+    if (!token || token !== process.env.JWT_SECRET) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+    if ((_nlLocks as any)['special']) {
+      return res.status(409).json({ error: 'Invio già in corso', locked: true });
+    }
+    (_nlLocks as any)['special'] = true;
+    try {
+      const { sendSpecialNewsletterAll } = await import('../sendSpecialNewsletter');
+      await sendSpecialNewsletterAll();
+      return res.json({ success: true, message: 'ProofPress Special inviata a tutti gli iscritti' });
+    } catch (err: any) {
+      return res.status(500).json({ error: err.message });
+    } finally {
+      (_nlLocks as any)['special'] = false;
+    }
+  });
+
   // GET /api/newsletter/html-preview — genera e mostra l'HTML della newsletter nel browser (solo admin)
   app.get("/api/newsletter/html-preview", async (req, res) => {
     try {
