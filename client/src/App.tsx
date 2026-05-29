@@ -136,6 +136,7 @@ const Methodology = lazy(() => import("./pages/Methodology"));
 const VerifyDashboard = lazy(() => import("./pages/verify/Dashboard"));
 const VerifyJoin = lazy(() => import("./pages/verify/Join"));
 const VerifyRegistry = lazy(() => import("./pages/VerifyRegistry"));
+const FasteerGuidaLegacy = lazy(() => import("./pages/FasteerGuidaLegacy"));
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -167,6 +168,7 @@ function Router() {
         <Route path="/preferenze-newsletter" component={ChannelPreferences} />
         <Route path="/notifiche" component={NotificationPreferences} />
         <Route path="/advertise" component={Advertise} />
+        <Route path="/fasteer-guida-legacy" component={FasteerGuidaLegacy} />
         <Route path="/research/:id" component={ResearchDetail} />
         <Route path="/research" component={Research} />
         {/* /verify e /proofpress-verify reindirizzano al sito ufficiale proofpressverify.com */}

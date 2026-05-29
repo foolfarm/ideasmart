@@ -3804,3 +3804,15 @@
 - [x] main.tsx: redirect UNAUTHORIZED punta a /accedi nativa invece del portale Manus OAuth
 - [x] RequireAuth: logica freemium 1 articolo/mese gratis (tracciato in localStorage per mese)
 - [x] GenericNewsArticle, NewsArticle, StartupNewsArticle: passato articleId a RequireAuth per tracking freemium
+
+## Newsletter Fasteer Special — Guida Definitiva (29 Mag 2026)
+
+- [x] Newsletter Fasteer Special: titolo aggiornato in "La Guida Definitiva al Codice Legacy"
+- [x] Subject email aggiornato: "PROOFPRESS SPECIAL — La Guida Definitiva al Codice Legacy: Come l'AI lo Azzera in 90 Giorni [Fasteer]"
+- [x] Banner quadrato 1080x1080 rigenerato con titolo "La Guida Definitiva al Codice Legacy."
+- [x] Rotazione Buongiorno 8:30 aggiornata con nuovo banner (UTM fasteer_guida_buongiorno)
+- [x] Test email inviato a ac@acinelli.com (titolo corretto verificato)
+- [x] Post LinkedIn pubblicato con banner quadrato (ID: urn:li:share:7466040815384092672)
+- [x] Landing page /fasteer-guida-legacy creata su ProofPress (banner + 4 key findings + stat bar + CTA + ProofPress Verify block)
+- [x] Route aggiunta in App.tsx: /fasteer-guida-legacy → FasteerGuidaLegacy.tsx
+- [x] TypeScript: 0 errori
