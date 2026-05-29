@@ -1778,26 +1778,68 @@ export function startAllSchedulers(): void {
   //   await runFasteerSpecial("29-mag-15:00");
   // }, { timezone: TZ });
 
-  // 2. Lunedì 2 giugno 2026 — 08:30 CET (06:30 UTC)
+  // 2. Lunedì 2 giugno 2026 — 08:30 CET (06:30 UTC) — solo non-opener del 29 maggio
   cron.schedule("30 6 2 6 *", async () => {
     const now = new Date();
     if (now.getFullYear() !== 2026 || now.getMonth() !== 5 || now.getDate() !== 2) return;
-    await runFasteerSpecial("2-giu-08:30");
+    console.log("[SchedulerManager] ⏰ 2 giugno 08:30 CET — ProofPress Special FASTEER (non-opener) in invio...");
+    await withLock("fasteer-special-2-giu-08:30", async () => {
+      try {
+        const { sendFasteerNewsletterAll } = await import('./sendFasteerNewsletter');
+        await sendFasteerNewsletterAll({
+          subject: "Hai già scaricato la Guida Definitiva al Codice Legacy?",
+          campaignId: "fasteer-special-2giu2026",
+          nonOpenersOnly: true,
+          previousCampaignId: "fasteer-special-29mag2026",
+        });
+        console.log("[SchedulerManager] ✅ ProofPress Special FASTEER [2 giugno]: completato");
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Errore ProofPress Special FASTEER [2 giugno]:", err);
+      }
+    });
   }, { timezone: TZ });
 
-  // 3. Mercoledì 4 giugno 2026 — 08:30 CET (06:30 UTC)
+  // 3. Mercoledì 4 giugno 2026 — 08:30 CET (06:30 UTC) — solo non-opener del 29 maggio
   cron.schedule("30 6 4 6 *", async () => {
     const now = new Date();
     if (now.getFullYear() !== 2026 || now.getMonth() !== 5 || now.getDate() !== 4) return;
-    await runFasteerSpecial("4-giu-08:30");
+    console.log("[SchedulerManager] ⏰ 4 giugno 08:30 CET — ProofPress Special FASTEER (non-opener) in invio...");
+    await withLock("fasteer-special-4-giu-08:30", async () => {
+      try {
+        const { sendFasteerNewsletterAll } = await import('./sendFasteerNewsletter');
+        await sendFasteerNewsletterAll({
+          subject: "$2.41 Trilioni di debito tecnico: la guida per uscirne in 90 giorni",
+          campaignId: "fasteer-special-4giu2026",
+          nonOpenersOnly: true,
+          previousCampaignId: "fasteer-special-29mag2026",
+        });
+        console.log("[SchedulerManager] ✅ ProofPress Special FASTEER [4 giugno]: completato");
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Errore ProofPress Special FASTEER [4 giugno]:", err);
+      }
+    });
   }, { timezone: TZ });
 
-  // 4. Venerdì 6 giugno 2026 — 08:30 CET (06:30 UTC)
+  // 4. Venerdì 6 giugno 2026 — 08:30 CET (06:30 UTC) — ultima chiamata, solo non-opener del 29 maggio
   cron.schedule("30 6 6 6 *", async () => {
     const now = new Date();
     if (now.getFullYear() !== 2026 || now.getMonth() !== 5 || now.getDate() !== 6) return;
-    await runFasteerSpecial("6-giu-08:30");
+    console.log("[SchedulerManager] ⏰ 6 giugno 08:30 CET — ProofPress Special FASTEER (ultima chiamata) in invio...");
+    await withLock("fasteer-special-6-giu-08:30", async () => {
+      try {
+        const { sendFasteerNewsletterAll } = await import('./sendFasteerNewsletter');
+        await sendFasteerNewsletterAll({
+          subject: "Ultima chiamata: Guida Definitiva al Codice Legacy — disponibile gratis",
+          campaignId: "fasteer-special-6giu2026",
+          nonOpenersOnly: true,
+          previousCampaignId: "fasteer-special-29mag2026",
+        });
+        console.log("[SchedulerManager] ✅ ProofPress Special FASTEER [6 giugno]: completato");
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Errore ProofPress Special FASTEER [6 giugno]:", err);
+      }
+    });
   }, { timezone: TZ });
 
-  console.log("[SchedulerManager]   📧 ProofPress Special FASTEER → 4 invii: 29/5 15:00 | 2/6 08:30 | 4/6 08:30 | 6/6 08:30 CET");
+  console.log("[SchedulerManager]   📧 ProofPress Special FASTEER → 3 re-invii (non-opener): 2/6 | 4/6 | 6/6 alle 08:30 CET");
 }
