@@ -1751,24 +1751,53 @@ export function startAllSchedulers(): void {
   console.log("[SchedulerManager]   🎯 LinkedIn Thought Leadership → primo lunedì del mese 09:00 CET (editoriale lungo-forma)");
 
   // ══════════════════════════════════════════════════════════════════════
-  // PROOFPRESS SPECIAL FASTEER — ONE-SHOT 29 maggio 2026 alle 08:30 CET
-  //   Invia la newsletter speciale Fasteer a tutta la lista iscritti.
-  //   Dopo l'invio, il job si auto-disabilita controllando la data.
+  // PROOFPRESS SPECIAL FASTEER — Campagna 4 invii
+  //   1. Oggi 29 maggio 2026 alle 15:00 CET
+  //   2. Lunedì 2 giugno 2026 alle 08:30 CET
+  //   3. Mercoledì 4 giugno 2026 alle 08:30 CET
+  //   4. Venerdì 6 giugno 2026 alle 08:30 CET
   // ══════════════════════════════════════════════════════════════════════
-  cron.schedule("30 6 29 5 *", async () => { // 29 maggio 2026, 08:30 CET (06:30 UTC)
-    const now = new Date();
-    // Sicurezza: esegui solo nel 2026
-    if (now.getFullYear() !== 2026) return;
-    console.log("[SchedulerManager] ⏰ 29 maggio 08:30 CET — ProofPress Special FASTEER in invio...");
-    await withLock("fasteer-special-newsletter", async () => {
+
+  async function runFasteerSpecial(label: string) {
+    console.log(`[SchedulerManager] ⏰ ${label} — ProofPress Special FASTEER in invio...`);
+    await withLock(`fasteer-special-${label}`, async () => {
       try {
         const { sendFasteerNewsletterAll } = await import('./sendFasteerNewsletter');
         await sendFasteerNewsletterAll();
-        console.log(`[SchedulerManager] ✅ ProofPress Special FASTEER: invio completato`);
+        console.log(`[SchedulerManager] ✅ ProofPress Special FASTEER [${label}]: invio completato`);
       } catch (err) {
-        console.error("[SchedulerManager] ❌ Errore ProofPress Special FASTEER:", err);
+        console.error(`[SchedulerManager] ❌ Errore ProofPress Special FASTEER [${label}]:`, err);
       }
     });
+  }
+
+  // 1. Oggi 29 maggio 2026 — 15:00 CET (13:00 UTC)
+  cron.schedule("0 13 29 5 *", async () => {
+    const now = new Date();
+    if (now.getFullYear() !== 2026 || now.getMonth() !== 4 || now.getDate() !== 29) return;
+    await runFasteerSpecial("29-mag-15:00");
   }, { timezone: TZ });
-  console.log("[SchedulerManager]   📧 ProofPress Special FASTEER → ONE-SHOT 29 maggio 2026 08:30 CET");
+
+  // 2. Lunedì 2 giugno 2026 — 08:30 CET (06:30 UTC)
+  cron.schedule("30 6 2 6 *", async () => {
+    const now = new Date();
+    if (now.getFullYear() !== 2026 || now.getMonth() !== 5 || now.getDate() !== 2) return;
+    await runFasteerSpecial("2-giu-08:30");
+  }, { timezone: TZ });
+
+  // 3. Mercoledì 4 giugno 2026 — 08:30 CET (06:30 UTC)
+  cron.schedule("30 6 4 6 *", async () => {
+    const now = new Date();
+    if (now.getFullYear() !== 2026 || now.getMonth() !== 5 || now.getDate() !== 4) return;
+    await runFasteerSpecial("4-giu-08:30");
+  }, { timezone: TZ });
+
+  // 4. Venerdì 6 giugno 2026 — 08:30 CET (06:30 UTC)
+  cron.schedule("30 6 6 6 *", async () => {
+    const now = new Date();
+    if (now.getFullYear() !== 2026 || now.getMonth() !== 5 || now.getDate() !== 6) return;
+    await runFasteerSpecial("6-giu-08:30");
+  }, { timezone: TZ });
+
+  console.log("[SchedulerManager]   📧 ProofPress Special FASTEER → 4 invii: 29/5 15:00 | 2/6 08:30 | 4/6 08:30 | 6/6 08:30 CET");
 }
