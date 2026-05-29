@@ -1,16 +1,12 @@
 /**
- * ProofPress Special — Fasteer: La Guida Definitiva alla Modernizzazione del Codice Legacy
- * Invia la newsletter Special Fasteer a tutti gli iscritti attivi
+ * Script one-shot per generare la preview HTML della newsletter Fasteer
+ * Usa buildFasteerHtml() direttamente dal file sorgente aggiornato
  */
+import { writeFileSync } from 'fs';
 
-import { sendEmail } from "./email";
-import { getActiveSubscribers } from "./db";
-import { sendWithWarmup } from "./newsletterWarmup";
-import { notifyOwner } from "./_core/notification";
-
+// ─── Design tokens ────────────────────────────────────────────────────────────
 const FASTEER_HERO_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/fasteer_hero_ff378869.jpg";
-
-// ─── Design tokens (coerenti con ProofPress Special) ─────────────────────────
+const BANNER_GUIDA = "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/fasteer_banner_ufficiale_guida.png";
 const BG = "#ffffff";
 const DARK = "#0a0f1e";
 const ACCENT = "#cc0000";
@@ -19,12 +15,11 @@ const BORDER = "#e5e7eb";
 const F_SERIF = "Georgia, 'Times New Roman', serif";
 const F_SANS = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif";
 
-function buildFasteerHtml(): string {
-  const today = new Date();
-  const dateStr = today.toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
-  const dateStrCap = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
+const today = new Date();
+const dateStr = today.toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+const dateStrCap = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
 
-  return `<!DOCTYPE html>
+const html = `<!DOCTYPE html>
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
@@ -52,7 +47,7 @@ function buildFasteerHtml(): string {
   <tr>
     <td style="padding:14px 40px;text-align:center;border-bottom:1px solid ${BORDER};">
       <p style="margin:0;font-family:${F_SANS};font-size:12px;color:${MUTED};">
-        ${dateStrCap} &nbsp;·&nbsp; <strong style="color:${DARK};">FASTEER REPORT</strong> &nbsp;·&nbsp; La Guida Definitiva al Codice Legacy
+        ${dateStrCap} &nbsp;·&nbsp; <strong style="color:${DARK};">FASTEER REPORT</strong> &nbsp;·&nbsp; La Guida Definitiva alla Modernizzazione del Codice Legacy
       </p>
     </td>
   </tr>
@@ -70,7 +65,7 @@ function buildFasteerHtml(): string {
     <td style="padding:36px 40px 28px;">
       <p style="margin:0 0 6px;font-family:${F_SANS};font-size:11px;letter-spacing:3px;color:${ACCENT};text-transform:uppercase;font-weight:600;">PROOFPRESS SPECIAL — REPORT ESCLUSIVO</p>
       <h2 style="margin:8px 0 18px;font-family:${F_SERIF};font-size:28px;font-weight:700;color:${DARK};line-height:1.25;">
-        La Guida Definitiva al Codice Legacy.<br/>Come l'AI Azzera il Debito Tecnico in 90 Giorni.
+        La Guida Definitiva alla Modernizzazione del Codice Legacy.
       </h2>
       <p style="margin:0 0 16px;font-family:${F_SANS};font-size:15px;color:#374151;line-height:1.7;">
         Il codice legacy non è un problema IT. È un freno strutturale alla competitività aziendale. Ogni anno, le aziende statunitensi bruciano <strong>$2.41 trilioni</strong> in debito tecnico — una tassa occulta che erode dal 10% al 20% del budget IT e riduce la produttività dei team di sviluppo fino al 42%.
@@ -176,7 +171,7 @@ function buildFasteerHtml(): string {
   <!-- DIVIDER -->
   <tr><td style="padding:0 40px;"><div style="height:1px;background:${BORDER};"></div></td></tr>
 
-  <!-- FASTEER SPONSOR BLOCK -->
+  <!-- FASTEER SPONSOR BLOCK — Banner ufficiale al centro -->
   <tr>
     <td style="padding:0;">
       <table width="100%" cellpadding="0" cellspacing="0" style="background:${DARK};">
@@ -187,7 +182,7 @@ function buildFasteerHtml(): string {
             <p style="margin:0 0 16px;font-family:${F_SANS};font-size:13px;font-weight:700;color:${ACCENT};letter-spacing:2px;text-transform:uppercase;">FASTEER — EXECUTIVE REPORT</p>
             <!-- Banner ufficiale Guida Definitiva -->
             <a href="https://fasteer.ai/report?utm_source=newsletter&utm_medium=email&utm_campaign=proofpress-special" style="display:block;margin-bottom:24px;text-align:center;">
-              <img src="https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/fasteer_banner_ufficiale_guida.png"
+              <img src="${BANNER_GUIDA}"
                 alt="La Guida Definitiva alla Modernizzazione del Codice Legacy — Fasteer"
                 width="480" style="display:block;width:100%;max-width:480px;height:auto;border-radius:6px;margin:0 auto;" />
             </a>
@@ -271,80 +266,10 @@ function buildFasteerHtml(): string {
 
 </table>
 <!-- END WRAPPER -->
-
 </td></tr>
 </table>
 </body>
 </html>`;
-}
 
-async function sendFasteerNewsletterTest(): Promise<void> {
-  const subject = `PROOFPRESS SPECIAL — La Guida Definitiva al Codice Legacy: Come l'AI lo Azzera in 90 Giorni [Fasteer]`;
-  const html = buildFasteerHtml();
-  const TEST_EMAIL = "ac@acinelli.com";
-  const BASE_URL = "https://proofpress.ai";
-  console.log(`[FasteerNewsletter] Invio test a ${TEST_EMAIL}...`);
-  const result = await sendEmail({
-    sender: 'daily',
-    to: TEST_EMAIL,
-    subject,
-    html,
-    listUnsubscribeUrl: `${BASE_URL}/unsubscribe`,
-  });
-  if (result.success) {
-    console.log(`[FasteerNewsletter] ✅ Test inviato a ${TEST_EMAIL}`);
-  } else {
-    console.error("[FasteerNewsletter] ❌ Errore invio test:", result.error);
-    throw new Error(result.error);
-  }
-}
-
-export async function sendFasteerNewsletterAll(): Promise<{ sent: number; errors: number }> {
-  const subject = `PROOFPRESS SPECIAL — La Guida Definitiva al Codice Legacy: Come l'AI lo Azzera in 90 Giorni [Fasteer]`;
-  const html = buildFasteerHtml();
-  const BASE_URL = "https://proofpress.ai";
-
-  console.log("[FasteerNewsletter] Recupero iscritti attivi...");
-  const subscribers = await getActiveSubscribers();
-  console.log(`[FasteerNewsletter] ${subscribers.length} iscritti attivi trovati`);
-
-    const warmupResult = await sendWithWarmup(
-    subscribers,
-    async (sub) => {
-      const unsubUrl = sub.unsubscribeToken
-        ? `${BASE_URL}/unsubscribe?token=${sub.unsubscribeToken}`
-        : `${BASE_URL}/unsubscribe`;
-      const personalizedHtml = html.replace(`${BASE_URL}/unsubscribe`, unsubUrl);
-      return sendEmail({
-        sender: 'daily',
-        to: sub.email,
-        subject,
-        html: personalizedHtml,
-        listUnsubscribeUrl: unsubUrl,
-      });
-    },
-    '[FasteerNewsletter]'
-  );
-  const totalSent = warmupResult.totalSent;
-  const totalErrors = warmupResult.totalErrors;
-  console.log(`[FasteerNewsletter] ✅ ${totalSent}/${subscribers.length} inviati, ${totalErrors} errori`);
-  await notifyOwner({
-    title: `📧 ProofPress Special Fasteer inviata`,
-    content: `Newsletter speciale Fasteer inviata a ${totalSent}/${subscribers.length} iscritti.`,
-  });
-  return { sent: totalSent, errors: totalErrors };
-}
-
-// Run diretto: npx tsx server/sendFasteerNewsletter.ts
-if (process.argv[1]?.includes("sendFasteerNewsletter")) {
-  const mode = process.argv[2];
-  if (mode === "all") {
-    sendFasteerNewsletterAll()
-      .then((r) => { console.log("Done:", r); process.exit(0); })
-      .catch((e) => { console.error(e); process.exit(1); });
-  } else {
-    sendFasteerNewsletterTest()
-      .then(() => process.exit(0))
-      .catch(() => process.exit(1));
-  }
-}
+writeFileSync('/tmp/fasteer_newsletter_preview_v3.html', html, 'utf8');
+console.log('Preview generata: /tmp/fasteer_newsletter_preview_v3.html (' + html.length + ' chars)');
