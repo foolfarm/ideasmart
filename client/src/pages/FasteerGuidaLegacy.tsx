@@ -1,208 +1,240 @@
 /**
  * Landing page: /fasteer-guida-legacy
- * Promuove "La Guida Definitiva al Codice Legacy" di Fasteer
- * Funziona da bridge tra newsletter ProofPress e fasteer.ai/report
+ * ProofPress presenta "La Guida Definitiva alla Modernizzazione del Codice Legacy"
+ * Stile: dark editorial ispirato a fasteer.ai/report
+ * Funzione: bridge newsletter → fasteer.ai/report con redirect automatico dopo 8s
  */
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "wouter";
 
 const BANNER_URL =
-  "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/fasteer_guida_definitiva_banner-Vn45h2fx6kUeqj85uQPZwt.png";
+  "https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/fasteer_banner_ufficiale_guida.png";
 
 const REPORT_URL =
   "https://fasteer.ai/report?utm_source=proofpress&utm_medium=landing&utm_campaign=fasteer_guida_legacy";
 
-const FINDINGS = [
-  {
-    label: "IL COSTO NASCOSTO",
-    text: "Mantenere sistemi legacy scritti in COBOL, RPG o vecchie versioni di Java significa operare con un freno a mano tirato. La riscrittura manuale tramite System Integrator richiede 3–5 anni e costa tra €5 e €15 milioni per milione di righe di codice. Il fai-da-te con LLM generici fallisce nel 70% dei casi per mancanza di contesto architetturale.",
-  },
-  {
-    label: "LA SOLUZIONE AGENTICA — FASTEER",
-    text: "Fasteer non è un assistente alla scrittura. È una catena di montaggio industriale: Agent Orchestrator che scansiona l'intera codebase, mappa le dipendenze, genera un PRD approvato dal CTO, poi traduce e valida il codice con unit test automatici. Equivalenza funzionale garantita.",
-  },
-  {
-    label: "FRIO — ABBATTIMENTO DEI COSTI -87%",
-    text: "Il motore FRIO instrada l'85% dei task su modelli open-source locali (Qwen, DeepSeek), riservando solo il 15% più complesso alle API commerciali. Il costo di inferenza scende da $15 a $2 per milione di token (-87%). Più si usa Fasteer, meno si paga: il Super RAG memorizza le correzioni e sposta progressivamente il carico sui modelli gratuiti.",
-  },
-  {
-    label: "AIDAMASK — SOVRANITÀ DEL CODICE",
-    text: "Il codice sorgente è l'asset più prezioso di un'azienda. AidaMask anonimizza e tokenizza nomi di variabili, logiche di business e IP proprietario prima che escano dal perimetro aziendale. Architettura On-Premise / Private Cloud, certificata GDPR + ISO 27001. L'unica soluzione accettabile per banche, assicurazioni e settori regolamentati.",
-  },
+const STATS = [
+  { value: "$2.41T", label: "costo annuo del debito tecnico negli USA" },
+  { value: "79%", label: "dei progetti di modernizzazione fallisce gli obiettivi" },
+  { value: "$67.9B", label: "mercato Legacy Modernization entro il 2031" },
+  { value: "−87%", label: "riduzione dei costi di inferenza con FRIO™" },
 ];
 
-const STATS = [
-  { value: "$2.41T", label: "Costo annuo debito tecnico USA" },
-  { value: "-87%", label: "Riduzione costi inferenza FRIO" },
-  { value: "$67.9B", label: "Mercato Legacy Mod. 2031" },
-  { value: "90gg", label: "Time to modernize" },
+const CHAPTERS = [
+  {
+    num: "01",
+    title: "Il Debito Tecnico come Rischio Sistemico",
+    text: "$2.41T/anno di tassa occulta che erode dal 10% al 20% dei budget IT e dal 23% al 42% della produttività dei team di sviluppo.",
+  },
+  {
+    num: "02",
+    title: "Un Mercato in Esplosione",
+    text: "$24.98B nel 2025 → $67.91B entro il 2031. Le normative DORA e cybersecurity trasformano la modernizzazione da opzionale a obbligatoria.",
+  },
+  {
+    num: "03",
+    title: "Anatomia del Fallimento",
+    text: "Il 79% manca gli obiettivi, il 74% non completa mai. $315K di sforamento medio per progetto. Le cause sono strutturali, non di budget.",
+  },
+  {
+    num: "04",
+    title: "L'Illusione del Fai-da-Te con gli LLM",
+    text: "Cecità contestuale, allucinazioni a cascata, rischio IP. Il prompt è il 5% del lavoro — il restante 95% è orchestrazione, test, memoria e sicurezza.",
+  },
+  {
+    num: "05",
+    title: "L'Esplosione dei Costi LLM",
+    text: "Nessuna economia di scala con prezzi API lineari a scala enterprise. Il costo reale esplode moltiplicato per le iterazioni effettive.",
+  },
+  {
+    num: "06",
+    title: "Perché Serve una Piattaforma Nativa",
+    text: "Fasteer: la prima fabbrica agentica per la modernizzazione del codice. Analisi → Approvazione umana → Transcodifica → Validazione. Equivalenza funzionale garantita.",
+  },
 ];
 
 export default function FasteerGuidaLegacy() {
+  const [countdown, setCountdown] = useState(8);
+
   useEffect(() => {
-    document.title = "La Guida Definitiva al Codice Legacy — ProofPress × Fasteer";
+    document.title =
+      "ProofPress presenta: La Guida Definitiva alla Modernizzazione del Codice Legacy — Fasteer";
   }, []);
 
+  useEffect(() => {
+    if (countdown <= 0) {
+      window.location.href = REPORT_URL;
+      return;
+    }
+    const t = setTimeout(() => setCountdown((c) => c - 1), 1000);
+    return () => clearTimeout(t);
+  }, [countdown]);
+
   return (
-    <div className="min-h-screen bg-[#f4f4f4]">
-      {/* Header ProofPress */}
-      <header className="bg-[#0a0f1e] border-b-4 border-[#cc0000] py-5 px-4 text-center">
-        <p className="text-[11px] tracking-[3px] text-gray-400 uppercase mb-1">PROOFPRESS MAGAZINE</p>
+    <div className="min-h-screen bg-[#080c14] text-white">
+      {/* Top bar ProofPress */}
+      <div className="border-b border-white/10 py-3 px-6 flex items-center justify-between">
         <Link href="/">
-          <h1 className="text-4xl font-bold text-white font-serif tracking-tight cursor-pointer hover:opacity-90 transition-opacity inline-block">
-            ProofPress
-          </h1>
+          <span className="text-[13px] font-bold tracking-[3px] text-white uppercase cursor-pointer hover:text-[#39ff14] transition-colors">
+            PROOFPRESS
+          </span>
         </Link>
-        <p className="text-[11px] tracking-[4px] text-[#cc0000] uppercase font-semibold mt-1">
-          SPECIAL EDITION × FASTEER
+        <span className="text-[11px] text-white/40 uppercase tracking-widest">
+          SPECIAL REPORT
+        </span>
+      </div>
+
+      {/* Hero section */}
+      <section className="max-w-[960px] mx-auto px-6 pt-16 pb-12">
+        <p className="text-[11px] tracking-[4px] text-[#39ff14] uppercase font-semibold mb-6">
+          PROOFPRESS PRESENTA
         </p>
-      </header>
 
-      <main className="max-w-[680px] mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+          {/* Left: testo */}
+          <div>
+            <h1 className="text-4xl md:text-5xl font-black leading-tight mb-6 tracking-tight">
+              La Guida Definitiva alla{" "}
+              <span className="text-[#39ff14]">Modernizzazione del Codice Legacy.</span>
+            </h1>
+            <p className="text-[13px] text-white/50 uppercase tracking-widest mb-2">
+              Fasteer Strategy Team · Executive Report · Maggio 2026
+            </p>
+            <div className="w-12 h-0.5 bg-[#39ff14] mb-6" />
+            <p className="text-[16px] text-white/70 leading-relaxed mb-6">
+              Perché la modernizzazione AI-driven è il nuovo imperativo strategico — e come evitare le trappole degli approcci fai-da-te. Analisi di mercato, valutazione del rischio, simulazione ROI.
+            </p>
+            <ul className="space-y-2 mb-8">
+              {[
+                "9 capitoli · 30+ pagine",
+                "Analisi di mercato e dati",
+                "Framework di valutazione del rischio",
+                "Simulazione ROI motore FRIO™",
+                "Download gratuito · IT e EN",
+                "Nessuno spam · disiscrizione in qualsiasi momento",
+              ].map((item, i) => (
+                <li key={i} className="flex items-center gap-2 text-[14px] text-white/60">
+                  <span className="text-[#39ff14] text-[10px]">✓</span>
+                  {item}
+                </li>
+              ))}
+            </ul>
 
-        {/* Banner quadrato */}
-        <div className="mb-8 rounded-lg overflow-hidden shadow-lg">
-          <a href={REPORT_URL} target="_blank" rel="noopener noreferrer">
-            <img
-              src={BANNER_URL}
-              alt="La Guida Definitiva al Codice Legacy — Fasteer"
-              className="w-full block"
-            />
-          </a>
-        </div>
-
-        {/* Intro editoriale */}
-        <div className="bg-white border border-gray-200 rounded-lg p-8 mb-6">
-          <p className="text-[11px] tracking-[3px] text-[#cc0000] uppercase font-semibold mb-2">
-            PROOFPRESS SPECIAL — REPORT ESCLUSIVO
-          </p>
-          <h2 className="text-2xl font-bold text-[#0a0f1e] font-serif leading-tight mb-4">
-            La Guida Definitiva al Codice Legacy.<br />
-            Come l'AI Azzera il Debito Tecnico in 90 Giorni.
-          </h2>
-          <p className="text-[15px] text-gray-700 leading-relaxed mb-4">
-            Il codice legacy non è un problema IT. È un freno strutturale alla competitività aziendale. Ogni anno, le aziende statunitensi bruciano <strong>$2.41 trilioni</strong> in debito tecnico — una tassa occulta che erode dal 10% al 20% del budget IT e riduce la produttività dei team di sviluppo fino al 42%.
-          </p>
-          <p className="text-[15px] text-gray-700 leading-relaxed mb-4">
-            Il mercato della Legacy Modernization vale <strong>$24.98 miliardi nel 2025</strong> e crescerà fino a <strong>$67.91 miliardi entro il 2031</strong> (CAGR 19.86%). La domanda supera l'offerta. I System Integrator tradizionali non riescono a scalare. Solo l'AI può risolvere il collo di bottiglia.
-          </p>
-          <p className="text-[15px] text-gray-700 leading-relaxed">
-            Fasteer ha costruito la guida operativa che mancava al mercato: non un white paper teorico, ma un manuale d'esecuzione con dati, benchmark e roadmap per CTO e CEO.{" "}
-            <a href={REPORT_URL} target="_blank" rel="noopener noreferrer" className="text-[#cc0000] font-semibold hover:underline">
-              Scarica gratuitamente su fasteer.ai/report →
-            </a>
-          </p>
-        </div>
-
-        {/* Stat bar */}
-        <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-6">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {STATS.map((s, i) => (
-              <div key={i} className="text-center">
-                <p className="text-2xl font-bold text-[#cc0000] font-serif">{s.value}</p>
-                <p className="text-[11px] text-gray-500 uppercase tracking-wide mt-1 leading-tight">{s.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Key Findings */}
-        <div className="bg-white border border-gray-200 rounded-lg p-8 mb-6">
-          <p className="text-[11px] tracking-[3px] text-gray-400 uppercase font-semibold mb-5">
-            KEY FINDINGS — FASTEER REPORT 2026
-          </p>
-          <div className="space-y-5">
-            {FINDINGS.map((f, i) => (
-              <div key={i} className="flex gap-4">
-                <div className="w-1 flex-shrink-0 bg-[#cc0000] rounded-full" />
-                <div>
-                  <p className="text-[12px] font-bold text-[#cc0000] uppercase tracking-wide mb-1">{f.label}</p>
-                  <p className="text-[14px] text-gray-700 leading-relaxed">{f.text}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Fasteer Sponsor Block */}
-        <div className="bg-[#0a0f1e] rounded-lg p-8 mb-6">
-          <p className="text-[10px] tracking-[3px] text-gray-500 uppercase mb-1">PARTNER SPOTLIGHT</p>
-          <div className="w-8 h-px bg-[#cc0000] mb-5" />
-          <p className="text-[13px] font-bold text-[#cc0000] tracking-[2px] uppercase mb-2">FASTEER</p>
-          <h3 className="text-2xl font-bold text-white font-serif leading-tight mb-4">
-            Da Spesa ad Asset.<br />
-            Il Fai-da-Te è una Tassa.<br />
-            Fasteer è un Investimento.
-          </h3>
-          <p className="text-[14px] text-gray-300 leading-relaxed mb-6">
-            In 48 ore analizziamo un campione del tuo codice legacy e consegniamo una stima precisa di costi, tempi e ROI rispetto alle alternative tradizionali.{" "}
-            <span className="text-white font-semibold">Assessment gratuito, nessun impegno.</span>
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3">
+            {/* CTA principale */}
             <a
               href={REPORT_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block bg-[#cc0000] text-white text-[13px] font-bold tracking-wide uppercase text-center px-6 py-3 rounded hover:bg-red-700 transition-colors"
+              className="inline-flex items-center gap-2 bg-[#39ff14] text-black text-[14px] font-bold px-7 py-3.5 rounded hover:bg-[#2de010] transition-colors"
             >
-              SCARICA LA GUIDA GRATIS →
+              Scarica gratis — IT / EN →
             </a>
-            <a
-              href="https://fasteer.ai?utm_source=proofpress&utm_medium=landing&utm_campaign=fasteer_guida_assessment"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block border border-gray-600 text-gray-300 text-[13px] font-semibold text-center px-5 py-3 rounded hover:border-gray-400 hover:text-white transition-colors"
-            >
-              Prenota Assessment →
+            <p className="text-[11px] text-white/30 mt-3">
+              Nessuno spam. Elaborato da Fasteer solo per questo download.
+            </p>
+
+            {/* Countdown redirect */}
+            <div className="mt-6 flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-[#39ff14] animate-pulse" />
+              <p className="text-[12px] text-white/40">
+                Reindirizzamento automatico a fasteer.ai/report in{" "}
+                <span className="text-[#39ff14] font-bold">{countdown}s</span>
+              </p>
+            </div>
+          </div>
+
+          {/* Right: banner ufficiale */}
+          <div className="flex justify-center md:justify-end">
+            <a href={REPORT_URL} target="_blank" rel="noopener noreferrer">
+              <img
+                src={BANNER_URL}
+                alt="La Guida Definitiva alla Modernizzazione del Codice Legacy — Fasteer"
+                className="w-full max-w-[380px] rounded-lg shadow-2xl hover:scale-[1.02] transition-transform duration-300"
+              />
             </a>
           </div>
-          <p className="text-[11px] text-gray-600 mt-4">
-            ✉ hello@fasteer.ai · www.fasteer.ai · FoolFarm S.p.A. — 2026
-          </p>
         </div>
+      </section>
 
-        {/* ProofPress Verify block */}
-        <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
-          <p className="text-[11px] tracking-[3px] text-gray-400 uppercase font-semibold mb-2">
-            PROOFPRESS VERIFY™
+      {/* Stat bar */}
+      <section className="border-t border-b border-white/10 py-10 px-6">
+        <div className="max-w-[960px] mx-auto">
+          <p className="text-[10px] tracking-[4px] text-white/30 uppercase mb-8 text-center">
+            KEY FINDINGS DAL REPORT
           </p>
-          <p className="text-[17px] font-bold text-[#0a0f1e] font-serif leading-snug mb-3">
-            Il futuro dell'informazione è la notizia certificata.
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {STATS.map((s, i) => (
+              <div key={i} className="text-center">
+                <p className="text-3xl font-black text-[#39ff14] mb-2">{s.value}</p>
+                <p className="text-[12px] text-white/40 leading-snug">{s.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Cosa trovi dentro */}
+      <section className="max-w-[960px] mx-auto px-6 py-16">
+        <p className="text-[10px] tracking-[4px] text-white/30 uppercase mb-2">INDICE</p>
+        <h2 className="text-3xl font-black mb-10">
+          Cosa trovi dentro.
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {CHAPTERS.map((ch, i) => (
+            <div
+              key={i}
+              className="border border-white/10 rounded-lg p-6 hover:border-[#39ff14]/30 transition-colors"
+            >
+              <p className="text-[11px] font-bold text-[#39ff14] tracking-widest mb-2">{ch.num}</p>
+              <h3 className="text-[16px] font-bold text-white mb-2 leading-snug">{ch.title}</h3>
+              <p className="text-[13px] text-white/50 leading-relaxed">{ch.text}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA finale */}
+      <section className="border-t border-white/10 py-16 px-6 text-center">
+        <div className="max-w-[600px] mx-auto">
+          <p className="text-[11px] tracking-[4px] text-white/30 uppercase mb-4">
+            DOWNLOAD GRATUITO
           </p>
-          <p className="text-[13px] text-gray-600 leading-relaxed mb-4">
-            Ogni contenuto pubblicato su ProofPress porta un codice crittografico verificabile. La certificazione è l'unico antidoto alla disinformazione nell'era dei modelli generativi.
+          <h2 className="text-3xl font-black mb-4">
+            Scarica il report completo.
+          </h2>
+          <p className="text-[15px] text-white/50 mb-8">
+            Disponibile in italiano e inglese. Richiede 30 secondi.
           </p>
           <a
-            href="https://proofpressverify.com?utm_source=proofpress&utm_medium=landing&utm_campaign=fasteer_guida_verify"
+            href={REPORT_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block bg-[#cc0000] text-white text-[12px] font-bold tracking-wide uppercase px-5 py-2.5 rounded hover:bg-red-700 transition-colors"
+            className="inline-flex items-center gap-2 bg-[#39ff14] text-black text-[14px] font-bold px-8 py-4 rounded hover:bg-[#2de010] transition-colors"
           >
-            Scopri come funziona →
+            Ottieni il report ora →
           </a>
         </div>
-
-        {/* Back to ProofPress */}
-        <div className="text-center pb-4">
-          <Link href="/">
-            <span className="text-[13px] text-gray-500 hover:text-[#cc0000] transition-colors cursor-pointer">
-              ← Torna a ProofPress.ai
-            </span>
-          </Link>
-        </div>
-      </main>
+      </section>
 
       {/* Footer */}
-      <footer className="bg-[#0a0f1e] border-t border-gray-800 py-6 px-4 text-center">
-        <p className="text-[12px] text-gray-500">
-          © 2026 ProofPress — Il primo sito di informazione con notizie certificate.
-          Contenuto sponsorizzato da{" "}
-          <a href="https://fasteer.ai" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
-            Fasteer
-          </a>
-          {" "}· FoolFarm S.p.A.
-        </p>
+      <footer className="border-t border-white/10 py-8 px-6">
+        <div className="max-w-[960px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <Link href="/">
+              <span className="text-[12px] font-bold tracking-[3px] text-white/60 uppercase cursor-pointer hover:text-white transition-colors">
+                PROOFPRESS
+              </span>
+            </Link>
+            <span className="text-white/20">·</span>
+            <span className="text-[12px] font-bold tracking-[3px] text-white/60 uppercase">
+              FASTEER
+            </span>
+          </div>
+          <p className="text-[11px] text-white/30">
+            © 2026 Fasteer — Milano · FoolFarm S.p.A.
+          </p>
+        </div>
       </footer>
     </div>
   );
