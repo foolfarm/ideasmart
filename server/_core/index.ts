@@ -689,8 +689,8 @@ async function startServer() {
     (_nlLocks as any)['fasteer'] = true;
     try {
       const { sendFasteerNewsletterAll } = await import('../sendFasteerNewsletter');
-      const result = await sendFasteerNewsletterAll();
-      return res.json({ success: true, message: `ProofPress Special Fasteer inviata: ${result.sent} inviati, ${result.errors} errori` });
+      await sendFasteerNewsletterAll();
+      return res.json({ success: true, message: `ProofPress Special Fasteer inviata con successo` });
     } catch (err: any) {
       return res.status(500).json({ error: err.message });
     } finally {

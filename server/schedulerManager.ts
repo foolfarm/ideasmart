@@ -1763,8 +1763,8 @@ export function startAllSchedulers(): void {
     await withLock("fasteer-special-newsletter", async () => {
       try {
         const { sendFasteerNewsletterAll } = await import('./sendFasteerNewsletter');
-        const result = await sendFasteerNewsletterAll();
-        console.log(`[SchedulerManager] ✅ ProofPress Special FASTEER: ${result.sent} inviati, ${result.errors} errori`);
+        await sendFasteerNewsletterAll();
+        console.log(`[SchedulerManager] ✅ ProofPress Special FASTEER: invio completato`);
       } catch (err) {
         console.error("[SchedulerManager] ❌ Errore ProofPress Special FASTEER:", err);
       }
