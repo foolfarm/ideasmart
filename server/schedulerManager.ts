@@ -1771,12 +1771,12 @@ export function startAllSchedulers(): void {
     });
   }
 
-  // 1. Oggi 29 maggio 2026 — 15:00 CET (13:00 UTC)
-  cron.schedule("0 13 29 5 *", async () => {
-    const now = new Date();
-    if (now.getFullYear() !== 2026 || now.getMonth() !== 4 || now.getDate() !== 29) return;
-    await runFasteerSpecial("29-mag-15:00");
-  }, { timezone: TZ });
+  // 1. Oggi 29 maggio 2026 — DISABILITATO: newsletter già inviata alle 13:05 dalla Buongiorno
+  // cron.schedule("0 13 29 5 *", async () => {
+  //   const now = new Date();
+  //   if (now.getFullYear() !== 2026 || now.getMonth() !== 4 || now.getDate() !== 29) return;
+  //   await runFasteerSpecial("29-mag-15:00");
+  // }, { timezone: TZ });
 
   // 2. Lunedì 2 giugno 2026 — 08:30 CET (06:30 UTC)
   cron.schedule("30 6 2 6 *", async () => {
