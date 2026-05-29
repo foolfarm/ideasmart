@@ -809,8 +809,8 @@ function buildNewsletterHtmlV2(opts: {
   const _sponsorBanners = [
     {
       url: 'https://fasteer.ai/report?utm_source=newsletter&utm_medium=email&utm_campaign=fasteer_guida_buongiorno',
-      imgSrc: 'https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/fasteer_guida_definitiva_banner-Vn45h2fx6kUeqj85uQPZwt.png',
-      alt: 'Fasteer — La Guida Definitiva al Codice Legacy. Scarica gratis su fasteer.ai/report.',
+      imgSrc: 'https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/banners/fasteer_guida_definitiva_ufficiale.png',
+      alt: 'Fasteer — La Guida Definitiva alla Modernizzazione del Codice Legacy. Executive Report | Fasteer Strategy Team.',
     },
     {
       url: 'https://decisionsciencesummit.com?utm_source=newsletter&utm_medium=email&utm_campaign=dss_sponsor',
