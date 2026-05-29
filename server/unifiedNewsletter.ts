@@ -808,9 +808,9 @@ function buildNewsletterHtmlV2(opts: {
   // ── Sponsor banner (rotazione giornaliera) ──
   const _sponsorBanners = [
     {
-      url: 'https://fasteer.ai/report?utm_source=newsletter&utm_medium=email&utm_campaign=fasteer_report_buongiorno',
-      imgSrc: 'https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/fasteer_banner_square-5QB3TLJ6ZVwCnxrjheAKbc.png',
-      alt: 'Fasteer — Il Debito Tecnico Costa $2.41T l\'Anno. Scarica il Report gratuito.',
+      url: 'https://fasteer.ai/report?utm_source=newsletter&utm_medium=email&utm_campaign=fasteer_guida_buongiorno',
+      imgSrc: 'https://d2xsxph8kpxj0f.cloudfront.net/99304667/UyPaon6i3Ec4nvfPz6kUfg/fasteer_guida_definitiva_banner-Vn45h2fx6kUeqj85uQPZwt.png',
+      alt: 'Fasteer — La Guida Definitiva al Codice Legacy. Scarica gratis su fasteer.ai/report.',
     },
     {
       url: 'https://decisionsciencesummit.com?utm_source=newsletter&utm_medium=email&utm_campaign=dss_sponsor',

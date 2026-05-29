@@ -29,7 +29,7 @@ function buildFasteerHtml(): string {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PROOFPRESS SPECIAL — Il Debito Tecnico che Frena la Tua Azienda</title>
+  <title>PROOFPRESS SPECIAL — La Guida Definitiva al Codice Legacy</title>
 </head>
 <body style="margin:0;padding:0;background:#f4f4f4;font-family:${F_SANS};">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f4;">
@@ -52,7 +52,7 @@ function buildFasteerHtml(): string {
   <tr>
     <td style="padding:14px 40px;text-align:center;border-bottom:1px solid ${BORDER};">
       <p style="margin:0;font-family:${F_SANS};font-size:12px;color:${MUTED};">
-        ${dateStrCap} &nbsp;·&nbsp; <strong style="color:${DARK};">FASTEER REPORT</strong> &nbsp;·&nbsp; Il Debito Tecnico che Frena la Tua Azienda
+        ${dateStrCap} &nbsp;·&nbsp; <strong style="color:${DARK};">FASTEER REPORT</strong> &nbsp;·&nbsp; La Guida Definitiva al Codice Legacy
       </p>
     </td>
   </tr>
@@ -70,7 +70,7 @@ function buildFasteerHtml(): string {
     <td style="padding:36px 40px 28px;">
       <p style="margin:0 0 6px;font-family:${F_SANS};font-size:11px;letter-spacing:3px;color:${ACCENT};text-transform:uppercase;font-weight:600;">PROOFPRESS SPECIAL — REPORT ESCLUSIVO</p>
       <h2 style="margin:8px 0 18px;font-family:${F_SERIF};font-size:28px;font-weight:700;color:${DARK};line-height:1.25;">
-        Il Debito Tecnico Costa $2.41 Trilioni l'Anno.<br/>L'AI Può Azzerarlo in 90 Giorni.
+        La Guida Definitiva al Codice Legacy.<br/>Come l'AI Azzera il Debito Tecnico in 90 Giorni.
       </h2>
       <p style="margin:0 0 16px;font-family:${F_SANS};font-size:15px;color:#374151;line-height:1.7;">
         Il codice legacy non è un problema IT. È un freno strutturale alla competitività aziendale. Ogni anno, le aziende statunitensi bruciano <strong>$2.41 trilioni</strong> in debito tecnico — una tassa occulta che erode dal 10% al 20% del budget IT e riduce la produttività dei team di sviluppo fino al 42%.
@@ -79,7 +79,7 @@ function buildFasteerHtml(): string {
         Il mercato della Legacy Modernization vale <strong>$24.98 miliardi nel 2025</strong> e crescerà fino a <strong>$67.91 miliardi entro il 2031</strong> (CAGR 19.86%). La domanda supera l'offerta. I System Integrator tradizionali non riescono a scalare. Solo l'AI può risolvere il collo di bottiglia.
       </p>
       <p style="margin:0;font-family:${F_SANS};font-size:15px;color:#374151;line-height:1.7;">
-        Fasteer ha analizzato il problema e costruito una risposta industriale. Il report che segue è la sintesi dei dati più rilevanti — scarica il documento completo per la stima precisa su costi, tempi e ROI per la tua azienda.
+        Fasteer ha costruito la guida operativa che mancava al mercato: non un white paper teorico, ma un manuale d'esecuzione con dati, benchmark e roadmap per CTO e CEO. Scarica la guida completa gratuitamente su <a href="https://fasteer.ai/report?utm_source=newsletter&utm_medium=email&utm_campaign=proofpress-special-intro" style="color:${ACCENT};font-weight:600;">fasteer.ai/report</a>.
       </p>
     </td>
   </tr>
@@ -276,7 +276,7 @@ function buildFasteerHtml(): string {
 }
 
 async function sendFasteerNewsletterTest(): Promise<void> {
-  const subject = `PROOFPRESS SPECIAL — Il Debito Tecnico che Frena la Tua Azienda: Il Report Fasteer 2026`;
+  const subject = `PROOFPRESS SPECIAL — La Guida Definitiva al Codice Legacy: Come l'AI lo Azzera in 90 Giorni [Fasteer]`;
   const html = buildFasteerHtml();
   const TEST_EMAIL = "ac@acinelli.com";
   const BASE_URL = "https://proofpress.ai";
@@ -297,7 +297,7 @@ async function sendFasteerNewsletterTest(): Promise<void> {
 }
 
 export async function sendFasteerNewsletterAll(): Promise<{ sent: number; errors: number }> {
-  const subject = `PROOFPRESS SPECIAL — Il Debito Tecnico che Frena la Tua Azienda: Il Report Fasteer 2026`;
+  const subject = `PROOFPRESS SPECIAL — La Guida Definitiva al Codice Legacy: Come l'AI lo Azzera in 90 Giorni [Fasteer]`;
   const html = buildFasteerHtml();
   const BASE_URL = "https://proofpress.ai";
 
