@@ -206,7 +206,7 @@ export default function EbookPrompt() {
       {/* Footer mini */}
       <footer className="py-4 px-4 border-t border-white/5 text-center">
         <p className="text-gray-500 text-xs">
-          ProofPress Magazine è parte del gruppo <span className="font-semibold">AxiomX</span>{" · "}
+          ProofPress Magazine è parte del gruppo <a href="https://aidagpt.com" target="_blank" rel="noopener noreferrer" className="font-semibold hover:underline">Aida Srl</a>{" · "}
           <a href="/privacy" className="underline hover:opacity-70">Privacy</a>
         </p>
       </footer>

@@ -69,10 +69,10 @@ describe("Newsletter Proof Press Daily v3 — Design Tokens & Brand", () => {
     expect(src).toContain("promptcollection2026.com");
   });
 
-  it("Footer contiene AxiomX LLC copyright", async () => {
+  it("Footer contiene Aida Srl copyright", async () => {
     const { readFileSync } = await import("fs");
     const src = readFileSync("server/unifiedNewsletter.ts", "utf8");
-    expect(src).toContain("AxiomX LLC");
+    expect(src).toContain("Aida Srl");
     expect(src).not.toContain("FoolFarm S.p.A.");
   });
 

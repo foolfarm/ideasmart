@@ -727,7 +727,7 @@ export default function Tecnologia() {
               style={{ color: "rgba(26,26,46,0.4)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}
             >
               ProofPress Magazine è parte del gruppo{" "}
-              <span style={{ fontWeight: 600, color: "rgba(26,26,46,0.55)" }}>AxiomX</span>
+              <a href="https://aidagpt.com" target="_blank" rel="noopener noreferrer" style={{ fontWeight: 600, color: "rgba(26,26,46,0.55)" }}>Aida Srl</a>
               {" · "}
               <a href="/privacy" style={{ color: "rgba(26,26,46,0.4)", textDecoration: "underline" }}>Privacy</a>
             </p>

@@ -1700,7 +1700,7 @@ export default function Home() {
               <p className="text-[11px] text-[#1a1a1a]/40"
                 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
                 ProofPress Magazine è parte del gruppo{" "}
-                <span className="font-semibold text-[#1a1a1a]/55">AxiomX</span>
+                <a href="https://aidagpt.com" target="_blank" rel="noopener noreferrer" className="font-semibold text-[#1a1a1a]/55 hover:text-[#1a1a1a]/80 transition-colors">Aida Srl</a>
                 {" · "}
                 <Link href="/privacy">
                   <span className="hover:underline cursor-pointer">Privacy</span>

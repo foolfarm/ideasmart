@@ -463,7 +463,7 @@ export default function ChiSiamo() {
 
           <Divider />
 
-          {/* ── SEZIONE ISTITUZIONALE AxiomX LLC ── */}
+          {/* ── SEZIONE ISTITUZIONALE Aida Srl ── */}
           <Section bg="#f8f8f6">
             <div className="max-w-3xl">
               <Label>Chi c'è dietro ProofPress</Label>
@@ -471,22 +471,22 @@ export default function ChiSiamo() {
                 className="text-2xl md:text-3xl font-black leading-tight mb-6 text-[#0a0a0a]"
                 style={{ fontFamily: FONT }}
               >
-                Un progetto <span style={{ color: ORANGE }}>AxiomX LLC</span>
+                Un progetto <span style={{ color: ORANGE }}>Aida Srl</span>
               </h2>
               <p className="text-base leading-relaxed text-[#0a0a0a]/65 mb-4">
-                ProofPress è un progetto di <strong>AxiomX LLC</strong>, società registrata negli Stati Uniti d'America.
-                AxiomX opera nel settore dell'intelligenza artificiale applicata ai media, con focus su piattaforme
+                ProofPress è un progetto di <strong>Aida Srl</strong>, società italiana.
+                Aida Srl opera nel settore dell'intelligenza artificiale applicata ai media, con focus su piattaforme
                 di giornalismo agentico, certificazione dei contenuti e distribuzione editoriale scalabile.
               </p>
               <p className="text-base leading-relaxed text-[#0a0a0a]/65 mb-6">
-                La piattaforma ProofPress è stata concepita, progettata e sviluppata interamente dal team AxiomX,
+                La piattaforma ProofPress è stata concepita, progettata e sviluppata interamente dal team Aida Srl,
                 con l'obiettivo di portare standard di affidabilità e trasparenza nell'informazione digitale
                 attraverso tecnologie AI proprietarie.
               </p>
               <div className="flex flex-wrap gap-8 pt-4 border-t border-[#0a0a0a]/8">
                 <div>
                   <div className="text-xs font-bold uppercase tracking-widest text-[#0a0a0a]/40 mb-1">Sede legale</div>
-                  <div className="text-sm font-semibold text-[#0a0a0a]">AxiomX LLC · United States of America</div>
+                  <div className="text-sm font-semibold text-[#0a0a0a]"><a href="https://aidagpt.com" target="_blank" rel="noopener noreferrer" className="hover:underline">Aida Srl</a> · Italia</div>
                 </div>
                 <div>
                   <div className="text-xs font-bold uppercase tracking-widest text-[#0a0a0a]/40 mb-1">Contatti</div>

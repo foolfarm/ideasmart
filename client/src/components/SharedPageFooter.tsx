@@ -1,6 +1,6 @@
 /**
- * SharedPageFooter — Footer con BannerRotator + testo AxiomX
- * Struttura: BannerRotator 720×190 → divisore → testo AxiomX · Privacy · Trust Score
+ * SharedPageFooter — Footer con BannerRotator + testo Aida Srl
+ * Struttura: BannerRotator 720×190 → divisore → testo Aida Srl · Privacy · Trust Score
  */
 import { Link } from "wouter";
 import BannerRotator from "@/components/BannerRotator";
@@ -20,7 +20,7 @@ export default function SharedPageFooter() {
             style={{ fontFamily: SF }}
           >
             ProofPress Magazine è parte del gruppo{" "}
-            <span className="font-semibold text-[#1a1a1a]/55">AxiomX</span>
+            <a href="https://aidagpt.com" target="_blank" rel="noopener noreferrer" className="font-semibold text-[#1a1a1a]/55 hover:text-[#1a1a1a]/80 transition-colors">Aida Srl</a>
             {" · "}
             <Link href="/privacy">
               <span className="hover:underline cursor-pointer">Privacy</span>
