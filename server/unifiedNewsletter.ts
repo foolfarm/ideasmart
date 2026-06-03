@@ -1303,7 +1303,7 @@ function buildNewsletterHtmlV2(opts: {
                 <a href="${unsubscribeUrl}" style="font-size:11px;color:${ACCENT};text-decoration:underline;font-weight:600;font-family:${F_SANS};">Cancella iscrizione</a>
               </div>
               <div style="margin-top:16px;padding-top:12px;border-top:1px solid ${BORDER};">
-                <div style="font-size:10px;color:${MUTED};font-family:${F_SANS};margin-bottom:4px;">© 2026 Proof Press · Un progetto <a href="https://aidagpt.com" style="color:${MUTED};text-decoration:none;">Aida Srl</a> · Italia</div>
+                <div style="font-size:10px;color:${MUTED};font-family:${F_SANS};margin-bottom:4px;">© 2026 Proof Press · Un progetto <a href="https://aidagpt.com" target="_blank" rel="noopener noreferrer" style="color:${MUTED};text-decoration:none;">Aida Srl</a> · Italia</div>
                 <div style="font-size:10px;color:${ACCENT};font-weight:700;font-family:${F_SANS};letter-spacing:0.06em;">✓ PROOFPRESS VERIFY TECHNOLOGY</div>
               </div>
             </td>
