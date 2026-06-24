@@ -474,25 +474,25 @@ export function startAllSchedulers(): void {
   }, { timezone: TZ });
 
   // ── NEWSLETTER MASSIVA "BUONGIORNO by PROOFPRESS" — 08:30 CET (solo lun-ven) ────────────
-  // Cron: 30 8 * * 1-5 = lun-ven alle 08:30 CET (sospesa sabato e domenica)
-  // Nessuna approvazione richiesta — invio automatico diretto a tutti i subscriber attivi
-  // Gli unsubscribed sono automaticamente esclusi dalla query getActiveSubscribers()
-  cron.schedule("30 8 * * 1-5", async () => {
-    console.log("[SchedulerManager] ⏰ 08:30 CET — Invio massivo \"BUONGIORNO by PROOFPRESS\" a tutti i subscriber attivi (lun-ven)...");
-    await withLock("newsletter-mattino", async () => {
-      try {
-        const { sendMorningNewsletterToAll } = await import("./unifiedNewsletter");
-        const result = await sendMorningNewsletterToAll();
-        if (result.success) {
-          console.log(`[SchedulerManager] ✅ Newsletter inviata: ${result.recipientCount} destinatari — ${result.subject}`);
-        } else {
-          console.error("[SchedulerManager] ❌ Errore newsletter:", result.error);
-        }
-      } catch (err) {
-        console.error("[SchedulerManager] ❌ Errore critico newsletter:", err);
-      }
-    });
-  }, { timezone: TZ });
+  // NEWSLETTER BUONGIORNO — SOSPESA dal 2026-06-24 per decisione editoriale (Andrea Cinelli)
+  // Per riattivare: rimuovere il commento dal blocco cron.schedule qui sotto
+  // cron.schedule("30 8 * * 1-5", async () => {
+  //   console.log("[SchedulerManager] ⏰ 08:30 CET — Invio massivo \"BUONGIORNO by PROOFPRESS\" a tutti i subscriber attivi (lun-ven)...");
+  //   await withLock("newsletter-mattino", async () => {
+  //     try {
+  //       const { sendMorningNewsletterToAll } = await import("./unifiedNewsletter");
+  //       const result = await sendMorningNewsletterToAll();
+  //       if (result.success) {
+  //         console.log(`[SchedulerManager] ✅ Newsletter inviata: ${result.recipientCount} destinatari — ${result.subject}`);
+  //       } else {
+  //         console.error("[SchedulerManager] ❌ Errore newsletter:", result.error);
+  //       }
+  //     } catch (err) {
+  //       console.error("[SchedulerManager] ❌ Errore critico newsletter:", err);
+  //     }
+  //   });
+  // }, { timezone: TZ });
+  console.log("[SchedulerManager] ⏸️  Newsletter BUONGIORNO SOSPESA (dal 2026-06-24) — cron disabilitato");
 
   // NEWSLETTER PROMOZIONALE — DISABILITATA (rimossa 2026-04-12 per decisione editoriale)
   // NEWSLETTER SABATO SEPARATA — DISABILITATA (rimossa 2026-04-24: newsletter unificata 7gg/7)
@@ -815,6 +815,9 @@ export function startAllSchedulers(): void {
       const minuteCET = nowCET.getMinutes();
       const currentMinutes = hourCET * 60 + minuteCET;
       const dayOfWeek = nowCET.getDay(); // 0=dom, 1=lun, ..., 5=ven, 6=sab
+      // CATCH-UP SOSPESO dal 2026-06-24 per decisione editoriale
+      console.log('[SchedulerManager] ⏸️  CATCH-UP BUONGIORNO: sospeso (dal 2026-06-24)');
+      return;
       // Catch-up BUONGIORNO: solo lun-ven (1-5), sospeso sabato (6) e domenica (0)
       if (dayOfWeek === 0 || dayOfWeek === 6) {
         console.log(`[SchedulerManager] ℹ️ CATCH-UP BUONGIORNO: weekend (${dayOfWeek === 0 ? 'domenica' : 'sabato'}) — newsletter sospesa, nessun catch-up`);
@@ -841,7 +844,7 @@ export function startAllSchedulers(): void {
       const todayLabelCET = nowCET.toLocaleDateString('en-CA', { timeZone: TZ }); // YYYY-MM-DD
 
       // Cerca QUALSIASI record di oggi, indipendentemente dallo status
-      const anyRecordResult = await catchUpDb.execute(
+      const anyRecordResult = await catchUpDb!.execute(
         sqlOp`SELECT id, status, recipientCount FROM newsletter_sends
               WHERE send_date = ${todayLabelCET} AND section = 'ai4business'
               LIMIT 1`
