@@ -474,25 +474,24 @@ export function startAllSchedulers(): void {
   }, { timezone: TZ });
 
   // ── NEWSLETTER MASSIVA "BUONGIORNO by PROOFPRESS" — 08:30 CET (solo lun-ven) ────────────
-  // NEWSLETTER BUONGIORNO — SOSPESA dal 2026-06-24 per decisione editoriale (Andrea Cinelli)
-  // Per riattivare: rimuovere il commento dal blocco cron.schedule qui sotto
-  // cron.schedule("30 8 * * 1-5", async () => {
-  //   console.log("[SchedulerManager] ⏰ 08:30 CET — Invio massivo \"BUONGIORNO by PROOFPRESS\" a tutti i subscriber attivi (lun-ven)...");
-  //   await withLock("newsletter-mattino", async () => {
-  //     try {
-  //       const { sendMorningNewsletterToAll } = await import("./unifiedNewsletter");
-  //       const result = await sendMorningNewsletterToAll();
-  //       if (result.success) {
-  //         console.log(`[SchedulerManager] ✅ Newsletter inviata: ${result.recipientCount} destinatari — ${result.subject}`);
-  //       } else {
-  //         console.error("[SchedulerManager] ❌ Errore newsletter:", result.error);
-  //       }
-  //     } catch (err) {
-  //       console.error("[SchedulerManager] ❌ Errore critico newsletter:", err);
-  //     }
-  //   });
-  // }, { timezone: TZ });
-  console.log("[SchedulerManager] ⏸️  Newsletter BUONGIORNO SOSPESA (dal 2026-06-24) — cron disabilitato");
+  // NEWSLETTER BUONGIORNO — RIATTIVATA dal 2026-07-06 per decisione editoriale (Andrea Cinelli)
+  cron.schedule("30 8 * * 1-5", async () => {
+    console.log("[SchedulerManager] ⏰ 08:30 CET — Invio massivo \"BUONGIORNO by PROOFPRESS\" a tutti i subscriber attivi (lun-ven)...");
+    await withLock("newsletter-mattino", async () => {
+      try {
+        const { sendMorningNewsletterToAll } = await import("./unifiedNewsletter");
+        const result = await sendMorningNewsletterToAll();
+        if (result.success) {
+          console.log(`[SchedulerManager] ✅ Newsletter inviata: ${result.recipientCount} destinatari — ${result.subject}`);
+        } else {
+          console.error("[SchedulerManager] ❌ Errore newsletter:", result.error);
+        }
+      } catch (err) {
+        console.error("[SchedulerManager] ❌ Errore critico newsletter:", err);
+      }
+    });
+  }, { timezone: TZ });
+  console.log("[SchedulerManager] ✅ Newsletter BUONGIORNO RIATTIVATA (dal 2026-07-06) — cron attivo lun-ven 08:30 CET");
 
   // NEWSLETTER PROMOZIONALE — DISABILITATA (rimossa 2026-04-12 per decisione editoriale)
   // NEWSLETTER SABATO SEPARATA — DISABILITATA (rimossa 2026-04-24: newsletter unificata 7gg/7)
@@ -815,9 +814,7 @@ export function startAllSchedulers(): void {
       const minuteCET = nowCET.getMinutes();
       const currentMinutes = hourCET * 60 + minuteCET;
       const dayOfWeek = nowCET.getDay(); // 0=dom, 1=lun, ..., 5=ven, 6=sab
-      // CATCH-UP SOSPESO dal 2026-06-24 per decisione editoriale
-      console.log('[SchedulerManager] ⏸️  CATCH-UP BUONGIORNO: sospeso (dal 2026-06-24)');
-      return;
+      // CATCH-UP RIATTIVATO dal 2026-07-06 per decisione editoriale
       // Catch-up BUONGIORNO: solo lun-ven (1-5), sospeso sabato (6) e domenica (0)
       if (dayOfWeek === 0 || dayOfWeek === 6) {
         console.log(`[SchedulerManager] ℹ️ CATCH-UP BUONGIORNO: weekend (${dayOfWeek === 0 ? 'domenica' : 'sabato'}) — newsletter sospesa, nessun catch-up`);
