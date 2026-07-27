@@ -139,8 +139,17 @@ function getWeekKey(): string {
   return `${d.getFullYear()}-W${String(weekNum).padStart(2, "0")}`;
 }
 
+// ─── Flag globale di pausa — impostato a true per sospendere TUTTI i job ────────────────────────
+// Per riattivare: cambiare in false e fare deploy
+// Sospeso il 2026-07-06 per decisione operativa (Andrea Cinelli)
+const ALL_JOBS_PAUSED = true;
+
 // ─── Avvio scheduler ─────────────────────────────────────────────────────────
 export function startAllSchedulers(): void {
+  if (ALL_JOBS_PAUSED) {
+    console.log("[SchedulerManager] ⏸️  TUTTI I JOB AUTOMATICI SOSPESI (ALL_JOBS_PAUSED=true) — sito online, nessun job attivo");
+    return;
+  }
   console.log("[SchedulerManager] 🚀 Avvio di tutti gli scheduler automatici...");
   console.log("[SchedulerManager] Fuso orario: Europe/Rome (CET/CEST)");
 
