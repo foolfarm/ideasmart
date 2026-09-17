@@ -19,6 +19,7 @@ const NAV_GROUPS = [
   {
     label: "Newsletter",
     items: [
+      { label: "✦ Centro Newsletter", path: "/admin/newsletter" },
       { label: "📊 Performance & Statistiche", path: "/admin/newsletter-performance" },
       { label: "📧 Promo Newsletter", path: "/admin/promo-newsletter" },
       { label: "📰 Contenuti & Sponsor", path: "/admin/newsletter-content" },

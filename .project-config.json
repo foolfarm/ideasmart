@@ -9,13 +9,15 @@
   "env_vars": {
     "DATABASE_URL": "mysql://3aGZ9MSLrhgSbtV.0a4dfe1f8b2a:8jNe8l1he97vNMvK0bma@gateway02.us-east-1.prod.aws.tidbcloud.com:4000/UyPaon6i3Ec4nvfPz6kUfg?ssl={\"rejectUnauthorized\":true}"
   },
-  "experiments": null,
+  "experiments": [
+    "no_db_push"
+  ],
   "git_remote": {
     "repo_url": "s3://vida-prod-gitrepo/webdev-git/99304667/UyPaon6i3Ec4nvfPz6kUfg",
-    "access_key_id": "ASIAZV3A2ECZARBSTMK5",
-    "secret_access_key": "tZ4qU8x7QmF9MNBRik96p/8yqVmA29PkP2tFm9Wa",
-    "session_token": "IQoJb3JpZ2luX2VjEHwaCXVzLWVhc3QtMSJHMEUCIQDtwuw2J5C9jTPHy+lL+50nVUmH33FgJ9BHPdzBuh2aBQIgQuuxPpj62cvq0Zo7m5TQ8AfvjGnurca+L6T4fQFyKe0q4gMIRRAEGgw2NjUzODYwOTg4NjYiDLKrr2qLC6ovF0LCpCq/A8Vu9J/ShD4f8ac97VHyy9tajfkyB/d/FJ34icih6OJfppivH5jb5to1iJ3MVkW8AxZQ8WDjSkobaK8ItZxJqok7mkOZI9K3X4digAiPpjk7Bny5wuPp/D906EuQtQTYAYUgQ9EuiL/8VuszyEsZF2bfFbIExm3nuSPRKKIXJiVtXGDZ9HXdiPv65EOP6A/l/tRcXE3PviYIWTL6VE7Lf9/yB6DOvUz89c0Dx5Rt2GDtabqY5mj1fdu6FT+Nh4C/c6XQgCVCLOW53Y83a3a89/NiHl+HLxEY+86tom/SomNNj8aBHyEpHS2ivfZQg0ld+aKjiYAQVtOikon37IkkmoTP8WW+FKCflFYebhGmwNIJXc1whDqxbN8BZf8FBLPEZrPw/aaZL7kdlfoAlZhZyKiJ4qkbgxRuRg/sgpXL/XnwyjgcxhXPPzYhcyxF7TDIkNcBSGu9dS3GaGBwcU4nl/M0BRk3E1hI9X4TVXA5W7Y1eVFy7Ij7GPVbbqXWfedLeeWpOWqope5OPJHRnzg2GUooXET7En2WSq67h5CRSbgtX2vDtDBqlZSQ/RUov24OGDGOLhbuRtpwKMBlUxfm/DDlpJvTBjqdAR/iPKdnyP9t2ASIfj1EmIfztVafFhes4akvEY+FlFCy598WZRU8FE4HNDOeIaUaV270LHwIdXXn8YCvoWOG2seW80Lv8SQ6Rf4I98deV81EX25a0Ag5xEhfv+PS/yMMk1/mhORe9pkNsRWv7e5VixJ22/0AHTDSCWS3C4oBIlXUk1HldC7E60ulcamo+uGNW6+/0l9I4wIg46RmHwc=",
-    "expiration": "2026-07-27T15:37:09.000Z",
+    "access_key_id": "ASIAZV3A2ECZCBDUU42Q",
+    "secret_access_key": "ZsLAXQongxQZEahQNkhARJu8EolZUQCDrztwY7pq",
+    "session_token": "IQoJb3JpZ2luX2VjEGYaCXVzLWVhc3QtMSJGMEQCIFldWdEmUDBzNRt4ZKvkkg/DmuLZhFKyZIvbZtZDDM0QAiAjspFdhG+TIawNqasJjUYcabvxu9CMfKBk4I+oxe+LnyriAwgvEAQaDDY2NTM4NjA5ODg2NiIMhBVHm/of2fgpFF9FKr8D9TnXMFI47VS97oy9Bt094UwLw7e80yo5YrSzYm7jzaIRBmfQs9W78Kf8ndejNUVS1qu18NsBHmjnyVpL7Aym8JO9yaGbTMi/BXGW61XmCLpSM/THEQIBdp622GkUdvo3TfREMS1zWygTIlYe9QDn+lnvHY6g2czzVhTbnxoRRAwzJcs6fwqODjgGwXjDZuFC6U8NReJxU3Zh8j3welOXaBUKfYhg3YnolrqjK9gVNIpztHo2qSEt/LkvvzdpBgC8M5my5rPkLIOkq/OKx7Fge6nkvQi9+MggUFFA266hpNuZROyjDhcu4Z36Pz964Xwxyrl7lx5f7iKb6sUkYsJP6TpTzUEFToCzaxD3kvCfQs5hY3lw4tDxuYX22g13zuVYHj8xPcC1977c3sjy1T9mco4c6HhNHbe+btOPlKXE5HsCW7A+aRTl8UBdu8bKgnCJJVfQpsXgMA1xOliVE16M3RzUcAGw/5xtKQ1oAcDj1x6zEDi2A8SLqYTlDCkTBNVNvXyYrUXQgw9KhjdmrXV19tIW0uQLH85bioCLjQtZR2Z4dgO85a2kHDPrdVUNQ12Qaf7/SiNBk/FMOBbd+Zg4MK/E99QGOp4BPeGEx2PJfygYBj1ebOS6hpCuvSYKaNwftLsnrrmSixOXk60Ssupoef1H774JCkHmRhY01789wXUH79pxg1P6XUa89/LmDBr550eyv+asH5dlPO0ULkJvP0JKVzAq/XozKukJbDxeas7+Pur2eTDr1l5pnKLy9nyEMGEnTrIrdiGYaF2xZml6Pimj/02kzmuUyr4NJEMuYeaVEsx3Xm4=",
+    "expiration": "2026-09-07T09:59:11.000Z",
     "backend": "GIT_BACKEND_S3"
   },
   "name": "ideasmart",

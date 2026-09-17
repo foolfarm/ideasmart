@@ -3816,3 +3816,7 @@
 - [x] Landing page /fasteer-guida-legacy creata su ProofPress (banner + 4 key findings + stat bar + CTA + ProofPress Verify block)
 - [x] Route aggiunta in App.tsx: /fasteer-guida-legacy → FasteerGuidaLegacy.tsx
 - [x] TypeScript: 0 errori
+
+## Esportazione iscritti newsletter (28 Lug 2026)
+- [x] Esportare in Excel l’elenco completo delle email iscritte alla newsletter — 2.958 indirizzi attivi, deduplicati e validati
+- [x] Estendere l’Excel con nome, cognome e telefono, quando disponibili, e confermare il conteggio record — 2.958 record; telefono non archiviato nel database iscritti

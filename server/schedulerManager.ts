@@ -142,7 +142,7 @@ function getWeekKey(): string {
 // ─── Flag globale di pausa — impostato a true per sospendere TUTTI i job ────────────────────────
 // Per riattivare: cambiare in false e fare deploy
 // Sospeso il 2026-07-06 per decisione operativa (Andrea Cinelli)
-const ALL_JOBS_PAUSED = true;
+export const ALL_JOBS_PAUSED = true;
 
 // ─── Avvio scheduler ─────────────────────────────────────────────────────────
 export function startAllSchedulers(): void {

@@ -16,6 +16,8 @@ import { invokeLLM } from "./_core/llm";
 import { sendEmail, buildWelcomeEmailHtml, buildFullNewsletterHtml } from "./email";
 import { publishLinkedInPost } from "./linkedinPublisher";
 import { getLinkedInTokenStatus, refreshLinkedInToken } from "./linkedinTokenRefresh";
+import { ALL_JOBS_PAUSED } from "./schedulerManager";
+import { buildNewsletterOperationalStatus } from "./newsletterControl";
 
 import {
   addSubscriber,
@@ -107,6 +109,19 @@ export const appRouter = router({
   creator: creatorRouter,
   journalist: journalistRouter,
   journalistAdmin: journalistAdminRouter,
+
+  // ── Newsletter Control Room ──────────────────────────────────────────────
+  // Stato operativo esposto all'admin senza divulgare segreti o consentire invii.
+  newsletterControl: router({
+    getOperationalStatus: adminProcedure.query(async () => {
+      const audience = await getAllSubscribers();
+      return buildNewsletterOperationalStatus({
+        automationsPaused: ALL_JOBS_PAUSED,
+        sendGridConfigured: Boolean(process.env.SENDGRID_API_KEY),
+        subscribers: audience,
+      });
+    }),
+  }),
 
   // ── Notification Preferences (public) ─────────────────────────────────────
   notifications: router({
