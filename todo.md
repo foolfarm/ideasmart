@@ -3820,3 +3820,9 @@
 ## Esportazione iscritti newsletter (28 Lug 2026)
 - [x] Esportare in Excel l’elenco completo delle email iscritte alla newsletter — 2.958 indirizzi attivi, deduplicati e validati
 - [x] Estendere l’Excel con nome, cognome e telefono, quando disponibili, e confermare il conteggio record — 2.958 record; telefono non archiviato nel database iscritti
+
+## Centro Newsletter manuale (17 settembre 2026)
+- [x] Creato `/admin/newsletter`: centro operativo con audience, deliverability, storico campagne e protezioni operative.
+- [x] Collegati test email e preview redazione al template newsletter unificato, senza introdurre invii automatici.
+- [x] Confermato `ALL_JOBS_PAUSED=true`: cron, catch-up e invii ricorrenti restano sospesi; il nuovo portale non espone l’invio massivo.
+- [x] Validati TypeScript, build di produzione e test unitari del nuovo stato operativo.
